@@ -1,10 +1,6 @@
 package se.hiflyer.fettle;
 
 import org.junit.Test;
-import se.hiflyer.fettle.BasicTransition;
-import se.hiflyer.fettle.Condition;
-import se.hiflyer.fettle.StateMachine;
-import se.hiflyer.fettle.Transition;
 
 import static org.junit.Assert.assertEquals;
 import static se.mockachino.Mockachino.*;
@@ -20,7 +16,7 @@ public class TestStates {
 	@Test
 	public void simpleStateTransition() {
 
-		StateMachine<States> machine = new StateMachine<States>(States.class, States.INITIAL);
+		StateMachine<States> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		Condition condition1 = mock(Condition.class);
 		stubReturn(true).on(condition1).isSatisfied();
@@ -54,7 +50,7 @@ public class TestStates {
 
 	@Test
 	public void entryExitActions() {
-		StateMachine<States> machine = new StateMachine<States>(States.class, States.INITIAL);
+		StateMachine<States> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		Condition condition1 = mock(Condition.class);
 		stubReturn(false).on(condition1).isSatisfied();
@@ -85,8 +81,48 @@ public class TestStates {
 
 		verifyOnce().on(entryAction).run();
 		verifyOnce().on(exitAction).run();
+	}
 
+	@Test
+	public void simpleStateTransitionUsingNonEnums() {
+
+		TestState initial = new TestState();
+		TestState one = new TestState();
+		TestState two = new TestState();
+
+		StateMachine<TestState> machine = StateMachine.createStateMachine(initial);
+
+		Condition condition1 = mock(Condition.class);
+		stubReturn(true).on(condition1).isSatisfied();
+
+		Transition<TestState> initToOne = new BasicTransition<TestState>(initial, one, condition1);
+		machine.addTransition(initToOne);
+
+		Condition condition2 = mock(Condition.class);
+		stubReturn(false).on(condition2).isSatisfied();
+
+		Transition<TestState> oneToTwo = new BasicTransition<TestState>(one, two, condition2);
+		machine.addTransition(oneToTwo);
+
+		assertEquals(initial, machine.getCurrentState());
+
+		machine.update();
+
+		assertEquals(one, machine.getCurrentState());
+
+		machine.update();
+
+		assertEquals(one, machine.getCurrentState());
+
+		stubReturn(true).on(condition2).isSatisfied();
+
+		machine.update();
+
+		assertEquals(two, machine.getCurrentState());
 
 	}
 
+
+	private class TestState {
+	}
 }

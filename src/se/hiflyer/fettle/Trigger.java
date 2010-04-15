@@ -1,6 +1,6 @@
 package se.hiflyer.fettle;
 
-public class Trigger<T extends Enum<T>> implements Condition {
+public class Trigger<T> implements Condition {
 	private final StateMachine<T> machine;
 	private boolean satisfied;
 
@@ -8,6 +8,7 @@ public class Trigger<T extends Enum<T>> implements Condition {
 		this.machine = machine;
 	}
 
+	@Override
 	public boolean isSatisfied() {
 		return satisfied;
 	}

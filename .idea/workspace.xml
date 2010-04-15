@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager" verified="true">
-    <list default="true" readonly="true" id="b8c33278-85c6-4699-9086-489a569c352c" name="Default" comment="" />
+    <list default="true" readonly="true" id="b8c33278-85c6-4699-9086-489a569c352c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/se/hiflyer/fettle/Transition.java" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/Transition.java" />
+      <change type="DELETED" beforePath="C:\Dev\Fettle\src\se\hiflyer\fettle\EnumMultimap.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/se/hiflyer/fettle/BasicTransition.java" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/BasicTransition.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/util/SetMultimap.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/util/AbstractMultimap.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/se/hiflyer/fettle/Trigger.java" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/Trigger.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/util/Multimap.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestTrigger.java" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestTrigger.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/util/EnumMultimap.java" />
+    </list>
     <ignored path="State.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -12,6 +27,9 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/Fettle$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271337690249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>se.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/State$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271326888742" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -63,28 +81,55 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="TestStates.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
+      <file leaf-file-name="StateMachine.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="17" selection-start="1837" selection-end="1837" vertical-scroll-proportion="0.4733785">
+            <state line="29" column="80" selection-start="1187" selection-end="1187" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StateMachine.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
+      <file leaf-file-name="TestStates.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="26" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0">
+            <state line="97" column="0" selection-start="2639" selection-end="2639" vertical-scroll-proportion="0.6221374">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestTrigger.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestTrigger.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="21" column="56" selection-start="460" selection-end="460" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SetMultimap.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/util/SetMultimap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="36" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="EnumMultimap.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/EnumMultimap.java">
+        <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/util/EnumMultimap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="4" selection-start="414" selection-end="414" vertical-scroll-proportion="0.0">
+            <state line="14" column="18" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractMultimap.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/util/AbstractMultimap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="25" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -102,7 +147,16 @@
       <file leaf-file-name="BasicTransition.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/BasicTransition.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="0" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0">
+            <state line="24" column="26" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Trigger.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/Trigger.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="26" selection-start="252" selection-end="252" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -124,20 +178,27 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="GIT_EXECUTABLE" value="C:\Dev\Program Files\Git\bin\git.exe" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/se/hiflyer/Trigger.java" />
-        <option value="$PROJECT_DIR$/src/StateMachine.java" />
-        <option value="$PROJECT_DIR$/src/se/hiflyer/Transition.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/BasicTransition.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/EnumMultimap.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/Condition.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/State.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/StateMachineTemplate.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/StateMachine.java" />
-        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/TestStates.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/util/Multimap.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/util/AbstractMultimap.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/util/SetMultimap.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/util/EnumMultimap.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
+        <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestTrigger.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/Trigger.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/BasicTransition.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" />
       </list>
     </option>
@@ -162,7 +223,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="0" />
+    <option name="STATE" value="2" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -177,6 +238,9 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Favorites" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -195,33 +259,106 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fettle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="268" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="309" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="290" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="293" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="965" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="972" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="285" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="302" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="options.lastSelected" value="com.intellij.openapi.vcs.configurable.VcsManagerConfigurable$4" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="se.hiflyer.fettle.util" />
+      <recent name="se.hiflyer.fettle" />
       <recent name="se.hiflyer" />
     </key>
   </component>
@@ -372,7 +509,12 @@
       </method>
     </configuration>
     <configuration default="false" name="All tests" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="true" merge="false" sample_coverage="true" runner="emma" />
+      <extension name="coverage" enabled="true" merge="false" sample_coverage="true" runner="emma">
+        <pattern>
+          <option name="PATTERN" value="se.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <extension name="snapshooter" />
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -439,24 +581,24 @@
     <frame x="1436" y="-4" width="1928" height="1208" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295562" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39943343" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29084042" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286119" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24986653" sideWeight="0.7667611" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15643352" sideWeight="0.7667611" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2266289" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2266289" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3286119" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295562" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -494,14 +636,51 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
+    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/util/Multimap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="26" selection-start="129" selection-end="129" vertical-scroll-proportion="0.0" />
+        <state line="6" column="0" selection-start="127" selection-end="127" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/EnumMultimap.java">
+    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/util/AbstractMultimap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="4" selection-start="414" selection-end="414" vertical-scroll-proportion="0.0" />
+        <state line="25" column="25" selection-start="561" selection-end="561" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/util/EnumMultimap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="18" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestTrigger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="56" selection-start="460" selection-end="460" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="80" selection-start="1187" selection-end="1187" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/Condition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="18" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/Trigger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="26" selection-start="252" selection-end="252" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/Transition.java">
@@ -511,17 +690,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/BasicTransition.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0" />
+        <state line="24" column="26" selection-start="434" selection-end="434" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/Condition.java">
+    <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/util/SetMultimap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="18" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" />
+        <state line="13" column="36" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="17" selection-start="1837" selection-end="1837" vertical-scroll-proportion="0.4733785">
+        <state line="97" column="0" selection-start="2639" selection-end="2639" vertical-scroll-proportion="0.6221374">
           <folding />
         </state>
       </provider>

@@ -1,18 +1,33 @@
 package se.hiflyer.fettle;
 
+import se.hiflyer.fettle.util.EnumMultimap;
+import se.hiflyer.fettle.util.Multimap;
+import se.hiflyer.fettle.util.SetMultimap;
+
 import java.util.Collection;
 
-public class StateMachine<T extends Enum<T>> {
+public class StateMachine<T> {
 	private T currentState;
-	private final EnumMultimap<T, Transition<T>> stateTransitions;
-	private final EnumMultimap<T, Runnable> entryActions;
-	private final EnumMultimap<T, Runnable> exitActions;
+	private final Multimap<T, Transition<T>> stateTransitions;
+	private final Multimap<T, Runnable> entryActions;
+	private final Multimap<T, Runnable> exitActions;
 
-	public StateMachine(Class<T> clazz, T initial) {
+
+	private StateMachine(T initial, Multimap<T, Transition<T>> stateTransitions, Multimap<T, Runnable> entryActions, Multimap<T, Runnable> exitActions) {
 		currentState = initial;
-		stateTransitions = EnumMultimap.create(clazz);
-		entryActions = EnumMultimap.create(clazz);
-		exitActions = EnumMultimap.create(clazz);
+		this.stateTransitions = stateTransitions;
+		this.entryActions = entryActions;
+		this.exitActions = exitActions;
+	}
+
+	public static <T> StateMachine<T> createStateMachine(T initial) {
+		return new StateMachine<T>(initial, SetMultimap.<T, Transition<T>>create(),
+				  SetMultimap.<T, Runnable>create(), SetMultimap.<T, Runnable>create());
+	}
+
+	public static <T extends Enum<T>> StateMachine<T> createStateMachineOfEnum(Class<T> clazz, T initial) {
+		return new StateMachine<T>(initial, EnumMultimap.<T, Transition<T>>create(clazz),
+				  EnumMultimap.<T, Runnable>create(clazz), EnumMultimap.<T, Runnable>create(clazz));
 	}
 
 	public void addTransition(Transition<T> transition) {
@@ -26,7 +41,7 @@ public class StateMachine<T extends Enum<T>> {
 	public void update() {
 		Collection<Transition<T>> activeTransitions = stateTransitions.get(currentState);
 		for (Transition<T> activeTransition : activeTransitions) {
-			if (activeTransition.getTrigger().isSatisfied()) {
+			if (activeTransition.getCondition().isSatisfied()) {
 				moveToNewState(activeTransition.getTo());
 			}
 		}
@@ -38,7 +53,7 @@ public class StateMachine<T extends Enum<T>> {
 		runActions(entryActions, currentState);
 	}
 
-	private void runActions(EnumMultimap<T, Runnable> actionMap, T state) {
+	private void runActions(Multimap<T, Runnable> actionMap, T state) {
 		Collection<Runnable> actions = actionMap.get(state);
 		for (Runnable action : actions) {
 			action.run();

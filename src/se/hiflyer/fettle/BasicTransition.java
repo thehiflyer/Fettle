@@ -1,6 +1,6 @@
 package se.hiflyer.fettle;
 
-public class BasicTransition<T extends Enum<T>> implements Transition<T> {
+public class BasicTransition<T> implements Transition<T> {
 	private final T from;
 	private final T to;
 	private final Condition condition;
@@ -11,15 +11,18 @@ public class BasicTransition<T extends Enum<T>> implements Transition<T> {
 		this.condition = condition;
 	}
 
+	@Override
 	public T getFrom() {
 		return from;
 	}
 
+	@Override
 	public T getTo() {
 		return to;
 	}
 
-	public Condition getTrigger() {
+	@Override
+	public Condition getCondition() {
 		return condition;
 	}
 }

@@ -1,7 +1,7 @@
 package se.hiflyer.fettle;
 
 public interface Transition<T> {
-	Condition getTrigger();
+	Condition getCondition();
 
 	T getFrom();
 

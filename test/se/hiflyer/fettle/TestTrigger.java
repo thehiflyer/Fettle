@@ -3,7 +3,6 @@ package se.hiflyer.fettle;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static se.mockachino.Mockachino.mock;
 
 public class TestTrigger {
 
@@ -15,7 +14,7 @@ public class TestTrigger {
 
 	@Test
 	public void trigger() {
-		StateMachine<States> machine = new StateMachine<States>(States.class, States.INITIAL);
+		StateMachine<States> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		Trigger trigger = new Trigger<States>(machine);
 
