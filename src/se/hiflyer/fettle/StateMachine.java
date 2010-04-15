@@ -11,6 +11,7 @@ public class StateMachine<T> {
 	private final Multimap<T, Transition<T>> stateTransitions;
 	private final Multimap<T, Runnable> entryActions;
 	private final Multimap<T, Runnable> exitActions;
+	private final Multimap<Transition<T>, Runnable> transitionActions = new SetMultimap<Transition<T>, Runnable>();
 
 
 	private StateMachine(T initial, Multimap<T, Transition<T>> stateTransitions, Multimap<T, Runnable> entryActions, Multimap<T, Runnable> exitActions) {
@@ -42,18 +43,20 @@ public class StateMachine<T> {
 		Collection<Transition<T>> activeTransitions = stateTransitions.get(currentState);
 		for (Transition<T> activeTransition : activeTransitions) {
 			if (activeTransition.getCondition().isSatisfied()) {
-				moveToNewState(activeTransition.getTo());
+				makeTransition(activeTransition);
 			}
 		}
 	}
 
-	private void moveToNewState(T to) {
+	private void makeTransition(Transition<T> transition) {
+
 		runActions(exitActions, currentState);
-		currentState = to;
+		currentState = transition.getTo();
+		runActions(transitionActions, transition);
 		runActions(entryActions, currentState);
 	}
 
-	private void runActions(Multimap<T, Runnable> actionMap, T state) {
+	private <S> void runActions(Multimap<S, Runnable> actionMap, S state) {
 		Collection<Runnable> actions = actionMap.get(state);
 		for (Runnable action : actions) {
 			action.run();
@@ -66,5 +69,9 @@ public class StateMachine<T> {
 
 	public void addExitAction(T exitState, Runnable action) {
 		exitActions.put(exitState, action);
+	}
+
+	public void addTransitionAction(Transition<T> transition, Runnable action) {
+		transitionActions.put(transition, action);
 	}
 }

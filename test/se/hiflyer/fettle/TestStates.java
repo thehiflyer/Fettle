@@ -7,12 +7,6 @@ import static se.mockachino.Mockachino.*;
 
 public class TestStates {
 
-	private enum States {
-		INITIAL,
-		ONE,
-		TWO
-	}
-
 	@Test
 	public void simpleStateTransition() {
 

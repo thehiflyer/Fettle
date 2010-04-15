@@ -6,12 +6,6 @@ import static org.junit.Assert.assertEquals;
 
 public class TestTrigger {
 
-	private enum States {
-		INITIAL,
-		ONE,
-		TWO
-	}
-
 	@Test
 	public void trigger() {
 		StateMachine<States> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
