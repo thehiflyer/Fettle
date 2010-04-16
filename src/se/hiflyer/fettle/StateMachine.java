@@ -44,6 +44,7 @@ public class StateMachine<T> {
 		for (Transition<T> activeTransition : activeTransitions) {
 			if (activeTransition.getCondition().isSatisfied()) {
 				makeTransition(activeTransition);
+				return;
 			}
 		}
 	}
