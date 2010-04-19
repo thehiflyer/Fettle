@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="b8c33278-85c6-4699-9086-489a569c352c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/se/hiflyer/fettle/Transition.java" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/Transition.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/se/hiflyer/fettle/MovementUsecase.java" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/MovementUsecase.java" />
@@ -19,7 +18,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Fettle$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271672759359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Fettle$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271677373328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>se.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/State$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271326888742" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -76,7 +75,7 @@
       <file leaf-file-name="StateMachine.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="52" selection-start="1801" selection-end="1847" vertical-scroll-proportion="0.0">
+            <state line="44" column="4" selection-start="1753" selection-end="1753" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -84,19 +83,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestStates.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="TestStates.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="19" selection-start="229" selection-end="229" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestTransitionActions.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TestTransitionActions.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestTransitionActions.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="33" selection-start="253" selection-end="253" vertical-scroll-proportion="0.31554523">
+            <state line="11" column="33" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -177,10 +176,10 @@
         <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/BasicConditions.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/OrConditionTest.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/Transition.java" />
-        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/MovementUsecase.java" />
-        <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestTransitionActions.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
+        <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" />
       </list>
     </option>
   </component>
@@ -570,7 +569,7 @@
     <frame x="0" y="0" width="1440" height="870" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.33287102" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33287102" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39917696" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -582,9 +581,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22815885" sideWeight="0.6574203" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22815885" sideWeight="0.76421636" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22633745" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22607489" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295562" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -603,7 +602,7 @@
     <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reworked design according to code review by krka" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made events a generic" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -621,6 +620,7 @@
     <MESSAGE value="Only one transition can now be made on a single update" />
     <MESSAGE value="Added junit lib" />
     <MESSAGE value="Reworked design according to code review by krka" />
+    <MESSAGE value="Made events a generic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -693,9 +693,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestTransitionActions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="33" selection-start="253" selection-end="253" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="52" selection-start="1801" selection-end="1847" vertical-scroll-proportion="0.0">
+        <state line="44" column="4" selection-start="1753" selection-end="1753" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -704,14 +711,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="19" selection-start="229" selection-end="229" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestTransitionActions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="33" selection-start="253" selection-end="253" vertical-scroll-proportion="0.31554523">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>

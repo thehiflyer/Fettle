@@ -32,12 +32,16 @@ public class StateMachine<T, S> {
 	}
 
 
-	public void addTransition(T from, T to, Condition condition, S event, List<Runnable> actions) {
+	public void addTransition(T from, T to, S event, Condition condition, List<Runnable> actions) {
 		stateTransitions.put(from, new Transition<T, S>(from, to, condition, event, actions));
 	}
 
-	public void addTransition(T from, T to, Condition condition, S event) {
-		addTransition(from, to, condition, event, Collections.<Runnable>emptyList());
+	public void addTransition(T from, T to, S event, Condition condition) {
+		addTransition(from, to, event, condition, Collections.<Runnable>emptyList());
+	}
+
+	public void addTransition(T from, T to, S event) {
+		addTransition(from, to, event, BasicConditions.ALWAYS);
 	}
 
 	public T getCurrentState() {

@@ -11,11 +11,11 @@ public class TestTransitionActions {
 	public void actionsAreRunOnTransitions() {
 		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, BasicConditions.ALWAYS, "");
+		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS);
 		Runnable transitionAction1 = mock(Runnable.class);
-		machine.addTransition(States.ONE, States.TWO, BasicConditions.ALWAYS, "", Lists.newArrayList(transitionAction1));
+		machine.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction1));
 		Runnable transitionAction2 = mock(Runnable.class);
-		machine.addTransition(States.TWO, States.ONE, BasicConditions.ALWAYS, "", Lists.newArrayList(transitionAction2));
+		machine.addTransition(States.TWO, States.ONE, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction2));
 
 
 		machine.fireEvent("");

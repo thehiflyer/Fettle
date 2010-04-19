@@ -26,18 +26,18 @@ public class MovementUsecase {
 
 		StateMachine<State, MovementEvents> machine = StateMachine.createStateMachine(walking);
 
-		machine.addTransition(walking, jumping, BasicConditions.ALWAYS, MovementEvents.PRESSED_SPACE, Collections.<Runnable>emptyList());
-		machine.addTransition(jumping, falling, BasicConditions.ALWAYS, MovementEvents.RELEASED_SPACE, Collections.<Runnable>emptyList());
-		machine.addTransition(falling, jetpackthrust, BasicConditions.ALWAYS, MovementEvents.PRESSED_SPACE, Collections.<Runnable>emptyList());
-		machine.addTransition(jetpackthrust, falling, BasicConditions.ALWAYS, MovementEvents.RELEASED_SPACE, Collections.<Runnable>emptyList());
-		machine.addTransition(falling, crashed, BasicConditions.ALWAYS, MovementEvents.HIT_GROUND, Collections.<Runnable>emptyList());
-		machine.addTransition(crashed, walking, new Condition() {
+		machine.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Runnable>emptyList());
+		machine.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Runnable>emptyList());
+		machine.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Runnable>emptyList());
+		machine.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Runnable>emptyList());
+		machine.addTransition(falling, crashed, MovementEvents.HIT_GROUND, BasicConditions.ALWAYS, Collections.<Runnable>emptyList());
+		machine.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition() {
 			@Override
 			public boolean isSatisfied() {
 				// wait until body is upright
 				return true;
 			}
-		}, MovementEvents.ON_UPDATE, Collections.<Runnable>emptyList());
+		}, Collections.<Runnable>emptyList());
 
 		assertEquals(walking, machine.getCurrentState());
 		machine.fireEvent(MovementEvents.RELEASED_SPACE);

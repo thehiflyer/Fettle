@@ -12,21 +12,21 @@ public class TestStates {
 
 		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, BasicConditions.ALWAYS, "");
+		machine.addTransition(States.INITIAL, States.ONE, "hej");
 
-		machine.addTransition(States.ONE, States.TWO, BasicConditions.ALWAYS, "");
+		machine.addTransition(States.ONE, States.TWO, "hopp");
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
-		machine.fireEvent("");
+		machine.fireEvent("hej");
 
 		assertEquals(States.ONE, machine.getCurrentState());
 
-		machine.fireEvent("foo");
+		machine.fireEvent("hej");
 
 		assertEquals(States.ONE, machine.getCurrentState());
 
-		machine.fireEvent("");
+		machine.fireEvent("hopp");
 
 		assertEquals(States.TWO, machine.getCurrentState());
 
@@ -36,10 +36,10 @@ public class TestStates {
 	public void entryExitActions() {
 		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, BasicConditions.ALWAYS, "");
+		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS);
 
 
-		machine.addTransition(States.ONE, States.TWO, BasicConditions.ALWAYS, "");
+		machine.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS);
 		Runnable entryAction = mock(Runnable.class);
 		machine.addEntryAction(States.ONE, entryAction);
 		Runnable exitAction = mock(Runnable.class);
@@ -70,9 +70,9 @@ public class TestStates {
 
 		StateMachine<TestState, String> machine = StateMachine.createStateMachine(initial);
 
-		machine.addTransition(initial, one, BasicConditions.ALWAYS, "");
+		machine.addTransition(initial, one, "", BasicConditions.ALWAYS);
 
-		machine.addTransition(one, two, BasicConditions.ALWAYS, "");
+		machine.addTransition(one, two, "", BasicConditions.ALWAYS);
 
 		assertEquals(initial, machine.getCurrentState());
 
