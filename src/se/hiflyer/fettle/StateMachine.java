@@ -8,35 +8,35 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class StateMachine<T> {
+public class StateMachine<T, S> {
 	private T currentState;
-	private final Multimap<T, Transition<T>> stateTransitions;
+	private final Multimap<T, Transition<T, S>> stateTransitions;
 	private final Multimap<T, Runnable> entryActions;
 	private final Multimap<T, Runnable> exitActions;
 
-	private StateMachine(T initial, Multimap<T, Transition<T>> stateTransitions, Multimap<T, Runnable> entryActions, Multimap<T, Runnable> exitActions) {
+	private StateMachine(T initial, Multimap<T, Transition<T, S>> stateTransitions, Multimap<T, Runnable> entryActions, Multimap<T, Runnable> exitActions) {
 		currentState = initial;
 		this.stateTransitions = stateTransitions;
 		this.entryActions = entryActions;
 		this.exitActions = exitActions;
 	}
 
-	public static <T> StateMachine<T> createStateMachine(T initial) {
-		return new StateMachine<T>(initial, SetMultimap.<T, Transition<T>>create(),
+	public static <T, S> StateMachine<T, S> createStateMachine(T initial) {
+		return new StateMachine<T, S>(initial, SetMultimap.<T, Transition<T, S>>create(),
 				  SetMultimap.<T, Runnable>create(), SetMultimap.<T, Runnable>create());
 	}
 
-	public static <T extends Enum<T>> StateMachine<T> createStateMachineOfEnum(Class<T> clazz, T initial) {
-		return new StateMachine<T>(initial, EnumMultimap.<T, Transition<T>>create(clazz),
+	public static <T extends Enum<T>, S> StateMachine<T, S> createStateMachineOfEnum(Class<T> clazz, T initial) {
+		return new StateMachine<T, S>(initial, EnumMultimap.<T, Transition<T, S>>create(clazz),
 				  EnumMultimap.<T, Runnable>create(clazz), EnumMultimap.<T, Runnable>create(clazz));
 	}
 
 
-	public void addTransition(T from, T to, Condition condition, Object event, List<Runnable> actions) {
-		stateTransitions.put(from, new Transition<T>(from, to, condition, event, actions));
+	public void addTransition(T from, T to, Condition condition, S event, List<Runnable> actions) {
+		stateTransitions.put(from, new Transition<T, S>(from, to, condition, event, actions));
 	}
 
-	public void addTransition(T from, T to, Condition condition, Object event) {
+	public void addTransition(T from, T to, Condition condition, S event) {
 		addTransition(from, to, condition, event, Collections.<Runnable>emptyList());
 	}
 
@@ -44,7 +44,7 @@ public class StateMachine<T> {
 		return currentState;
 	}
 
-	private void moveToNewState(Transition<T> transition) {
+	private void moveToNewState(Transition<T, S> transition) {
 		runActions(exitActions, currentState);
 		runActions(transition.getTransitionActions());
 		currentState = transition.getTo();
@@ -70,9 +70,9 @@ public class StateMachine<T> {
 		exitActions.put(exitState, action);
 	}
 
-	public void fireEvent(Object event) {
-		Collection<Transition<T>> transitions = stateTransitions.get(currentState);
-		for (Transition<T> transition : transitions) {
+	public void fireEvent(S event) {
+		Collection<Transition<T, S>> transitions = stateTransitions.get(currentState);
+		for (Transition<T, S> transition : transitions) {
 			// TODO: make smart lookup on event instead
 			if (transition.getEvent().equals(event)) {
 				if (transition.getCondition().isSatisfied()) {

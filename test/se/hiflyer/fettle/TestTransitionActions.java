@@ -9,7 +9,7 @@ public class TestTransitionActions {
 
 	@Test
 	public void actionsAreRunOnTransitions() {
-		StateMachine<States> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, BasicConditions.ALWAYS, "");
 		Runnable transitionAction1 = mock(Runnable.class);
