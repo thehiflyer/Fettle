@@ -5,14 +5,14 @@ import se.hiflyer.fettle.util.Multimap;
 import se.hiflyer.fettle.util.SetMultimap;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class StateMachine<T> {
 	private T currentState;
 	private final Multimap<T, Transition<T>> stateTransitions;
 	private final Multimap<T, Runnable> entryActions;
 	private final Multimap<T, Runnable> exitActions;
-	private final Multimap<Transition<T>, Runnable> transitionActions = new SetMultimap<Transition<T>, Runnable>();
-
 
 	private StateMachine(T initial, Multimap<T, Transition<T>> stateTransitions, Multimap<T, Runnable> entryActions, Multimap<T, Runnable> exitActions) {
 		currentState = initial;
@@ -31,37 +31,35 @@ public class StateMachine<T> {
 				  EnumMultimap.<T, Runnable>create(clazz), EnumMultimap.<T, Runnable>create(clazz));
 	}
 
-	public void addTransition(Transition<T> transition) {
-		stateTransitions.put(transition.getFrom(), transition);
+
+	public void addTransition(T from, T to, Condition condition, Object event, List<Runnable> actions) {
+		stateTransitions.put(from, new Transition<T>(from, to, condition, event, actions));
+	}
+
+	public void addTransition(T from, T to, Condition condition, Object event) {
+		addTransition(from, to, condition, event, Collections.<Runnable>emptyList());
 	}
 
 	public T getCurrentState() {
 		return currentState;
 	}
 
-	public void update() {
-		Collection<Transition<T>> activeTransitions = stateTransitions.get(currentState);
-		for (Transition<T> activeTransition : activeTransitions) {
-			if (activeTransition.getCondition().isSatisfied()) {
-				makeTransition(activeTransition);
-				return;
-			}
-		}
-	}
-
-	private void makeTransition(Transition<T> transition) {
-
+	private void moveToNewState(Transition<T> transition) {
 		runActions(exitActions, currentState);
+		runActions(transition.getTransitionActions());
 		currentState = transition.getTo();
-		runActions(transitionActions, transition);
 		runActions(entryActions, currentState);
 	}
 
-	private <S> void runActions(Multimap<S, Runnable> actionMap, S state) {
-		Collection<Runnable> actions = actionMap.get(state);
+	private void runActions(Collection<Runnable> actions) {
 		for (Runnable action : actions) {
 			action.run();
 		}
+	}
+
+
+	private void runActions(Multimap<T, Runnable> actionMap, T state) {
+		runActions(actionMap.get(state));
 	}
 
 	public void addEntryAction(T entryState, Runnable action) {
@@ -72,7 +70,16 @@ public class StateMachine<T> {
 		exitActions.put(exitState, action);
 	}
 
-	public void addTransitionAction(Transition<T> transition, Runnable action) {
-		transitionActions.put(transition, action);
+	public void fireEvent(Object event) {
+		Collection<Transition<T>> transitions = stateTransitions.get(currentState);
+		for (Transition<T> transition : transitions) {
+			// TODO: make smart lookup on event instead
+			if (transition.getEvent().equals(event)) {
+				if (transition.getCondition().isSatisfied()) {
+					moveToNewState(transition);
+					return;
+				}
+			}
+		}
 	}
 }

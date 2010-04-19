@@ -10,11 +10,34 @@ import static se.mockachino.Mockachino.stubReturn;
 public class OrConditionTest {
 
 	@Test
+	public void twoWayOr() {
+		Condition cond1 = mock(Condition.class);
+		Condition cond2 = mock(Condition.class);
+
+		Condition condition = BasicConditions.or(cond1, cond2);
+
+		assertFalse(condition.isSatisfied());
+
+		stubReturn(true).on(cond1).isSatisfied();
+		stubReturn(false).on(cond2).isSatisfied();
+		assertTrue(condition.isSatisfied());
+
+		stubReturn(false).on(cond1).isSatisfied();
+		stubReturn(true).on(cond2).isSatisfied();
+		assertTrue(condition.isSatisfied());
+
+		stubReturn(true).on(cond1).isSatisfied();
+		stubReturn(true).on(cond2).isSatisfied();
+		assertTrue(condition.isSatisfied());
+	}
+
+
+	@Test
 	public void notSatisfied() {
 		Condition cond1 = mock(Condition.class);
 		Condition cond2 = mock(Condition.class);
 		Condition cond3 = mock(Condition.class);
-		AndCondition condition = new AndCondition(cond1, cond2, cond3);
+		Condition condition = BasicConditions.or(cond1, cond2, cond3);
 
 		assertFalse(condition.isSatisfied());
 	}
@@ -24,7 +47,7 @@ public class OrConditionTest {
 		Condition cond1 = mock(Condition.class);
 		Condition cond2 = mock(Condition.class);
 		Condition cond3 = mock(Condition.class);
-		OrCondition condition = new OrCondition(cond1, cond2, cond3);
+		Condition condition = BasicConditions.or(cond1, cond2, cond3);
 
 
 		stubReturn(true).on(cond1).isSatisfied();
@@ -64,7 +87,6 @@ public class OrConditionTest {
 		assertTrue(condition.isSatisfied());
 
 	}
-
 
 
 }

@@ -1,5 +1,6 @@
 package se.hiflyer.fettle;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import static se.mockachino.Mockachino.*;
@@ -10,42 +11,29 @@ public class TestTransitionActions {
 	public void actionsAreRunOnTransitions() {
 		StateMachine<States> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		Condition condition1 = mock(Condition.class);
-		stubReturn(false).on(condition1).isSatisfied();
-
-		Transition<States> initToOne = new BasicTransition<States>(States.INITIAL, States.ONE, condition1);
-		machine.addTransition(initToOne);
-
-		Transition<States> oneToTwo = new BasicTransition<States>(States.ONE, States.TWO, condition1);
-		machine.addTransition(oneToTwo);
-		Transition<States> twoToOne = new BasicTransition<States>(States.TWO, States.ONE, condition1);
-		machine.addTransition(twoToOne);
-
+		machine.addTransition(States.INITIAL, States.ONE, BasicConditions.ALWAYS, "");
 		Runnable transitionAction1 = mock(Runnable.class);
-		machine.addTransitionAction(initToOne, transitionAction1);
-
+		machine.addTransition(States.ONE, States.TWO, BasicConditions.ALWAYS, "", Lists.newArrayList(transitionAction1));
 		Runnable transitionAction2 = mock(Runnable.class);
-		machine.addTransitionAction(twoToOne, transitionAction2);
+		machine.addTransition(States.TWO, States.ONE, BasicConditions.ALWAYS, "", Lists.newArrayList(transitionAction2));
 
-		machine.update();
+
+		machine.fireEvent("");
 
 		verifyNever().on(transitionAction1).run();
 		verifyNever().on(transitionAction2).run();
 
-		stubReturn(true).on(condition1).isSatisfied();
-
-		machine.update();
+		machine.fireEvent("");
 
 		verifyOnce().on(transitionAction1).run();
 		verifyNever().on(transitionAction2).run();
 
-
-		machine.update();
+		machine.fireEvent("foo");
 
 		verifyOnce().on(transitionAction1).run();
 		verifyNever().on(transitionAction2).run();
 
-		machine.update();
+		machine.fireEvent("");
 
 		verifyOnce().on(transitionAction1).run();
 		verifyOnce().on(transitionAction2).run();
