@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager" verified="true">
     <list default="true" readonly="true" id="b8c33278-85c6-4699-9086-489a569c352c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" afterPath="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/se/hiflyer/fettle/MovementUsecase.java" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/MovementUsecase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestFireEvent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestTransitionActions.java" afterPath="$PROJECT_DIR$/test/se/hiflyer/fettle/TestTransitionActions.java" />
     </list>
     <ignored path="State.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -18,7 +16,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Fettle$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271677373328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/Fettle$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271677971359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>se.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/State$All_tests..es" NAME="All tests Coverage Results" MODIFIED="1271326888742" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="emma" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -75,7 +73,7 @@
       <file leaf-file-name="StateMachine.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="4" selection-start="1753" selection-end="1753" vertical-scroll-proportion="0.0">
+            <state line="88" column="4" selection-start="2877" selection-end="2877" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -83,7 +81,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestStates.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="TestFireEvent.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestFireEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="18" selection-start="579" selection-end="579" vertical-scroll-proportion="0.7027559">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TestStates.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -164,7 +173,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/util/EnumMultimap.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/Trigger.java" />
         <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/BasicTransition.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/States.java" />
@@ -178,8 +186,9 @@
         <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/Transition.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/MovementUsecase.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestTransitionActions.java" />
-        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
         <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" />
+        <option value="$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java" />
+        <option value="$PROJECT_DIR$/test/se/hiflyer/fettle/TestFireEvent.java" />
       </list>
     </option>
   </component>
@@ -602,7 +611,7 @@
     <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made events a generic" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reordered the arguments for adding transitions and added a simple method with the always condition" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -621,6 +630,7 @@
     <MESSAGE value="Added junit lib" />
     <MESSAGE value="Reworked design according to code review by krka" />
     <MESSAGE value="Made events a generic" />
+    <MESSAGE value="Reordered the arguments for adding transitions and added a simple method with the always condition" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -700,19 +710,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/se/hiflyer/fettle/StateMachine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="4" selection-start="1753" selection-end="1753" vertical-scroll-proportion="0.0">
+        <state line="88" column="4" selection-start="2877" selection-end="2877" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java">
+    <entry file="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestFireEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="22" column="18" selection-start="579" selection-end="579" vertical-scroll-proportion="0.7027559">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

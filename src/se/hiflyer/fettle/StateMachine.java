@@ -74,16 +74,17 @@ public class StateMachine<T, S> {
 		exitActions.put(exitState, action);
 	}
 
-	public void fireEvent(S event) {
+	public boolean fireEvent(S event) {
 		Collection<Transition<T, S>> transitions = stateTransitions.get(currentState);
 		for (Transition<T, S> transition : transitions) {
 			// TODO: make smart lookup on event instead
 			if (transition.getEvent().equals(event)) {
 				if (transition.getCondition().isSatisfied()) {
 					moveToNewState(transition);
-					return;
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 }
