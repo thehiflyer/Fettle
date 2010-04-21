@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="fettle" default="all">
+
+
+	<property file="fettle.properties"/>
+	<!-- Uncomment the following property if no tests compilation is needed -->
+	<!--
+	  <property name="skip.tests" value="true"/>
+		-->
+
+	<!-- Compiler options -->
+
+	<property name="compiler.debug" value="on"/>
+	<property name="compiler.generate.no.warnings" value="off"/>
+	<property name="compiler.args" value=""/>
+	<property name="compiler.max.memory" value="128m"/>
+	<patternset id="ignored.files">
+		<exclude name="**/CVS/**"/>
+		<exclude name="**/SCCS/**"/>
+		<exclude name="**/RCS/**"/>
+		<exclude name="**/rcs/**"/>
+		<exclude name="**/.DS_Store/**"/>
+		<exclude name="**/.svn/**"/>
+		<exclude name="**/.pyc/**"/>
+		<exclude name="**/.pyo/**"/>
+		<exclude name="**/*.pyc/**"/>
+		<exclude name="**/*.pyo/**"/>
+		<exclude name="**/.git/**"/>
+		<exclude name="**/*.hprof/**"/>
+		<exclude name="**/_svn/**"/>
+	</patternset>
+	<patternset id="library.patterns">
+		<include name="*.zip"/>
+		<include name="*.war"/>
+		<include name="*.egg"/>
+		<include name="*.ear"/>
+		<include name="*.swc"/>
+		<include name="*.jar"/>
+	</patternset>
+	<patternset id="compiler.resources">
+		<include name="**/?*.properties"/>
+		<include name="**/?*.xml"/>
+		<include name="**/?*.gif"/>
+		<include name="**/?*.png"/>
+		<include name="**/?*.jpeg"/>
+		<include name="**/?*.jpg"/>
+		<include name="**/?*.html"/>
+		<include name="**/?*.dtd"/>
+		<include name="**/?*.tld"/>
+		<include name="**/?*.ftl"/>
+	</patternset>
+
+
+	<!-- Project Libraries -->
+
+	<path id="library.libs.classpath">
+		<fileset dir="${basedir}/libs">
+			<patternset refid="library.patterns"/>
+		</fileset>
+	</path>
+
+	<!-- Modules -->
+
+
+	<!-- Module Fettle -->
+
+	<dirname property="module.fettle.basedir" file="${ant.file}"/>
+
+
+	<property name="compiler.args.fettle" value="${compiler.args}"/>
+
+	<property name="fettle.output.dir" value="${module.fettle.basedir}/out/production/Fettle"/>
+	<property name="fettle.testoutput.dir" value="${module.fettle.basedir}/out/test/Fettle"/>
+
+	<path id="fettle.module.bootclasspath">
+		<!-- Paths to be included in compilation bootclasspath -->
+	</path>
+
+	<path id="fettle.module.classpath">
+		<path refid="library.libs.classpath"/>
+	</path>
+
+	<path id="fettle.runtime.module.classpath">
+		<pathelement location="${fettle.output.dir}"/>
+		<pathelement location="${fettle.testoutput.dir}"/>
+		<path refid="library.libs.classpath"/>
+	</path>
+
+
+	<patternset id="excluded.from.module.fettle">
+		<patternset refid="ignored.files"/>
+	</patternset>
+
+	<patternset id="excluded.from.compilation.fettle">
+		<patternset refid="excluded.from.module.fettle"/>
+	</patternset>
+
+	<path id="fettle.module.sourcepath">
+		<dirset dir="${module.fettle.basedir}">
+			<include name="src"/>
+		</dirset>
+	</path>
+
+	<path id="fettle.module.test.sourcepath">
+		<dirset dir="${module.fettle.basedir}">
+			<include name="test"/>
+		</dirset>
+	</path>
+
+
+	<target name="compile" depends="compile.source,compile.tests" description="Compile module Fettle"/>
+
+	<target name="compile.source" description="Compile module Fettle; production classes">
+		<mkdir dir="${fettle.output.dir}"/>
+		<javac destdir="${fettle.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+				 memorymaximumsize="${compiler.max.memory}" fork="true">
+			<compilerarg line="${compiler.args.fettle}"/>
+			<bootclasspath refid="fettle.module.bootclasspath"/>
+			<classpath refid="fettle.module.classpath"/>
+			<src refid="fettle.module.sourcepath"/>
+			<patternset refid="excluded.from.compilation.fettle"/>
+		</javac>
+
+		<copy todir="${fettle.output.dir}">
+			<fileset dir="${module.fettle.basedir}/src">
+				<patternset refid="compiler.resources"/>
+				<type type="file"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile.tests" depends="compile.source" description="compile module Fettle; test classes"
+			  unless="skip.tests">
+		<mkdir dir="${fettle.testoutput.dir}"/>
+		<javac destdir="${fettle.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+				 memorymaximumsize="${compiler.max.memory}" fork="true">
+			<compilerarg line="${compiler.args.fettle}"/>
+			<classpath refid="fettle.module.classpath"/>
+			<classpath>
+				<path refid="fettle.module.classpath"/>
+				<pathelement location="${fettle.output.dir}"/>
+			</classpath>
+			<src refid="fettle.module.test.sourcepath"/>
+			<patternset refid="excluded.from.compilation.fettle"/>
+		</javac>
+
+		<copy todir="${fettle.testoutput.dir}">
+			<fileset dir="${module.fettle.basedir}/test">
+				<patternset refid="compiler.resources"/>
+				<type type="file"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean" description="cleanup module">
+		<delete dir="${fettle.output.dir}"/>
+		<delete dir="${fettle.testoutput.dir}"/>
+	</target>
+
+	<target name="init" description="Build initialization">
+		<!-- Perform any build initialization in this target -->
+	</target>
+
+
+	<target name="package" description="Builds a jar" depends="compile.source">
+		<jar destfile="fettle-${version}.jar" basedir="${fettle.output.dir}">
+		</jar>
+	</target>
+
+
+	<target name="all" depends="compile" description="build all"/>
+</project>
