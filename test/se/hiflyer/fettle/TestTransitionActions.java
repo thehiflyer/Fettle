@@ -3,9 +3,26 @@ package se.hiflyer.fettle;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static se.mockachino.Mockachino.*;
 
 public class TestTransitionActions {
+
+	@Test
+	public void testTransitionCreation() {
+		States from = States.ONE;
+		States to = States.TWO;
+		Condition condition = mock(Condition.class);
+		String event = "foo";
+		Transition<States, String> transition = new Transition<States, String>(from, to, condition, event);
+
+		assertEquals(from, transition.getFrom());
+		assertEquals(to, transition.getTo());
+		assertEquals(condition, transition.getCondition());
+		assertEquals("foo", transition.getEvent());
+		assertNotNull(transition.getTransitionActions());
+	}
 
 	@Test
 	public void actionsAreRunOnTransitions() {

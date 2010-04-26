@@ -90,6 +90,30 @@ public class TestStates {
 
 	}
 
+	@Test
+	public void forceSetState() {
+		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		machine.addTransition(States.INITIAL, States.ONE, "hej");
+		machine.addTransition(States.ONE, States.TWO, "hopp");
+		machine.addTransition(States.TWO, States.INITIAL, "hej");
+
+		Runnable entryAction1 = mock(Runnable.class);
+		machine.addEntryAction(States.INITIAL, entryAction1);
+		Runnable exitAction1 = mock(Runnable.class);
+		machine.addExitAction(States.INITIAL, exitAction1);
+
+		Runnable entryAction2 = mock(Runnable.class);
+		machine.addEntryAction(States.TWO, entryAction2);
+		Runnable exitAction2 = mock(Runnable.class);
+		machine.addExitAction(States.TWO, exitAction2);
+
+		machine.forceSetState(States.TWO);
+		assertEquals(States.TWO, machine.getCurrentState());
+		verifyOnce().on(exitAction1).run();
+		verifyOnce().on(entryAction2).run();
+
+	}
+
 
 	private class TestState {
 	}

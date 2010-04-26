@@ -87,4 +87,9 @@ public class StateMachine<T, S> {
 		}
 		return false;
 	}
+
+	public void forceSetState(T forcedState) {
+		Transition<T, S> transition = new Transition<T, S>(currentState, forcedState, BasicConditions.ALWAYS, null);
+		moveToNewState(transition);
+	}
 }
