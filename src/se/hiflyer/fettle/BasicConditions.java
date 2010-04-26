@@ -1,6 +1,10 @@
 package se.hiflyer.fettle;
 
 public class BasicConditions {
+
+	private BasicConditions() {
+	}
+
 	public static final Condition ALWAYS = new Condition() {
 		@Override
 		public boolean isSatisfied() {
