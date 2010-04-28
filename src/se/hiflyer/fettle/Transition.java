@@ -8,10 +8,10 @@ public class Transition<T, S> {
 	private final T to;
 	private final Condition condition;
 	private final S event;
-	private final Collection<Runnable> transitionActions;
+	private final Collection<Action> transitionActions;
 
 
-	public Transition(T from, T to, Condition condition, S event, Collection<Runnable> transitionActions) {
+	public Transition(T from, T to, Condition condition, S event, Collection<Action> transitionActions) {
 		this.from = from;
 		this.to = to;
 		this.condition = condition;
@@ -20,7 +20,7 @@ public class Transition<T, S> {
 	}
 
 	public Transition(T from, T to, Condition condition, S event) {
-		this(from, to, condition, event, Collections.<Runnable>emptyList());
+		this(from, to, condition, event, Collections.<Action>emptyList());
 	}
 
 	public T getFrom() {
@@ -40,7 +40,7 @@ public class Transition<T, S> {
 		return condition;
 	}
 
-	public Collection<Runnable> getTransitionActions() {
+	public Collection<Action> getTransitionActions() {
 		return transitionActions;
 	}
 }

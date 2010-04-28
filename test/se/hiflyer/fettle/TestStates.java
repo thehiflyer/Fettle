@@ -40,25 +40,25 @@ public class TestStates {
 
 
 		machine.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS);
-		Runnable entryAction = mock(Runnable.class);
+		Action entryAction = mock(Action.class);
 		machine.addEntryAction(States.ONE, entryAction);
-		Runnable exitAction = mock(Runnable.class);
+		Action exitAction = mock(Action.class);
 		machine.addExitAction(States.ONE, exitAction);
 
 		machine.fireEvent("foo");
 
-		verifyNever().on(entryAction).run();
-		verifyNever().on(exitAction).run();
+		verifyNever().on(entryAction).perform();
+		verifyNever().on(exitAction).perform();
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).run();
-		verifyNever().on(exitAction).run();
+		verifyOnce().on(entryAction).perform();
+		verifyNever().on(exitAction).perform();
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).run();
-		verifyOnce().on(exitAction).run();
+		verifyOnce().on(entryAction).perform();
+		verifyOnce().on(exitAction).perform();
 	}
 
 	@Test
@@ -97,20 +97,20 @@ public class TestStates {
 		machine.addTransition(States.ONE, States.TWO, "hopp");
 		machine.addTransition(States.TWO, States.INITIAL, "hej");
 
-		Runnable entryAction1 = mock(Runnable.class);
+		Action entryAction1 = mock(Action.class);
 		machine.addEntryAction(States.INITIAL, entryAction1);
-		Runnable exitAction1 = mock(Runnable.class);
+		Action exitAction1 = mock(Action.class);
 		machine.addExitAction(States.INITIAL, exitAction1);
 
-		Runnable entryAction2 = mock(Runnable.class);
+		Action entryAction2 = mock(Action.class);
 		machine.addEntryAction(States.TWO, entryAction2);
-		Runnable exitAction2 = mock(Runnable.class);
+		Action exitAction2 = mock(Action.class);
 		machine.addExitAction(States.TWO, exitAction2);
 
 		machine.forceSetState(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());
-		verifyOnce().on(exitAction1).run();
-		verifyOnce().on(entryAction2).run();
+		verifyOnce().on(exitAction1).perform();
+		verifyOnce().on(entryAction2).perform();
 
 	}
 
