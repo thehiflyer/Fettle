@@ -26,7 +26,7 @@ public class TestTransitionActions {
 
 	@Test
 	public void actionsAreRunOnTransitions() {
-		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS);
 		Action transitionAction1 = mock(Action.class);

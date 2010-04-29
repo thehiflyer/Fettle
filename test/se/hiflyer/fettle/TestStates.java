@@ -10,7 +10,7 @@ public class TestStates {
 	@Test
 	public void simpleStateTransition() {
 
-		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej");
 
@@ -34,7 +34,7 @@ public class TestStates {
 
 	@Test
 	public void entryExitActions() {
-		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS);
 
@@ -68,7 +68,7 @@ public class TestStates {
 		TestState one = new TestState();
 		TestState two = new TestState();
 
-		StateMachine<TestState, String> machine = StateMachine.createStateMachine(initial);
+		StateMachine<TestState, String> machine = BasicStateMachine.createStateMachine(initial);
 
 		machine.addTransition(initial, one, "", BasicConditions.ALWAYS);
 
@@ -92,7 +92,7 @@ public class TestStates {
 
 	@Test
 	public void forceSetState() {
-		StateMachine<States, String> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 		machine.addTransition(States.INITIAL, States.ONE, "hej");
 		machine.addTransition(States.ONE, States.TWO, "hopp");
 		machine.addTransition(States.TWO, States.INITIAL, "hej");

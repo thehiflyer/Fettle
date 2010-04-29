@@ -13,7 +13,7 @@ public class TestFireEvent {
 
 	@Test
 	public void fireEvent() {
-		StateMachine<States, Triggers> machine = StateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, Triggers> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, Triggers.FOO);
 
