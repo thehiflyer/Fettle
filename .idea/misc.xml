@@ -3,6 +3,88 @@
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
+  <component name="GeneratorPluginComponent">
+    <option name="variableInitializers">
+      <TypeToTextMapping>
+        <option name="mapping">
+          <map>
+            <entry key="java.util.ArrayList">
+              <value>
+                <Entry>
+                  <option name="text" value="new java.util.ArrayList$&lt;&gt;$()" />
+                  <option name="type" value="java.util.ArrayList" />
+                  <option name="isAddRemoveMethodRequested" value="true" />
+                </Entry>
+              </value>
+            </entry>
+            <entry key="java.util.Collection">
+              <value>
+                <Entry>
+                  <option name="text" value="java.util.Collections.$&lt;&gt;$emptySet()" />
+                  <option name="type" value="java.util.Collection" />
+                  <option name="isAddRemoveMethodRequested" value="true" />
+                </Entry>
+              </value>
+            </entry>
+            <entry key="java.util.HashMap">
+              <value>
+                <Entry>
+                  <option name="text" value="new java.util.HashMap$&lt;&gt;$()" />
+                  <option name="type" value="java.util.HashMap" />
+                  <option name="isAddRemoveMethodRequested" value="false" />
+                </Entry>
+              </value>
+            </entry>
+            <entry key="java.util.HashSet">
+              <value>
+                <Entry>
+                  <option name="text" value="new java.util.HashSet$&lt;&gt;$()" />
+                  <option name="type" value="java.util.HashSet" />
+                  <option name="isAddRemoveMethodRequested" value="true" />
+                </Entry>
+              </value>
+            </entry>
+            <entry key="java.util.LinkedHashSet">
+              <value>
+                <Entry>
+                  <option name="text" value="new java.util.LinkedHashSet$&lt;&gt;$()" />
+                  <option name="type" value="java.util.LinkedHashSet" />
+                  <option name="isAddRemoveMethodRequested" value="true" />
+                </Entry>
+              </value>
+            </entry>
+            <entry key="java.util.List">
+              <value>
+                <Entry>
+                  <option name="text" value="java.util.Collections.$&lt;&gt;$emptyList()" />
+                  <option name="type" value="java.util.List" />
+                  <option name="isAddRemoveMethodRequested" value="true" />
+                </Entry>
+              </value>
+            </entry>
+            <entry key="java.util.Set">
+              <value>
+                <Entry>
+                  <option name="text" value="java.util.Collections.$&lt;&gt;$emptySet()" />
+                  <option name="type" value="java.util.Set" />
+                  <option name="isAddRemoveMethodRequested" value="true" />
+                </Entry>
+              </value>
+            </entry>
+            <entry key="java.util.SortedSet">
+              <value>
+                <Entry>
+                  <option name="text" value="new java.util.TreeSet$&lt;&gt;$()" />
+                  <option name="type" value="java.util.SortedSet" />
+                  <option name="isAddRemoveMethodRequested" value="true" />
+                </Entry>
+              </value>
+            </entry>
+          </map>
+        </option>
+      </TypeToTextMapping>
+    </option>
+  </component>
   <component name="IdProvider" IDEtalkID="FF97DCAF0D72C8D88972E799F431F769" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
