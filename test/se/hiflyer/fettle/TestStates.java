@@ -2,6 +2,8 @@ package se.hiflyer.fettle;
 
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 import static se.mockachino.Mockachino.*;
 
@@ -113,6 +115,43 @@ public class TestStates {
 		verifyOnce().on(entryAction2).perform();
 
 	}
+
+	@Test
+	public void fromAllTransition() {
+
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+
+		machine.addTransition(States.INITIAL, States.ONE, "hej");
+		machine.addTransition(States.ONE, States.TWO, "hopp");
+		machine.addFromAllTransition(States.INITIAL, "back", BasicConditions.ALWAYS, Collections.<Action>emptyList());
+
+
+		machine.fireEvent("hej");
+		machine.fireEvent("hopp");
+		machine.fireEvent("back");
+
+
+		assertEquals(States.INITIAL, machine.getCurrentState());
+
+	}
+
+	@Test
+	public void singleFiresBeforeFromAllTransition() {
+
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+
+		machine.addTransition(States.INITIAL, States.ONE, "hej");
+		machine.addTransition(States.ONE, States.TWO, "hopp");
+		machine.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
+
+
+		machine.fireEvent("hej");
+		machine.fireEvent("hopp");
+
+		assertEquals(States.TWO, machine.getCurrentState());
+
+	}
+
 
 
 	private class TestState {

@@ -1,5 +1,7 @@
 package se.hiflyer.fettle;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import se.hiflyer.fettle.util.EnumMultimap;
 import se.hiflyer.fettle.util.Multimap;
 import se.hiflyer.fettle.util.SetMultimap;
@@ -7,10 +9,12 @@ import se.hiflyer.fettle.util.SetMultimap;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class BasicStateMachine<S, E> implements StateMachine<S, E> {
 	private S currentState;
 	private final Multimap<S, Transition<S, E>> stateTransitions;
+	private final Map<E, Transition<S, E>> fromAllTransitions;
 	private final Multimap<S, Action> entryActions;
 	private final Multimap<S, Action> exitActions;
 
@@ -19,6 +23,7 @@ public class BasicStateMachine<S, E> implements StateMachine<S, E> {
 		this.stateTransitions = stateTransitions;
 		this.entryActions = entryActions;
 		this.exitActions = exitActions;
+		fromAllTransitions = Maps.newHashMap();
 	}
 
 	public static <S, E> StateMachine<S, E> createStateMachine(S initial) {
@@ -33,8 +38,18 @@ public class BasicStateMachine<S, E> implements StateMachine<S, E> {
 
 
 	@Override
+	public void addFromAllTransition(S to, E event, Condition condition, List<Action> actions) {
+		fromAllTransitions.put(event, new Transition<S, E>(null, to, condition, event, actions));
+	}
+
+	@Override
 	public void addTransition(S from, S to, E event, Condition condition, List<Action> actions) {
 		stateTransitions.put(from, new Transition<S, E>(from, to, condition, event, actions));
+	}
+
+	@Override
+	public void addTransition(S from, S to, E event, Condition condition, Action action) {
+		addTransition(from, to, event, condition, Lists.newArrayList(action));
 	}
 
 	@Override
@@ -90,6 +105,13 @@ public class BasicStateMachine<S, E> implements StateMachine<S, E> {
 					moveToNewState(transition);
 					return true;
 				}
+			}
+		}
+		Transition<S, E> fromAllTransition = fromAllTransitions.get(event);
+		if (fromAllTransition != null) {
+			if (fromAllTransition.getCondition().isSatisfied()) {
+				moveToNewState(fromAllTransition);
+				return true;
 			}
 		}
 		return false;
