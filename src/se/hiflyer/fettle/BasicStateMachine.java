@@ -48,21 +48,6 @@ public class BasicStateMachine<S, E> implements StateMachine<S, E> {
 	}
 
 	@Override
-	public void addTransition(S from, S to, E event, Condition condition, Action action) {
-		addTransition(from, to, event, condition, Lists.newArrayList(action));
-	}
-
-	@Override
-	public void addTransition(S from, S to, E event, Condition condition) {
-		addTransition(from, to, event, condition, Collections.<Action>emptyList());
-	}
-
-	@Override
-	public void addTransition(S from, S to, E event) {
-		addTransition(from, to, event, BasicConditions.ALWAYS);
-	}
-
-	@Override
 	public S getCurrentState() {
 		return currentState;
 	}

@@ -3,6 +3,8 @@ package se.hiflyer.fettle;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static se.mockachino.Mockachino.*;
@@ -28,7 +30,7 @@ public class TestTransitionActions {
 	public void actionsAreRunOnTransitions() {
 		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS);
+		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		Action transitionAction1 = mock(Action.class);
 		machine.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction1));
 		Action transitionAction2 = mock(Action.class);

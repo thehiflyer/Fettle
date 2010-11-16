@@ -1,6 +1,6 @@
 package se.hiflyer.fettle;
 
-enum States {
+public enum States {
 	INITIAL,
 	ONE,
 	TWO

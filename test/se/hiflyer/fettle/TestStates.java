@@ -14,9 +14,9 @@ public class TestStates {
 
 		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, "hej");
+		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
-		machine.addTransition(States.ONE, States.TWO, "hopp");
+		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
@@ -38,10 +38,10 @@ public class TestStates {
 	public void entryExitActions() {
 		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS);
+		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
 
-		machine.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS);
+		machine.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		Action entryAction = mock(Action.class);
 		machine.addEntryAction(States.ONE, entryAction);
 		Action exitAction = mock(Action.class);
@@ -72,9 +72,9 @@ public class TestStates {
 
 		StateMachine<TestState, String> machine = BasicStateMachine.createStateMachine(initial);
 
-		machine.addTransition(initial, one, "", BasicConditions.ALWAYS);
+		machine.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
-		machine.addTransition(one, two, "", BasicConditions.ALWAYS);
+		machine.addTransition(one, two, "", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
 		assertEquals(initial, machine.getCurrentState());
 
@@ -95,9 +95,9 @@ public class TestStates {
 	@Test
 	public void forceSetState() {
 		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
-		machine.addTransition(States.INITIAL, States.ONE, "hej");
-		machine.addTransition(States.ONE, States.TWO, "hopp");
-		machine.addTransition(States.TWO, States.INITIAL, "hej");
+		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
+		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
+		machine.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
 		Action entryAction1 = mock(Action.class);
 		machine.addEntryAction(States.INITIAL, entryAction1);
@@ -121,8 +121,8 @@ public class TestStates {
 
 		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, "hej");
-		machine.addTransition(States.ONE, States.TWO, "hopp");
+		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
+		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		machine.addFromAllTransition(States.INITIAL, "back", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
 
@@ -140,8 +140,8 @@ public class TestStates {
 
 		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
 
-		machine.addTransition(States.INITIAL, States.ONE, "hej");
-		machine.addTransition(States.ONE, States.TWO, "hopp");
+		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
+		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		machine.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
 
