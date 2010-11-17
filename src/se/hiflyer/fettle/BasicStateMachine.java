@@ -26,12 +26,16 @@ public class BasicStateMachine<S, E> implements StateMachine<S, E> {
 		fromAllTransitions = Maps.newHashMap();
 	}
 
+	@SuppressWarnings(value = "unchecked")
 	public static <S, E> StateMachine<S, E> createStateMachine(S initial) {
+		if (initial.getClass().isEnum()) {
+			return(StateMachine<S, E>) BasicStateMachine.createStateMachineOfEnum((Class<Enum>)((Enum<?>)initial).getClass(), (Enum<?>)initial);
+		}
 		return new BasicStateMachine<S, E>(initial, SetMultimap.<S, Transition<S, E>>create(),
 				  SetMultimap.<S, Action>create(), SetMultimap.<S, Action>create());
 	}
 
-	public static <S extends Enum<S>, E> StateMachine<S, E> createStateMachineOfEnum(Class<S> clazz, S initial) {
+	private static <S extends Enum<S>, E> StateMachine<S, E> createStateMachineOfEnum(Class<S> clazz, S initial) {
 		return new BasicStateMachine<S, E>(initial, EnumMultimap.<S, Transition<S, E>>create(clazz),
 				  EnumMultimap.<S, Action>create(clazz), EnumMultimap.<S, Action>create(clazz));
 	}

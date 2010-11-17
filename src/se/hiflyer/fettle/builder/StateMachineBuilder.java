@@ -16,7 +16,6 @@ public class StateMachineBuilder<S, E> {
 	}
 
 	public StateMachine<S, E> build(S initial) {
-		// TODO: add enum build or drop that concept?
 		StateMachine<S, E> machine = BasicStateMachine.createStateMachine(initial);
 		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
 			transitionBuilder.addToMachine(machine);

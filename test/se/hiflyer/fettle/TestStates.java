@@ -12,7 +12,7 @@ public class TestStates {
 	@Test
 	public void simpleStateTransition() {
 
-		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
@@ -36,7 +36,7 @@ public class TestStates {
 
 	@Test
 	public void entryExitActions() {
-		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 
@@ -94,7 +94,7 @@ public class TestStates {
 
 	@Test
 	public void forceSetState() {
-		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		machine.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
@@ -119,7 +119,7 @@ public class TestStates {
 	@Test
 	public void fromAllTransition() {
 
-		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
@@ -138,7 +138,7 @@ public class TestStates {
 	@Test
 	public void singleFiresBeforeFromAllTransition() {
 
-		StateMachine<States, String> machine = BasicStateMachine.createStateMachineOfEnum(States.class, States.INITIAL);
+		StateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action>emptyList());
