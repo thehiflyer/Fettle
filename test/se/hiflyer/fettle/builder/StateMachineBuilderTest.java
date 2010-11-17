@@ -1,11 +1,12 @@
 package se.hiflyer.fettle.builder;
 
 import org.junit.Test;
-import se.hiflyer.fettle.*;
-
-import java.util.Collections;
+import se.hiflyer.fettle.Action;
+import se.hiflyer.fettle.StateMachine;
+import se.hiflyer.fettle.States;
 
 import static org.junit.Assert.assertEquals;
+import static se.mockachino.Mockachino.*;
 
 public class StateMachineBuilderTest {
 
@@ -54,4 +55,37 @@ public class StateMachineBuilderTest {
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
 	}
+
+	@Test
+	public void entryExitActions() {
+
+		StateMachineBuilder<States, String> builder = new StateMachineBuilder<States, String>();
+
+		builder.transition().from(States.INITIAL).to(States.ONE).on("");
+
+		builder.transition().from(States.ONE).to(States.TWO).on("");
+		Action entryAction = mock(Action.class);
+		builder.onEntry(States.ONE).perform(entryAction);
+
+		Action exitAction = mock(Action.class);
+		builder.onExit(States.ONE).perform(exitAction);
+
+		StateMachine<States, String> machine = builder.build(States.INITIAL);
+
+		machine.fireEvent("foo");
+
+		verifyNever().on(entryAction).perform();
+		verifyNever().on(exitAction).perform();
+
+		machine.fireEvent("");
+
+		verifyOnce().on(entryAction).perform();
+		verifyNever().on(exitAction).perform();
+
+		machine.fireEvent("");
+
+		verifyOnce().on(entryAction).perform();
+		verifyOnce().on(exitAction).perform();
+	}
+
 }
