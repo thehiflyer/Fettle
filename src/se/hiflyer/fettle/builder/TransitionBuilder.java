@@ -39,7 +39,7 @@ public class TransitionBuilder<S, E> {
 	}
 
 
-	public void addToMachine(StateMachine<S, E> stateMachine) {
+	public void addToMachine(ModifiableStateMachine<S, E> stateMachine) {
 		if (from == null) {
 			stateMachine.addFromAllTransition(to, event, condition, actions);
 		} else {

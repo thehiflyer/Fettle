@@ -1,17 +1,15 @@
 package se.hiflyer.fettle;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import se.hiflyer.fettle.util.EnumMultimap;
 import se.hiflyer.fettle.util.Multimap;
 import se.hiflyer.fettle.util.SetMultimap;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class BasicStateMachine<S, E> implements StateMachine<S, E> {
+public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
 	private S currentState;
 	private final Multimap<S, Transition<S, E>> stateTransitions;
 	private final Map<E, Transition<S, E>> fromAllTransitions;
@@ -27,9 +25,9 @@ public class BasicStateMachine<S, E> implements StateMachine<S, E> {
 	}
 
 	@SuppressWarnings(value = "unchecked")
-	public static <S, E> StateMachine<S, E> createStateMachine(S initial) {
+	public static <S, E> ModifiableStateMachine<S, E> createStateMachine(S initial) {
 		if (initial.getClass().isEnum()) {
-			return(StateMachine<S, E>) BasicStateMachine.createStateMachineOfEnum((Class<Enum>)((Enum<?>)initial).getClass(), (Enum<?>)initial);
+			return(ModifiableStateMachine<S, E>) BasicStateMachine.createStateMachineOfEnum((Class<Enum>)((Enum<?>)initial).getClass(), (Enum<?>)initial);
 		}
 		return new BasicStateMachine<S, E>(initial, SetMultimap.<S, Transition<S, E>>create(),
 				  SetMultimap.<S, Action>create(), SetMultimap.<S, Action>create());

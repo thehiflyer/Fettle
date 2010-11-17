@@ -28,7 +28,7 @@ public class TestTransitionActions {
 
 	@Test
 	public void actionsAreRunOnTransitions() {
-		StateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		Action transitionAction1 = mock(Action.class);
