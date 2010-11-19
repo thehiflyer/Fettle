@@ -5,5 +5,7 @@ public interface StateMachine<S, E> {
 
 	boolean fireEvent(E event);
 
+	boolean fireEvent(E event, Arguments args);
+
 	void forceSetState(S forcedState);
 }

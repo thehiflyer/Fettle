@@ -33,7 +33,7 @@ public class MovementUsecase {
 		machine.addTransition(falling, crashed, MovementEvents.HIT_GROUND, BasicConditions.ALWAYS, Collections.<Action>emptyList());
 		machine.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition() {
 			@Override
-			public boolean isSatisfied() {
+			public boolean isSatisfied(Arguments args) {
 				// wait until body is upright
 				return true;
 			}

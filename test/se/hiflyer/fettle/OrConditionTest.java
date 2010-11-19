@@ -16,19 +16,19 @@ public class OrConditionTest {
 
 		Condition condition = BasicConditions.or(cond1, cond2);
 
-		assertFalse(condition.isSatisfied());
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 	}
 
 
@@ -39,7 +39,7 @@ public class OrConditionTest {
 		Condition cond3 = mock(Condition.class);
 		Condition condition = BasicConditions.or(cond1, cond2, cond3);
 
-		assertFalse(condition.isSatisfied());
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 	}
 
 	@Test
@@ -50,41 +50,41 @@ public class OrConditionTest {
 		Condition condition = BasicConditions.or(cond1, cond2, cond3);
 
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		stubReturn(false).on(cond3).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(false).on(cond3).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(false).on(cond3).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
 	}
 

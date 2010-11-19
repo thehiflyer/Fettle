@@ -17,17 +17,6 @@ public class StateMachineBuilder<S, E> {
 		return transition;
 	}
 
-	public StateMachine<S, E> build(S initial) {
-		ModifiableStateMachine<S, E> machine = BasicStateMachine.createStateMachine(initial);
-		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
-			transitionBuilder.addToMachine(machine);
-		}
-		for (EntryExitActionBuilder<S, E> entryExitAction : entryExitActions) {
-			entryExitAction.addToMachine(machine);
-		}
-		return machine;
-	}
-
 	public EntryExitActionBuilder<S, E> onEntry(S state) {
 		EntryExitActionBuilder<S, E> actionBuilder = EntryExitActionBuilder.entry(state);
 		entryExitActions.add(actionBuilder);
@@ -39,4 +28,17 @@ public class StateMachineBuilder<S, E> {
 		entryExitActions.add(actionBuilder);
 		return actionBuilder;
 	}
+
+	public StateMachine<S, E> build(S initial) {
+		ModifiableStateMachine<S, E> machine = BasicStateMachine.createStateMachine(initial);
+		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
+			transitionBuilder.addToMachine(machine);
+		}
+		for (EntryExitActionBuilder<S, E> entryExitAction : entryExitActions) {
+			entryExitAction.addToMachine(machine);
+		}
+		return machine;
+	}
+
+
 }

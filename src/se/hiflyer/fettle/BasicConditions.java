@@ -7,7 +7,7 @@ public class BasicConditions {
 
 	public static final Condition ALWAYS = new Condition() {
 		@Override
-		public boolean isSatisfied() {
+		public boolean isSatisfied(Arguments args) {
 			return true;
 		}
 	};
@@ -15,8 +15,8 @@ public class BasicConditions {
 	public static Condition and(final Condition first, final Condition second) {
 		return new Condition() {
 			@Override
-			public boolean isSatisfied() {
-				return first.isSatisfied() && second.isSatisfied();
+			public boolean isSatisfied(Arguments args) {
+				return first.isSatisfied(args) && second.isSatisfied(args);
 			}
 		};
 	}
@@ -24,9 +24,9 @@ public class BasicConditions {
 	public static Condition and(final Condition... conditions) {
 		return new Condition() {
 			@Override
-			public boolean isSatisfied() {
+			public boolean isSatisfied(Arguments args) {
 				for (Condition condition : conditions) {
-					if (!condition.isSatisfied()) {
+					if (!condition.isSatisfied(args)) {
 						return false;
 					}
 				}
@@ -38,8 +38,8 @@ public class BasicConditions {
 	public static Condition or(final Condition first, final Condition second) {
 		return new Condition() {
 			@Override
-			public boolean isSatisfied() {
-				return first.isSatisfied() || second.isSatisfied();
+			public boolean isSatisfied(Arguments args) {
+				return first.isSatisfied(args) || second.isSatisfied(args);
 			}
 		};
 	}
@@ -47,9 +47,9 @@ public class BasicConditions {
 	public static Condition or(final Condition... conditions) {
 		return new Condition() {
 			@Override
-			public boolean isSatisfied() {
+			public boolean isSatisfied(Arguments args) {
 				for (Condition condition : conditions) {
-					if (condition.isSatisfied()) {
+					if (condition.isSatisfied(args)) {
 						return true;
 					}
 				}

@@ -12,10 +12,8 @@ public class PredicateConditionTest {
 	public void predicate() {
 		PredicateCondition<String> condition = new PredicateCondition<String>(Predicates.containsPattern("foo"));
 
-		condition.setInput("froo");
-		assertFalse(condition.isSatisfied());
-		condition.setInput("foobar");
-		assertTrue(condition.isSatisfied());
+		assertFalse(condition.isSatisfied(new Arguments("froo")));
+		assertTrue(condition.isSatisfied(new Arguments("foobar")));
 
 	}
 }

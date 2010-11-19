@@ -27,7 +27,7 @@ public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
 	@SuppressWarnings(value = "unchecked")
 	public static <S, E> ModifiableStateMachine<S, E> createStateMachine(S initial) {
 		if (initial.getClass().isEnum()) {
-			return(ModifiableStateMachine<S, E>) BasicStateMachine.createStateMachineOfEnum((Class<Enum>)((Enum<?>)initial).getClass(), (Enum<?>)initial);
+			return (ModifiableStateMachine<S, E>) BasicStateMachine.createStateMachineOfEnum((Class<Enum>) ((Enum<?>) initial).getClass(), (Enum<?>) initial);
 		}
 		return new BasicStateMachine<S, E>(initial, SetMultimap.<S, Transition<S, E>>create(),
 				  SetMultimap.<S, Action>create(), SetMultimap.<S, Action>create());
@@ -82,13 +82,19 @@ public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
 		exitActions.put(exitState, action);
 	}
 
+
 	@Override
 	public boolean fireEvent(E event) {
+		return fireEvent(event, Arguments.NO_ARGS);
+	}
+
+	@Override
+	public boolean fireEvent(E event, Arguments args) {
 		Collection<Transition<S, E>> transitions = stateTransitions.get(currentState);
 		for (Transition<S, E> transition : transitions) {
 			// TODO: make smart lookup on event instead
 			if (transition.getEvent().equals(event)) {
-				if (transition.getCondition().isSatisfied()) {
+				if (transition.getCondition().isSatisfied(args)) {
 					moveToNewState(transition);
 					return true;
 				}
@@ -96,7 +102,7 @@ public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
 		}
 		Transition<S, E> fromAllTransition = fromAllTransitions.get(event);
 		if (fromAllTransition != null) {
-			if (fromAllTransition.getCondition().isSatisfied()) {
+			if (fromAllTransition.getCondition().isSatisfied(args)) {
 				moveToNewState(fromAllTransition);
 				return true;
 			}

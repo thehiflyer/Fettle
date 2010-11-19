@@ -1,5 +1,5 @@
 package se.hiflyer.fettle;
 
 public interface Condition {
-	boolean isSatisfied();
+	boolean isSatisfied(Arguments args);
 }

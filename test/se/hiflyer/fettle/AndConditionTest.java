@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static se.mockachino.Mockachino.mock;
 import static se.mockachino.Mockachino.stubReturn;
+import static se.mockachino.matchers.Matchers.any;
 
 public class AndConditionTest {
 
@@ -16,19 +17,19 @@ public class AndConditionTest {
 
 		Condition condition = BasicConditions.and(cond1, cond2);
 
-		assertFalse(condition.isSatisfied());
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		assertTrue(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 	}
 
 
@@ -39,13 +40,13 @@ public class AndConditionTest {
 		Condition cond3 = mock(Condition.class);
 		Condition condition = BasicConditions.and(cond1, cond2, cond3);
 
-		assertFalse(condition.isSatisfied());
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
 
-		assertTrue(condition.isSatisfied());
+		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 	}
 
 	@Test
@@ -55,40 +56,63 @@ public class AndConditionTest {
 		Condition cond3 = mock(Condition.class);
 		Condition condition = BasicConditions.and(cond1, cond2, cond3);
 
-		assertFalse(condition.isSatisfied());
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		stubReturn(false).on(cond3).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(false).on(cond3).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(false).on(cond3).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
 
-		stubReturn(true).on(cond1).isSatisfied();
-		stubReturn(false).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied();
-		stubReturn(true).on(cond2).isSatisfied();
-		stubReturn(true).on(cond3).isSatisfied();
-		assertFalse(condition.isSatisfied());
+		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		stubReturn(true).on(cond3).isSatisfied(Arguments.NO_ARGS);
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
 	}
 
+	@Test
+	public void testWithArguments() throws Exception {
+		Condition cond1 = new Condition() {
+			@Override
+			public boolean isSatisfied(Arguments args) {
+				if (args.getNumberOfArguments() < 1) {
+					return false;
+				}
+				return args.getFirst().equals("foo");
+			}
+		};
 
+		Condition cond2 = mock(Condition.class);
+
+		Condition condition = BasicConditions.and(cond1, cond2);
+
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
+		stubReturn(true).on(cond2).isSatisfied(any(Arguments.class));
+
+		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
+		assertFalse(condition.isSatisfied(new Arguments("bar")));
+		assertTrue(condition.isSatisfied(new Arguments("foo")));
+
+	}
 }

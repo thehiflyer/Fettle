@@ -24,4 +24,25 @@ public class TestFireEvent {
 		assertTrue(machine.fireEvent(Triggers.FOO));
 		assertFalse(machine.fireEvent(Triggers.FOO));
 	}
+
+	@Test
+	public void testFireEventWithParams() throws Exception {
+		ModifiableStateMachine<States, Triggers> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+
+		machine.addTransition(States.INITIAL, States.ONE, Triggers.FOO, new Condition() {
+			@Override
+			public boolean isSatisfied(Arguments args) {
+				if (args.getNumberOfArguments() < 1) {
+					return false;
+				}
+				String input = (String) args.getFirst();
+				return "hej".equals(input);
+			}
+		}, Collections.<Action>emptyList());
+
+		assertFalse(machine.fireEvent(Triggers.FOO));
+		assertFalse(machine.fireEvent(Triggers.FOO, new Arguments("foo")));
+		assertTrue(machine.fireEvent(Triggers.FOO, new Arguments("hej")));
+
+	}
 }
