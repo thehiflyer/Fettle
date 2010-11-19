@@ -3,15 +3,15 @@ package se.hiflyer.fettle;
 import java.util.Collection;
 import java.util.Collections;
 
-public class Transition<T, S> {
-	private final T from;
-	private final T to;
+public class Transition<S, E> {
+	private final S from;
+	private final S to;
 	private final Condition condition;
-	private final S event;
-	private final Collection<Action> transitionActions;
+	private final E event;
+	private final Collection<Action<S, E>> transitionActions;
 
 
-	public Transition(T from, T to, Condition condition, S event, Collection<Action> transitionActions) {
+	public Transition(S from, S to, Condition condition, E event, Collection<Action<S, E>> transitionActions) {
 		this.from = from;
 		this.to = to;
 		this.condition = condition;
@@ -19,19 +19,19 @@ public class Transition<T, S> {
 		this.transitionActions = transitionActions;
 	}
 
-	public Transition(T from, T to, Condition condition, S event) {
-		this(from, to, condition, event, Collections.<Action>emptyList());
+	public Transition(S from, S to, Condition condition, E event) {
+		this(from, to, condition, event, Collections.<Action<S, E>>emptyList());
 	}
 
-	public T getFrom() {
+	public S getFrom() {
 		return from;
 	}
 
-	public T getTo() {
+	public S getTo() {
 		return to;
 	}
 
-	public S getEvent() {
+	public E getEvent() {
 		return event;
 
 	}
@@ -40,7 +40,7 @@ public class Transition<T, S> {
 		return condition;
 	}
 
-	public Collection<Action> getTransitionActions() {
+	public Collection<Action<S, E>> getTransitionActions() {
 		return transitionActions;
 	}
 }

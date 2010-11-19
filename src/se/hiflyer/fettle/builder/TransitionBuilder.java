@@ -11,7 +11,7 @@ public class TransitionBuilder<S, E> {
 	private S to;
 	private E event;
 	private Condition condition = BasicConditions.ALWAYS;
-	private List<Action> actions = Lists.newArrayList();
+	private List<Action<S, E>> actions = Lists.newArrayList();
 
 	public TransitionBuilder<S, E> on(E event) {
 		this.event = event;
@@ -33,7 +33,7 @@ public class TransitionBuilder<S, E> {
 		return this;
 	}
 
-	public TransitionBuilder<S, E> perform(Action... actions) {
+	public TransitionBuilder<S, E> perform(Action<S, E>... actions) {
 		this.actions.addAll(Lists.newArrayList(actions));
 		return this;
 	}

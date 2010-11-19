@@ -2,11 +2,13 @@ package se.hiflyer.fettle.builder;
 
 import org.junit.Test;
 import se.hiflyer.fettle.Action;
+import se.hiflyer.fettle.Arguments;
 import se.hiflyer.fettle.StateMachine;
 import se.hiflyer.fettle.States;
 
 import static org.junit.Assert.assertEquals;
 import static se.mockachino.Mockachino.*;
+import static se.mockachino.matchers.Matchers.any;
 
 public class StateMachineBuilderTest {
 
@@ -64,28 +66,28 @@ public class StateMachineBuilderTest {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("");
 
 		builder.transition().from(States.ONE).to(States.TWO).on("");
-		Action entryAction = mock(Action.class);
+		Action<States, String> entryAction = mock(Action.class);
 		builder.onEntry(States.ONE).perform(entryAction);
 
-		Action exitAction = mock(Action.class);
+		Action<States, String> exitAction = mock(Action.class);
 		builder.onExit(States.ONE).perform(exitAction);
 
 		StateMachine<States, String> machine = builder.build(States.INITIAL);
 
 		machine.fireEvent("foo");
 
-		verifyNever().on(entryAction).perform();
-		verifyNever().on(exitAction).perform();
+		verifyNever().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).perform();
-		verifyNever().on(exitAction).perform();
+		verifyOnce().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).perform();
-		verifyOnce().on(exitAction).perform();
+		verifyOnce().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 	}
 
 }
