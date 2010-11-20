@@ -151,6 +151,8 @@ public class TestStates {
 
 		assertEquals(States.TWO, machine.getCurrentState());
 
+		DotExporter<States, String> exporter = new DotExporter<States, String>((BasicStateMachine<States,String>) machine, "test");
+		exporter.asDot(System.out, false);
 	}
 
 

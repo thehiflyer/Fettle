@@ -30,4 +30,9 @@ public abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
 		}
 		return values;
 	}
+
+	@Override
+	public Set<K> keySet() {
+		return getMap().keySet();
+	}
 }

@@ -1,10 +1,7 @@
 package se.hiflyer.fettle.builder;
 
 import org.junit.Test;
-import se.hiflyer.fettle.Action;
-import se.hiflyer.fettle.Arguments;
-import se.hiflyer.fettle.StateMachine;
-import se.hiflyer.fettle.States;
+import se.hiflyer.fettle.*;
 
 import static org.junit.Assert.assertEquals;
 import static se.mockachino.Mockachino.*;
@@ -35,6 +32,8 @@ public class StateMachineBuilderTest {
 
 		assertEquals(States.TWO, machine.getCurrentState());
 
+		DotExporter<States, String> exporter = new DotExporter<States, String>((BasicStateMachine<States,String>) machine, "test");
+		exporter.asDot(System.out, false);
 	}
 
 	@Test

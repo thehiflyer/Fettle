@@ -15,7 +15,7 @@ public class Arguments {
 		return first;
 	}
 
-	Object getArgument(int number) {
+	public Object getArgument(int number) {
 		if (number > rest.length || number < 0) {
 			return null;
 		}

@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
 	private S currentState;
-	private final Multimap<S, Transition<S, E>> stateTransitions;
-	private final Map<E, Transition<S, E>> fromAllTransitions;
+	final Multimap<S, Transition<S, E>> stateTransitions;
+	final Map<E, Transition<S, E>> fromAllTransitions;
 	private final Multimap<S, Action<S, E>> entryActions;
 	private final Multimap<S, Action<S, E>> exitActions;
 
