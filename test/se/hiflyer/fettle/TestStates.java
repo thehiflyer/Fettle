@@ -2,7 +2,6 @@ package se.hiflyer.fettle;
 
 import org.junit.Test;
 import se.hiflyer.fettle.builder.StateMachineBuilder;
-import se.hiflyer.fettle.export.DotExporter;
 
 import java.util.Collections;
 
@@ -16,7 +15,7 @@ public class TestStates {
 	public void simpleStateTransition() {
 
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		ModifiableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
@@ -41,7 +40,7 @@ public class TestStates {
 	@Test
 	public void entryExitActions() {
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		ModifiableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
@@ -76,7 +75,7 @@ public class TestStates {
 		TestState two = new TestState();
 
 		StateMachineBuilder<TestState, String> builder = StateMachineBuilder.create();
-		ModifiableStateMachine<TestState, String> machine = builder.buildModifiable(initial);
+		MutableStateMachine<TestState, String> machine = builder.buildModifiable(initial);
 
 		machine.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 
@@ -101,7 +100,7 @@ public class TestStates {
 	@Test
 	public void forceSetState() {
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		ModifiableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -128,7 +127,7 @@ public class TestStates {
 	public void fromAllTransition() {
 
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		ModifiableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -148,7 +147,7 @@ public class TestStates {
 	public void singleFiresBeforeFromAllTransition() {
 
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		ModifiableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -160,7 +159,6 @@ public class TestStates {
 
 		assertEquals(States.TWO, machine.getCurrentState());
 	}
-
 
 
 	private class TestState {

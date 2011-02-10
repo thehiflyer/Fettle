@@ -2,10 +2,10 @@ package se.hiflyer.fettle;
 
 import java.util.List;
 
-public class ModifiableTemplateBaseStateMachine<S, E> implements ModifiableStateMachine<S, E> {
+public class MutableTemplateBaseStateMachine<S, E> implements MutableStateMachine<S, E> {
 	private final TemplateBasedStateMachine<S, E> stateMachine;
 
-	public ModifiableTemplateBaseStateMachine(TemplateBasedStateMachine<S,E> stateMachine) {
+	public MutableTemplateBaseStateMachine(TemplateBasedStateMachine<S, E> stateMachine) {
 		this.stateMachine = stateMachine;
 	}
 
