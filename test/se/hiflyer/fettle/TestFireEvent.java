@@ -1,6 +1,7 @@
 package se.hiflyer.fettle;
 
 import org.junit.Test;
+import se.hiflyer.fettle.builder.StateMachineBuilder;
 
 import java.util.Collections;
 
@@ -15,7 +16,8 @@ public class TestFireEvent {
 
 	@Test
 	public void fireEvent() {
-		BasicStateMachine<States, Triggers> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		StateMachineBuilder<States, Triggers> builder = StateMachineBuilder.create();
+		ModifiableStateMachine<States, Triggers> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, Triggers.FOO, BasicConditions.ALWAYS, Collections.<Action<States, Triggers>>emptyList());
 
@@ -27,7 +29,8 @@ public class TestFireEvent {
 
 	@Test
 	public void testFireEventWithParams() throws Exception {
-		BasicStateMachine<States, Triggers> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		StateMachineBuilder<States, Triggers> builder = StateMachineBuilder.create();
+		ModifiableStateMachine<States, Triggers> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, Triggers.FOO, new Condition() {
 			@Override

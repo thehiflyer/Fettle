@@ -1,8 +1,7 @@
 package se.hiflyer.fettle.builder;
 
 import com.google.common.collect.Lists;
-import se.hiflyer.fettle.StateMachine;
-import se.hiflyer.fettle.StateMachineTemplate;
+import se.hiflyer.fettle.*;
 
 import java.util.List;
 
@@ -36,10 +35,14 @@ public class StateMachineBuilder<S, E> {
 		return actionBuilder;
 	}
 
-	public StateMachine<S, E> build(S initial) {
+	public TemplateBasedStateMachine<S, E> build(S initial) {
 		@SuppressWarnings("unchecked")
 		StateMachineTemplate<S, E> build = buildTemplate((Class<S>) initial.getClass());
 		return build.createInstance(initial);
+	}
+
+	public ModifiableStateMachine<S, E> buildModifiable(S initial) {
+		return new ModifiableTemplateBaseStateMachine<S, E>(build(initial));
 	}
 
 	public StateMachineTemplate<S, E> buildTemplate(Class<S> stateClass) {

@@ -1,7 +1,7 @@
 package se.hiflyer.fettle;
 
-import org.junit.Ignore;
 import org.junit.Test;
+import se.hiflyer.fettle.export.DotExporter;
 
 import java.util.Collections;
 
@@ -154,14 +154,20 @@ public class TestStatesWithTemplate {
 		template.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
 
-		StateMachine<States, String> machine = template.createInstance(States.INITIAL);
+		TemplateBasedStateMachine<States, String> machine = template.createInstance(States.INITIAL);
 		machine.fireEvent("hej");
 		machine.fireEvent("hopp");
 
 		assertEquals(States.TWO, machine.getCurrentState());
 
-		DotExporter<States, String> exporter = new DotExporter<States, String>(template, "test");
+		DotExporter<States, String> exporter = new DotExporter<States, String>(machine, "fromMachine");
 		exporter.asDot(System.out, false);
+		exporter.asDot(System.out, true);
+
+		DotExporter<States, String> exporter2 = new DotExporter<States, String>(template, "fromTemplate");
+		exporter2.asDot(System.out, false);
+		exporter2.asDot(System.out, true);
+
 	}
 
 

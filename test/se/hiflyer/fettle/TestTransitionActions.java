@@ -2,6 +2,7 @@ package se.hiflyer.fettle;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import se.hiflyer.fettle.builder.StateMachineBuilder;
 
 import java.util.Collections;
 
@@ -29,7 +30,8 @@ public class TestTransitionActions {
 
 	@Test
 	public void actionsAreRunOnTransitions() {
-		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		ModifiableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		Action<States, String> transitionAction1 = mock(Action.class);
@@ -51,7 +53,7 @@ public class TestTransitionActions {
 		machine.fireEvent("foo");
 
 		verifyOnce().on(transitionAction1).perform(States.ONE, States.TWO, "", Arguments.NO_ARGS);
-		verifyNever().on(transitionAction2).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);;
+		verifyNever().on(transitionAction2).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("");
 
@@ -62,7 +64,8 @@ public class TestTransitionActions {
 
 	@Test
 	public void testArguments() throws Exception {
-		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		ModifiableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
 
 		Action<States, String> transitionAction1 = mock(Action.class);
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction1));

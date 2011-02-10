@@ -2,6 +2,7 @@ package se.hiflyer.fettle.builder;
 
 import org.junit.Test;
 import se.hiflyer.fettle.*;
+import se.hiflyer.fettle.export.DotExporter;
 
 import static org.junit.Assert.assertEquals;
 import static se.mockachino.Mockachino.*;
@@ -89,4 +90,51 @@ public class StateMachineBuilderTest {
 		verifyOnce().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 	}
 
+	@Test
+	public void when() throws Exception {
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+
+		ConditionImpl condition = new ConditionImpl();
+		builder.transition().from(States.INITIAL).to(States.ONE).on("").when(condition);
+
+		StateMachine<States, String> machine = builder.build(States.INITIAL);
+
+		machine.fireEvent("");
+		assertEquals(States.INITIAL, machine.getCurrentState());
+
+		condition.pass = true;
+		machine.fireEvent("");
+		assertEquals(States.ONE, machine.getCurrentState());
+	}
+
+	private class ConditionImpl implements Condition {
+		boolean pass = false;
+		@Override
+		public boolean isSatisfied(Arguments args) {
+			return pass;
+		}
+	}
+
+	@Test
+	public void perform() throws Exception {
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		Action<States, String> action1 = mock(Action.class);
+		Action<States, String> action2 = mock(Action.class);
+
+		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(action1, action2);
+
+		StateMachine<States, String> machine = builder.build(States.INITIAL);
+
+		verifyNever().on(action1).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(action2).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		machine.fireEvent("");
+
+		verifyNever().on(action1).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(action2).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+
+		machine.fireEvent("a");
+
+		verifyOnce().on(action1).perform(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS);
+		verifyOnce().on(action2).perform(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS);
+	}
 }

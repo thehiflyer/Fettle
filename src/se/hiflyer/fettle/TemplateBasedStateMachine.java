@@ -66,4 +66,8 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E>, Stat
 	public Map<E, Transition<S, E>> getFromAllTransitions() {
 		return template.getFromAllTransitions();
 	}
+
+	public StateMachineTemplate<S,E> getTemplate() {
+		return template;
+	}
 }

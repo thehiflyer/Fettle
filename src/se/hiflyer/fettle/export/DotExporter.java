@@ -1,5 +1,7 @@
-package se.hiflyer.fettle;
+package se.hiflyer.fettle.export;
 
+import se.hiflyer.fettle.StateMachineInternalsInformer;
+import se.hiflyer.fettle.Transition;
 import se.hiflyer.fettle.util.Multimap;
 
 import java.io.OutputStream;

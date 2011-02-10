@@ -36,7 +36,7 @@ public class StateMachineTemplate<S, E> implements StateMachineConstructor<S, E>
 	}
 
 
-	public StateMachine<S, E> createInstance(S initial) {
+	public TemplateBasedStateMachine<S, E> createInstance(S initial) {
 		return new TemplateBasedStateMachine<S, E>(this, initial);
 	}
 

@@ -1,6 +1,7 @@
 package se.hiflyer.fettle;
 
 import org.junit.Test;
+import se.hiflyer.fettle.builder.StateMachineBuilder;
 import se.mockachino.Mockachino;
 
 import java.util.Collections;
@@ -24,7 +25,8 @@ public class MovementUsecase {
 		State crashed = Mockachino.mock(State.class);
 		State jetpackthrust = Mockachino.mock(State.class);
 
-		BasicStateMachine<State, MovementEvents> machine = BasicStateMachine.createStateMachine(walking);
+		StateMachineBuilder<State, MovementEvents> builder = StateMachineBuilder.create();
+		ModifiableStateMachine<State, MovementEvents> machine = builder.buildModifiable(walking);
 
 		machine.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
 		machine.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
