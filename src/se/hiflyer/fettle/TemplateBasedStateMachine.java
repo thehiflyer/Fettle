@@ -5,10 +5,10 @@ import se.hiflyer.fettle.util.Multimap;
 import java.util.Map;
 
 public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E>, StateMachineInternalsInformer<S, E> {
-	private final StateMachineTemplate<S, E> template;
+	private final MutableTransitionModel<S, E> template;
 	private S currentState;
 
-	public TemplateBasedStateMachine(StateMachineTemplate<S, E> template, S initial) {
+	public TemplateBasedStateMachine(MutableTransitionModel<S, E> template, S initial) {
 		this.template = template;
 		currentState = initial;
 	}
@@ -25,7 +25,7 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E>, Stat
 
 	@Override
 	public boolean fireEvent(E event, Arguments args) {
-		Multimap<S,Transition<S,E>> stateTransitions = template.getStateTransitions();
+		Multimap<S, Transition<S, E>> stateTransitions = template.getStateTransitions();
 		for (Transition<S, E> transition : stateTransitions.get(currentState)) {
 			if (transition.getEvent().equals(event)) {
 				if (transition.getCondition().isSatisfied(args)) {
@@ -49,7 +49,7 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E>, Stat
 		S to = transition.getTo();
 		template.runTransitionActions(from, to, cause, args, transition.getTransitionActions());
 		currentState = to;
-	}	
+	}
 
 	@Override
 	public void forceSetState(S forcedState) {
@@ -67,7 +67,7 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E>, Stat
 		return template.getFromAllTransitions();
 	}
 
-	public StateMachineTemplate<S,E> getTemplate() {
+	public MutableTransitionModel<S, E> getTemplate() {
 		return template;
 	}
 }

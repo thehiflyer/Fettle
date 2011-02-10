@@ -1,7 +1,10 @@
 package se.hiflyer.fettle.builder;
 
 import com.google.common.collect.Lists;
-import se.hiflyer.fettle.*;
+import se.hiflyer.fettle.Action;
+import se.hiflyer.fettle.BasicConditions;
+import se.hiflyer.fettle.Condition;
+import se.hiflyer.fettle.TransitionModel;
 
 import java.util.List;
 
@@ -19,12 +22,12 @@ public class TransitionBuilder<S, E> {
 	}
 
 	public TransitionBuilder<S, E> from(S fromState) {
-		from  = fromState;
+		from = fromState;
 		return this;
 	}
 
 	public TransitionBuilder<S, E> to(S toState) {
-		to  = toState;
+		to = toState;
 		return this;
 	}
 
@@ -39,11 +42,11 @@ public class TransitionBuilder<S, E> {
 	}
 
 
-	public void addToMachine(StateMachineConstructor<S, E> stateMachineConstructor) {
+	public void addToMachine(TransitionModel<S, E> transitionModel) {
 		if (from == null) {
-			stateMachineConstructor.addFromAllTransition(to, event, condition, actions);
+			transitionModel.addFromAllTransition(to, event, condition, actions);
 		} else {
-			stateMachineConstructor.addTransition(from, to, event, condition, actions);
+			transitionModel.addTransition(from, to, event, condition, actions);
 		}
 	}
 }

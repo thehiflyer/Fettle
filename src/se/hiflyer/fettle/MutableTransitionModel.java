@@ -9,13 +9,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class StateMachineTemplate<S, E> implements StateMachineConstructor<S, E>, StateMachineInternalsInformer<S,E> {
+public class MutableTransitionModel<S, E> implements TransitionModel<S, E>, StateMachineInternalsInformer<S, E> {
 	private final Multimap<S, Transition<S, E>> stateTransitions;
 	private final Map<E, Transition<S, E>> fromAllTransitions;
 	private final Multimap<S, Action<S, E>> entryActions;
 	private final Multimap<S, Action<S, E>> exitActions;
 
-	private StateMachineTemplate(Multimap<S, Transition<S, E>> stateTransitions, Multimap<S, Action<S, E>> entryActions, Multimap<S, Action<S, E>> exitActions) {
+	private MutableTransitionModel(Multimap<S, Transition<S, E>> stateTransitions, Multimap<S, Action<S, E>> entryActions, Multimap<S, Action<S, E>> exitActions) {
 		this.stateTransitions = stateTransitions;
 		this.entryActions = entryActions;
 		this.exitActions = exitActions;
@@ -23,15 +23,15 @@ public class StateMachineTemplate<S, E> implements StateMachineConstructor<S, E>
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <S, E> StateMachineTemplate<S, E> createStateMachineTemplate(Class<S> stateClass) {
+	public static <S, E> MutableTransitionModel<S, E> createStateMachineTemplate(Class<S> stateClass) {
 		if (stateClass.isEnum()) {
-			return (StateMachineTemplate<S, E>) StateMachineTemplate.createStateMachineTemplateOfEnum((Class<Enum>) stateClass);
+			return (MutableTransitionModel<S, E>) MutableTransitionModel.createStateMachineTemplateOfEnum((Class<Enum>) stateClass);
 		}
-		return new StateMachineTemplate<S, E>(SetMultimap.<S, Transition<S, E>>create(), SetMultimap.<S, Action<S, E>>create(), SetMultimap.<S, Action<S, E>>create());
+		return new MutableTransitionModel<S, E>(SetMultimap.<S, Transition<S, E>>create(), SetMultimap.<S, Action<S, E>>create(), SetMultimap.<S, Action<S, E>>create());
 	}
 
-	private static <S extends Enum<S>, E> StateMachineTemplate<S, E> createStateMachineTemplateOfEnum(Class<S> clazz) {
-		return new StateMachineTemplate<S, E>(EnumMultimap.<S, Transition<S, E>>create(clazz),
+	private static <S extends Enum<S>, E> MutableTransitionModel<S, E> createStateMachineTemplateOfEnum(Class<S> clazz) {
+		return new MutableTransitionModel<S, E>(EnumMultimap.<S, Transition<S, E>>create(clazz),
 				  EnumMultimap.<S, Action<S, E>>create(clazz), EnumMultimap.<S, Action<S, E>>create(clazz));
 	}
 

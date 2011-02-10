@@ -13,7 +13,7 @@ public class TestStatesWithTemplate {
 
 	@Test
 	public void simpleStateTransition() {
-		StateMachineTemplate<States, String> template = StateMachineTemplate.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
@@ -39,7 +39,7 @@ public class TestStatesWithTemplate {
 
 	@Test
 	public void entryExitActions() {
-		StateMachineTemplate<States, String> template = StateMachineTemplate.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
@@ -75,7 +75,7 @@ public class TestStatesWithTemplate {
 		TestState one = new TestState();
 		TestState two = new TestState();
 
-		StateMachineTemplate<TestState, String> template = StateMachineTemplate.createStateMachineTemplate(TestState.class);
+		MutableTransitionModel<TestState, String> template = MutableTransitionModel.createStateMachineTemplate(TestState.class);
 
 		template.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 		template.addTransition(one, two, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
@@ -100,7 +100,7 @@ public class TestStatesWithTemplate {
 
 	@Test
 	public void forceSetState() {
-		StateMachineTemplate<States, String> template = StateMachineTemplate.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -117,7 +117,7 @@ public class TestStatesWithTemplate {
 		template.addExitAction(States.TWO, exitAction2);
 
 		StateMachine<States, String> machine = template.createInstance(States.INITIAL);
-		
+
 		machine.forceSetState(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());
 		verifyOnce().on(exitAction1).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
@@ -128,7 +128,7 @@ public class TestStatesWithTemplate {
 	@Test
 	public void fromAllTransition() {
 
-		StateMachineTemplate<States, String> template = StateMachineTemplate.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -147,7 +147,7 @@ public class TestStatesWithTemplate {
 	@Test
 	public void singleFiresBeforeFromAllTransition() {
 
-		StateMachineTemplate<States, String> template = StateMachineTemplate.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -169,7 +169,6 @@ public class TestStatesWithTemplate {
 		exporter2.asDot(System.out, true);
 
 	}
-
 
 
 	private class TestState {

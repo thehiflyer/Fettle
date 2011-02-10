@@ -3,7 +3,7 @@ package se.hiflyer.fettle.builder;
 import com.google.common.collect.Lists;
 import se.hiflyer.fettle.MutableStateMachine;
 import se.hiflyer.fettle.MutableTemplateBaseStateMachine;
-import se.hiflyer.fettle.StateMachineTemplate;
+import se.hiflyer.fettle.MutableTransitionModel;
 import se.hiflyer.fettle.TemplateBasedStateMachine;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class StateMachineBuilder<S, E> {
 
 	public TemplateBasedStateMachine<S, E> build(S initial) {
 		@SuppressWarnings("unchecked")
-		StateMachineTemplate<S, E> build = buildTemplate((Class<S>) initial.getClass());
+		MutableTransitionModel<S, E> build = buildTemplate((Class<S>) initial.getClass());
 		return build.createInstance(initial);
 	}
 
@@ -56,8 +56,8 @@ public class StateMachineBuilder<S, E> {
 	 * @param stateClass the class of the states
 	 * @return a state machine template configured with all the transitions and actions specified using this builder
 	 */
-	public StateMachineTemplate<S, E> buildTemplate(Class<S> stateClass) {
-		StateMachineTemplate<S, E> template = StateMachineTemplate.createStateMachineTemplate(stateClass);
+	public MutableTransitionModel<S, E> buildTemplate(Class<S> stateClass) {
+		MutableTransitionModel<S, E> template = MutableTransitionModel.createStateMachineTemplate(stateClass);
 		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
 			transitionBuilder.addToMachine(template);
 		}
