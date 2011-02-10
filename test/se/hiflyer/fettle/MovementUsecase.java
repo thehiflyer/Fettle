@@ -24,7 +24,7 @@ public class MovementUsecase {
 		State crashed = Mockachino.mock(State.class);
 		State jetpackthrust = Mockachino.mock(State.class);
 
-		ModifiableStateMachine<State, MovementEvents> machine = BasicStateMachine.createStateMachine(walking);
+		BasicStateMachine<State, MovementEvents> machine = BasicStateMachine.createStateMachine(walking);
 
 		machine.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
 		machine.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());

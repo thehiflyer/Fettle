@@ -15,7 +15,7 @@ public class TestFireEvent {
 
 	@Test
 	public void fireEvent() {
-		ModifiableStateMachine<States, Triggers> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, Triggers> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, Triggers.FOO, BasicConditions.ALWAYS, Collections.<Action<States, Triggers>>emptyList());
 
@@ -27,7 +27,7 @@ public class TestFireEvent {
 
 	@Test
 	public void testFireEventWithParams() throws Exception {
-		ModifiableStateMachine<States, Triggers> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, Triggers> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, Triggers.FOO, new Condition() {
 			@Override

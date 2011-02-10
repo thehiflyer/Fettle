@@ -1,15 +1,22 @@
 package se.hiflyer.fettle.builder;
 
 import com.google.common.collect.Lists;
-import se.hiflyer.fettle.BasicStateMachine;
-import se.hiflyer.fettle.ModifiableStateMachine;
 import se.hiflyer.fettle.StateMachine;
+import se.hiflyer.fettle.StateMachineTemplate;
 
 import java.util.List;
 
 public class StateMachineBuilder<S, E> {
 	private final List<TransitionBuilder<S, E>> transitionBuilders = Lists.newArrayList();
 	private final List<EntryExitActionBuilder<S, E>> entryExitActions = Lists.newArrayList();
+
+
+	private StateMachineBuilder() {
+	}
+
+	public static <S, E> StateMachineBuilder<S, E> create() {
+		return new StateMachineBuilder<S, E>();
+	}
 
 	public TransitionBuilder<S, E> transition() {
 		TransitionBuilder<S, E> transition = new TransitionBuilder<S, E>();
@@ -30,14 +37,20 @@ public class StateMachineBuilder<S, E> {
 	}
 
 	public StateMachine<S, E> build(S initial) {
-		ModifiableStateMachine<S, E> machine = BasicStateMachine.createStateMachine(initial);
+		@SuppressWarnings("unchecked")
+		StateMachineTemplate<S, E> build = buildTemplate((Class<S>) initial.getClass());
+		return build.createInstance(initial);
+	}
+
+	public StateMachineTemplate<S, E> buildTemplate(Class<S> stateClass) {
+		StateMachineTemplate<S, E> template = StateMachineTemplate.createStateMachineTemplate(stateClass);
 		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
-			transitionBuilder.addToMachine(machine);
+			transitionBuilder.addToMachine(template);
 		}
 		for (EntryExitActionBuilder<S, E> entryExitAction : entryExitActions) {
-			entryExitAction.addToMachine(machine);
+			entryExitAction.addToMachine(template);
 		}
-		return machine;
+		return template;
 	}
 
 

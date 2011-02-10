@@ -13,7 +13,7 @@ public class TestStates {
 	@Test
 	public void simpleStateTransition() {
 
-		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
@@ -37,7 +37,7 @@ public class TestStates {
 
 	@Test
 	public void entryExitActions() {
-		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
@@ -71,7 +71,7 @@ public class TestStates {
 		TestState one = new TestState();
 		TestState two = new TestState();
 
-		ModifiableStateMachine<TestState, String> machine = BasicStateMachine.createStateMachine(initial);
+		BasicStateMachine<TestState, String> machine = BasicStateMachine.createStateMachine(initial);
 
 		machine.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 
@@ -95,7 +95,7 @@ public class TestStates {
 
 	@Test
 	public void forceSetState() {
-		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		machine.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -120,7 +120,7 @@ public class TestStates {
 	@Test
 	public void fromAllTransition() {
 
-		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -139,7 +139,7 @@ public class TestStates {
 	@Test
 	public void singleFiresBeforeFromAllTransition() {
 
-		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());

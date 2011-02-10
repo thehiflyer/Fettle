@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
+public class BasicStateMachine<S, E> implements StateMachine<S, E>, StateMachineConstructor<S, E>, StateMachineInternalsInformer<S,E> {
 	private S currentState;
 	final Multimap<S, Transition<S, E>> stateTransitions;
 	final Map<E, Transition<S, E>> fromAllTransitions;
@@ -25,9 +25,9 @@ public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
 	}
 
 	@SuppressWarnings(value = "unchecked")
-	public static <S, E> ModifiableStateMachine<S, E> createStateMachine(S initial) {
+	public static <S, E> BasicStateMachine<S, E> createStateMachine(S initial) {
 		if (initial.getClass().isEnum()) {
-			return (ModifiableStateMachine<S, E>) BasicStateMachine.createStateMachineOfEnum((Class<Enum>) ((Enum<?>) initial).getClass(), (Enum<?>) initial);
+			return (BasicStateMachine<S, E>) BasicStateMachine.createStateMachineOfEnum((Class<Enum>) ((Enum<?>) initial).getClass(), (Enum<?>) initial);
 		}
 		return new BasicStateMachine<S, E>(initial, SetMultimap.<S, Transition<S, E>>create(),
 				  SetMultimap.<S, Action<S, E>>create(), SetMultimap.<S, Action<S, E>>create());
@@ -82,6 +82,16 @@ public class BasicStateMachine<S, E> implements ModifiableStateMachine<S, E> {
 	@Override
 	public void addExitAction(S exitState, Action<S, E> action) {
 		exitActions.put(exitState, action);
+	}
+
+	@Override
+	public Multimap<S, Transition<S, E>> getStateTransitions() {
+		return stateTransitions;
+	}
+
+	@Override
+	public Map<E, Transition<S, E>> getFromAllTransitions() {
+		return fromAllTransitions;
 	}
 
 

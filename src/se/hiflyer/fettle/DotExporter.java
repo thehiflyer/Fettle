@@ -1,34 +1,36 @@
 package se.hiflyer.fettle;
 
+import se.hiflyer.fettle.util.Multimap;
+
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.*;
 
 public class DotExporter<S, E> {
-	private final BasicStateMachine<S, E> stateMachine;
+	private final StateMachineInternalsInformer<S, E> stateMachineInternalsInformer;
 	private final String name;
 
-	public DotExporter(BasicStateMachine<S, E> stateMachine, String name) {
-		this.stateMachine = stateMachine;
+	public DotExporter(StateMachineInternalsInformer<S, E> stateMachineInternalsInformer, String name) {
+		this.stateMachineInternalsInformer = stateMachineInternalsInformer;
 		this.name = name;
 	}
 
 	public void asDot(OutputStream os, boolean includeFromAllTransitions) {
 		PrintWriter writer = new PrintWriter(os);
 		writer.println("digraph " + name + " {");
-		Set<S> states = stateMachine.stateTransitions.keySet();
+		Multimap<S,Transition<S,E>> stateTransitions = stateMachineInternalsInformer.getStateTransitions();
+		Set<S> states = stateTransitions.keySet();
 		Set<S> allStates = new HashSet<S>(states);
 		for (S state : states) {
-			Collection<Transition<S, E>> transitions = stateMachine.stateTransitions.get(state);
-			for (Transition<S, E> transition : transitions) {
+			for (Transition<S, E> transition : stateTransitions.get(state)) {
 				printTransition(writer, transition.getFrom(), transition.getTo(), transition.getEvent(), "");
 				allStates.add(transition.getTo());
 			}
 		}
 		if (includeFromAllTransitions) {
-			stateMachine.fromAllTransitions.keySet();
-			for (E event : stateMachine.fromAllTransitions.keySet()) {
-				Transition<S, E> fromAll = stateMachine.fromAllTransitions.get(event);
+			Map<E, Transition<S, E>> fromAllTransitions = stateMachineInternalsInformer.getFromAllTransitions();
+			for (E event : fromAllTransitions.keySet()) {
+				Transition<S, E> fromAll = fromAllTransitions.get(event);
 				for (S state : allStates) {
 					printTransition(writer, state, fromAll.getTo(), event, "(fromall)");
 				}

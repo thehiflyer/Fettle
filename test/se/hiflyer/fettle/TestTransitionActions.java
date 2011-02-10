@@ -29,7 +29,7 @@ public class TestTransitionActions {
 
 	@Test
 	public void actionsAreRunOnTransitions() {
-		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		Action<States, String> transitionAction1 = mock(Action.class);
@@ -62,7 +62,7 @@ public class TestTransitionActions {
 
 	@Test
 	public void testArguments() throws Exception {
-		ModifiableStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
+		BasicStateMachine<States, String> machine = BasicStateMachine.createStateMachine(States.INITIAL);
 
 		Action<States, String> transitionAction1 = mock(Action.class);
 		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction1));

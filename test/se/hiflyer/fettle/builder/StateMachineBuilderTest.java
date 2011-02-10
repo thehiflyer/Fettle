@@ -11,7 +11,7 @@ public class StateMachineBuilderTest {
 
 	@Test
 	public void testBuilder() {
-		StateMachineBuilder<States, String> builder = new StateMachineBuilder<States, String>();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
 
 		builder.transition().on("hej").from(States.INITIAL).to(States.ONE);
 		builder.transition().on("hopp").from(States.ONE).to(States.TWO);
@@ -32,14 +32,14 @@ public class StateMachineBuilderTest {
 
 		assertEquals(States.TWO, machine.getCurrentState());
 
-		DotExporter<States, String> exporter = new DotExporter<States, String>((BasicStateMachine<States,String>) machine, "test");
+		DotExporter<States, String> exporter = new DotExporter<States, String>((StateMachineInternalsInformer<States,String>) machine, "test");
 		exporter.asDot(System.out, false);
 	}
 
 	@Test
 	public void fromAllTransition() {
 
-		StateMachineBuilder<States, String> builder = new StateMachineBuilder<States, String>();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
 
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
@@ -60,7 +60,7 @@ public class StateMachineBuilderTest {
 	@Test
 	public void entryExitActions() {
 
-		StateMachineBuilder<States, String> builder = new StateMachineBuilder<States, String>();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("");
 

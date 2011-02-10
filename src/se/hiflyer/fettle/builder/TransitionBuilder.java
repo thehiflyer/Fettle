@@ -39,11 +39,11 @@ public class TransitionBuilder<S, E> {
 	}
 
 
-	public void addToMachine(ModifiableStateMachine<S, E> stateMachine) {
+	public void addToMachine(StateMachineConstructor<S, E> stateMachineConstructor) {
 		if (from == null) {
-			stateMachine.addFromAllTransition(to, event, condition, actions);
+			stateMachineConstructor.addFromAllTransition(to, event, condition, actions);
 		} else {
-			stateMachine.addTransition(from, to, event, condition, actions);
+			stateMachineConstructor.addTransition(from, to, event, condition, actions);
 		}
 	}
 }
