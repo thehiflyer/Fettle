@@ -13,13 +13,13 @@ public class TestStatesWithTemplate {
 
 	@Test
 	public void simpleStateTransition() {
-		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createTransitionModel(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
 		template.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
-		StateMachine<States, String> machine = template.createInstance(States.INITIAL);
+		StateMachine<States, String> machine = template.newStateMachine(States.INITIAL);
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
@@ -39,7 +39,7 @@ public class TestStatesWithTemplate {
 
 	@Test
 	public void entryExitActions() {
-		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createTransitionModel(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
@@ -50,7 +50,7 @@ public class TestStatesWithTemplate {
 		Action<States, String> exitAction = mock(Action.class);
 		template.addExitAction(States.ONE, exitAction);
 
-		StateMachine<States, String> machine = template.createInstance(States.INITIAL);
+		StateMachine<States, String> machine = template.newStateMachine(States.INITIAL);
 
 		machine.fireEvent("foo");
 
@@ -75,12 +75,12 @@ public class TestStatesWithTemplate {
 		TestState one = new TestState();
 		TestState two = new TestState();
 
-		MutableTransitionModel<TestState, String> template = MutableTransitionModel.createStateMachineTemplate(TestState.class);
+		MutableTransitionModel<TestState, String> template = MutableTransitionModel.createTransitionModel(TestState.class);
 
 		template.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 		template.addTransition(one, two, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 
-		StateMachine<TestState, String> machine = template.createInstance(initial);
+		StateMachine<TestState, String> machine = template.newStateMachine(initial);
 
 		assertEquals(initial, machine.getCurrentState());
 
@@ -100,7 +100,7 @@ public class TestStatesWithTemplate {
 
 	@Test
 	public void forceSetState() {
-		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createTransitionModel(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -116,7 +116,7 @@ public class TestStatesWithTemplate {
 		Action<States, String> exitAction2 = mock(Action.class);
 		template.addExitAction(States.TWO, exitAction2);
 
-		StateMachine<States, String> machine = template.createInstance(States.INITIAL);
+		StateMachine<States, String> machine = template.newStateMachine(States.INITIAL);
 
 		machine.forceSetState(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());
@@ -128,13 +128,13 @@ public class TestStatesWithTemplate {
 	@Test
 	public void fromAllTransition() {
 
-		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createTransitionModel(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addFromAllTransition(States.INITIAL, "back", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
-		StateMachine<States, String> machine = template.createInstance(States.INITIAL);
+		StateMachine<States, String> machine = template.newStateMachine(States.INITIAL);
 
 		machine.fireEvent("hej");
 		machine.fireEvent("hopp");
@@ -147,14 +147,14 @@ public class TestStatesWithTemplate {
 	@Test
 	public void singleFiresBeforeFromAllTransition() {
 
-		MutableTransitionModel<States, String> template = MutableTransitionModel.createStateMachineTemplate(States.class);
+		MutableTransitionModel<States, String> template = MutableTransitionModel.createTransitionModel(States.class);
 
 		template.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		template.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
 
-		TemplateBasedStateMachine<States, String> machine = template.createInstance(States.INITIAL);
+		TemplateBasedStateMachine<States, String> machine = template.newStateMachine(States.INITIAL);
 		machine.fireEvent("hej");
 		machine.fireEvent("hopp");
 

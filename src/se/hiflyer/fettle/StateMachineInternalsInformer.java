@@ -1,11 +1,10 @@
 package se.hiflyer.fettle;
 
-import se.hiflyer.fettle.util.Multimap;
-
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
+import se.hiflyer.fettle.util.TransitionMap;
 
 public interface StateMachineInternalsInformer<S, E> {
-	Multimap<S, Transition<S, E>> getStateTransitions();
+	TransitionMap<S, E> getStateTransitions();
 
-	Map<E, Transition<S, E>> getFromAllTransitions();
+	ImmutableMap<E, Transition<S, E>> getFromAllTransitions();
 }

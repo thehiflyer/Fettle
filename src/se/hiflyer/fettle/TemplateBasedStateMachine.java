@@ -1,8 +1,8 @@
 package se.hiflyer.fettle;
 
+import com.google.common.collect.ImmutableMap;
 import se.hiflyer.fettle.util.Multimap;
-
-import java.util.Map;
+import se.hiflyer.fettle.util.TransitionMap;
 
 public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E>, StateMachineInternalsInformer<S, E> {
 	private final MutableTransitionModel<S, E> template;
@@ -58,12 +58,12 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E>, Stat
 	}
 
 	@Override
-	public Multimap<S, Transition<S, E>> getStateTransitions() {
+	public TransitionMap<S, E> getStateTransitions() {
 		return template.getStateTransitions();
 	}
 
 	@Override
-	public Map<E, Transition<S, E>> getFromAllTransitions() {
+	public ImmutableMap<E, Transition<S, E>> getFromAllTransitions() {
 		return template.getFromAllTransitions();
 	}
 

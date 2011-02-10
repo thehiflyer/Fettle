@@ -41,7 +41,7 @@ public class StateMachineBuilder<S, E> {
 	public TemplateBasedStateMachine<S, E> build(S initial) {
 		@SuppressWarnings("unchecked")
 		MutableTransitionModel<S, E> build = buildTemplate((Class<S>) initial.getClass());
-		return build.createInstance(initial);
+		return build.newStateMachine(initial);
 	}
 
 	public MutableStateMachine<S, E> buildModifiable(S initial) {
@@ -57,7 +57,7 @@ public class StateMachineBuilder<S, E> {
 	 * @return a state machine template configured with all the transitions and actions specified using this builder
 	 */
 	public MutableTransitionModel<S, E> buildTemplate(Class<S> stateClass) {
-		MutableTransitionModel<S, E> template = MutableTransitionModel.createStateMachineTemplate(stateClass);
+		MutableTransitionModel<S, E> template = MutableTransitionModel.createTransitionModel(stateClass);
 		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
 			transitionBuilder.addToMachine(template);
 		}
