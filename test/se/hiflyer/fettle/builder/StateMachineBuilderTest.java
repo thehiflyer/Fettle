@@ -12,7 +12,7 @@ public class StateMachineBuilderTest {
 
 	@Test
 	public void testBuilder() {
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
 
 		builder.transition().on("hej").from(States.INITIAL).to(States.ONE);
 		builder.transition().on("hopp").from(States.ONE).to(States.TWO);
@@ -33,14 +33,14 @@ public class StateMachineBuilderTest {
 
 		assertEquals(States.TWO, machine.getCurrentState());
 
-		DotExporter<States, String> exporter = new DotExporter<States, String>((StateMachineInternalsInformer<States,String>) machine, "test");
-		exporter.asDot(System.out, false);
+//		DotExporter<States, String> exporter = new DotExporter<States, String>((StateMachineInternalsInformer<States,String>) machine, "test");
+//		exporter.asDot(System.out, false);
 	}
 
 	@Test
 	public void fromAllTransition() {
 
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
 
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
@@ -61,7 +61,7 @@ public class StateMachineBuilderTest {
 	@Test
 	public void entryExitActions() {
 
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("");
 
@@ -76,23 +76,23 @@ public class StateMachineBuilderTest {
 
 		machine.fireEvent("foo");
 
-		verifyNever().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyOnce().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 	}
 
 	@Test
 	public void when() throws Exception {
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
 
 		ConditionImpl condition = new ConditionImpl();
 		builder.transition().from(States.INITIAL).to(States.ONE).on("").when(condition);
@@ -117,7 +117,7 @@ public class StateMachineBuilderTest {
 
 	@Test
 	public void perform() throws Exception {
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
 		Action<States, String> action1 = mock(Action.class);
 		Action<States, String> action2 = mock(Action.class);
 
@@ -125,16 +125,16 @@ public class StateMachineBuilderTest {
 
 		StateMachine<States, String> machine = builder.build(States.INITIAL);
 
-		verifyNever().on(action1).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(action2).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(action1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(action2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 		machine.fireEvent("");
 
-		verifyNever().on(action1).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(action2).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(action1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(action2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("a");
 
-		verifyOnce().on(action1).perform(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS);
-		verifyOnce().on(action2).perform(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS);
+		verifyOnce().on(action1).onTransition(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS);
+		verifyOnce().on(action2).onTransition(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS);
 	}
 }

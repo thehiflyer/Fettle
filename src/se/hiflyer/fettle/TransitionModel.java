@@ -1,13 +1,9 @@
 package se.hiflyer.fettle;
 
-import java.util.List;
-
 public interface TransitionModel<S, E> {
-	void addTransition(S from, S to, E event, Condition condition, List<Action<S, E>> actions);
 
-	void addFromAllTransition(S to, E event, Condition condition, List<Action<S, E>> actions);
+	StateMachine<S, E> newStateMachine(S init);
 
-	void addEntryAction(S entryState, Action<S, E> action);
+	boolean fireEvent(StateMachine<S, E> machine, E event, Arguments args);
 
-	void addExitAction(S exitState, Action<S, E> action);
 }

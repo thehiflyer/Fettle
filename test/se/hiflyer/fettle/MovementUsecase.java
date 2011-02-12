@@ -2,6 +2,7 @@ package se.hiflyer.fettle;
 
 import org.junit.Test;
 import se.hiflyer.fettle.builder.StateMachineBuilder;
+import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 import se.mockachino.Mockachino;
 
 import java.util.Collections;
@@ -25,15 +26,15 @@ public class MovementUsecase {
 		State crashed = Mockachino.mock(State.class);
 		State jetpackthrust = Mockachino.mock(State.class);
 
-		StateMachineBuilder<State, MovementEvents> builder = StateMachineBuilder.create();
-		MutableStateMachine<State, MovementEvents> machine = builder.buildModifiable(walking);
+		StateMachineBuilder<State, MovementEvents> builder = StateMachineBuilder.create(State.class, MovementEvents.class);
+		MutableTransitionModelImpl<State,MovementEvents> model = builder.buildTransitionModel();
 
-		machine.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		machine.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		machine.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		machine.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		machine.addTransition(falling, crashed, MovementEvents.HIT_GROUND, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		machine.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition() {
+		model.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
+		model.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
+		model.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
+		model.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
+		model.addTransition(falling, crashed, MovementEvents.HIT_GROUND, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
+		model.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition() {
 			@Override
 			public boolean isSatisfied(Arguments args) {
 				// wait until body is upright
@@ -41,6 +42,7 @@ public class MovementUsecase {
 			}
 		}, Collections.<Action<State, MovementEvents>>emptyList());
 
+		StateMachine<State, MovementEvents> machine = model.newStateMachine(walking);
 		assertEquals(walking, machine.getCurrentState());
 		machine.fireEvent(MovementEvents.RELEASED_SPACE);
 		assertEquals(walking, machine.getCurrentState());

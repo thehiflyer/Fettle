@@ -2,7 +2,7 @@ package se.hiflyer.fettle.builder;
 
 import com.google.common.collect.Lists;
 import se.hiflyer.fettle.Action;
-import se.hiflyer.fettle.TransitionModel;
+import se.hiflyer.fettle.MutableTransitionModel;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class EntryExitActionBuilder<S, E> {
 		EXIT
 	}
 
-	private List<Action> actions = Lists.newArrayList();
+	private final List<Action<S, E>> actions = Lists.newArrayList();
 
 
 	public static <S, E> EntryExitActionBuilder<S, E> entry(S to) {
@@ -31,18 +31,18 @@ public class EntryExitActionBuilder<S, E> {
 		return new EntryExitActionBuilder<S, E>(Mode.EXIT, from);
 	}
 
-	public EntryExitActionBuilder<S, E> perform(Action... actions) {
+	public EntryExitActionBuilder<S, E> perform(Action<S, E>... actions) {
 		this.actions.addAll(Lists.newArrayList(actions));
 		return this;
 	}
 
-	public void addToMachine(TransitionModel<S, E> machineConstructor) {
-		for (Action action : actions) {
+	public void addToMachine(MutableTransitionModel<S, E> machineConstructor) {
+		for (Action<S, E> action : actions) {
 			add(machineConstructor, action);
 		}
 	}
 
-	private void add(TransitionModel<S, E> machineConstructor, Action action) {
+	private void add(MutableTransitionModel<S, E> machineConstructor, Action<S, E> action) {
 		switch (mode) {
 			case ENTRY:
 				machineConstructor.addEntryAction(state, action);

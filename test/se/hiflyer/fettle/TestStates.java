@@ -2,6 +2,7 @@ package se.hiflyer.fettle;
 
 import org.junit.Test;
 import se.hiflyer.fettle.builder.StateMachineBuilder;
+import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 
 import java.util.Collections;
 
@@ -14,12 +15,13 @@ public class TestStates {
 	@Test
 	public void simpleStateTransition() {
 
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
+		MutableTransitionModelImpl<States,String> model = builder.buildTransitionModel();
 
-		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
-		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
@@ -39,32 +41,33 @@ public class TestStates {
 
 	@Test
 	public void entryExitActions() {
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
-
-		machine.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
+		MutableTransitionModelImpl<States,String> model = builder.buildTransitionModel();
 
 
-		machine.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		Action<States, String> entryAction = mock(Action.class);
-		machine.addEntryAction(States.ONE, entryAction);
+		model.addEntryAction(States.ONE, entryAction);
 		Action<States, String> exitAction = mock(Action.class);
-		machine.addExitAction(States.ONE, exitAction);
+		model.addExitAction(States.ONE, exitAction);
+
+		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
 
 		machine.fireEvent("foo");
 
-		verifyNever().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyOnce().on(exitAction).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 	}
 
 	@Test
@@ -74,12 +77,13 @@ public class TestStates {
 		TestState one = new TestState();
 		TestState two = new TestState();
 
-		StateMachineBuilder<TestState, String> builder = StateMachineBuilder.create();
-		MutableStateMachine<TestState, String> machine = builder.buildModifiable(initial);
+		StateMachineBuilder<TestState, String> builder = StateMachineBuilder.create(TestState.class, String.class);
+		MutableTransitionModelImpl<TestState, String> model = builder.buildTransitionModel();
 
-		machine.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
+		model.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 
-		machine.addTransition(one, two, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
+		model.addTransition(one, two, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
+		StateMachine<TestState, String> machine = model.newStateMachine(initial);
 
 		assertEquals(initial, machine.getCurrentState());
 
@@ -99,60 +103,59 @@ public class TestStates {
 
 	@Test
 	public void forceSetState() {
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableTransitionModel<States, String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		machine.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
 		Action<States, String> entryAction1 = mock(Action.class);
-		machine.addEntryAction(States.INITIAL, entryAction1);
+		model.addEntryAction(States.INITIAL, entryAction1);
 		Action<States, String> exitAction1 = mock(Action.class);
-		machine.addExitAction(States.INITIAL, exitAction1);
+		model.addExitAction(States.INITIAL, exitAction1);
 
 		Action<States, String> entryAction2 = mock(Action.class);
-		machine.addEntryAction(States.TWO, entryAction2);
+		model.addEntryAction(States.TWO, entryAction2);
 		Action<States, String> exitAction2 = mock(Action.class);
-		machine.addExitAction(States.TWO, exitAction2);
+		model.addExitAction(States.TWO, exitAction2);
+
+		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
 
 		machine.forceSetState(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());
-		verifyOnce().on(exitAction1).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyOnce().on(entryAction2).perform(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-
+		verifyOnce().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(entryAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 	}
 
 	@Test
 	public void fromAllTransition() {
 
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableTransitionModel<States, String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		machine.addFromAllTransition(States.INITIAL, "back", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addFromAllTransition(States.INITIAL, "back", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
+		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
 
 		machine.fireEvent("hej");
 		machine.fireEvent("hopp");
 		machine.fireEvent("back");
 
-
 		assertEquals(States.INITIAL, machine.getCurrentState());
-
 	}
 
 	@Test
 	public void singleFiresBeforeFromAllTransition() {
 
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create();
-		MutableStateMachine<States, String> machine = builder.buildModifiable(States.INITIAL);
+		MutableTransitionModel<States, String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-		machine.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		machine.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		machine.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+		model.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
+
+		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
 
 		machine.fireEvent("hej");
 		machine.fireEvent("hopp");

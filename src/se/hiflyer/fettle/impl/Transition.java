@@ -1,49 +1,39 @@
 package se.hiflyer.fettle.impl;
 
+import com.google.common.collect.Lists;
 import se.hiflyer.fettle.Action;
+import se.hiflyer.fettle.Arguments;
 import se.hiflyer.fettle.Condition;
 
 import java.util.Collection;
-import java.util.Collections;
 
 public class Transition<S, E> {
-	private final S from;
 	private final S to;
 	private final Condition condition;
-	private final E event;
-	private final Collection<Action<S, E>> transitionActions;
+	private final Collection<Action<S, E>> actions = Lists.newArrayList();
 
-
-	public Transition(S from, S to, Condition condition, E event, Collection<Action<S, E>> transitionActions) {
-		this.from = from;
+	public Transition(S to, Condition condition, Collection<Action<S, E>> actions) {
 		this.to = to;
 		this.condition = condition;
-		this.event = event;
-		this.transitionActions = transitionActions;
-	}
-
-	public Transition(S from, S to, Condition condition, E event) {
-		this(from, to, condition, event, Collections.<Action<S, E>>emptyList());
-	}
-
-	public S getFrom() {
-		return from;
+		this.actions.addAll(actions);
 	}
 
 	public S getTo() {
 		return to;
 	}
 
-	public E getEvent() {
-		return event;
-
+	public boolean isSatisfied(Arguments args) {
+		return condition.isSatisfied(args);
 	}
 
 	public Condition getCondition() {
 		return condition;
 	}
 
-	public Collection<Action<S, E>> getTransitionActions() {
-		return transitionActions;
+	public void onTransition(S from, S to, E event, Arguments args) {
+		for (Action<S, E> action : actions) {
+			action.onTransition(from, to, event, args);
+		}
+
 	}
 }
