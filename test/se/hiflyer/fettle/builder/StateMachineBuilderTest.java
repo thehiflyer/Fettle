@@ -3,6 +3,7 @@ package se.hiflyer.fettle.builder;
 import org.junit.Test;
 import se.hiflyer.fettle.*;
 import se.hiflyer.fettle.export.DotExporter;
+import se.hiflyer.fettle.impl.AbstractTransitionModel;
 
 import static org.junit.Assert.assertEquals;
 import static se.mockachino.Mockachino.*;
@@ -17,7 +18,8 @@ public class StateMachineBuilderTest {
 		builder.transition().on("hej").from(States.INITIAL).to(States.ONE);
 		builder.transition().on("hopp").from(States.ONE).to(States.TWO);
 
-		StateMachine<States, String> machine = builder.build(States.INITIAL);
+		TransitionModel<States, String> transitionModel = builder.buildTransitionModel();
+		StateMachine<States, String> machine = transitionModel.newStateMachine(States.INITIAL);
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
@@ -32,9 +34,8 @@ public class StateMachineBuilderTest {
 		machine.fireEvent("hopp");
 
 		assertEquals(States.TWO, machine.getCurrentState());
-
-//		DotExporter<States, String> exporter = new DotExporter<States, String>((StateMachineInternalsInformer<States,String>) machine, "test");
-//		exporter.asDot(System.out, false);
+		DotExporter<States, String> exporter = new DotExporter<States, String>((AbstractTransitionModel<States,String>) transitionModel, "test");
+		exporter.asDot(System.out, false);
 	}
 
 	@Test

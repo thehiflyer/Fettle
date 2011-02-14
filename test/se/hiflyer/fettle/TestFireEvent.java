@@ -1,7 +1,6 @@
 package se.hiflyer.fettle;
 
 import org.junit.Test;
-import se.hiflyer.fettle.builder.StateMachineBuilder;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 
 import java.util.Collections;
@@ -17,8 +16,7 @@ public class TestFireEvent {
 
 	@Test
 	public void fireEvent() {
-		StateMachineBuilder<States, Triggers> builder = StateMachineBuilder.create(States.class, Triggers.class);
-		MutableTransitionModelImpl<States,Triggers> model = builder.buildTransitionModel();
+		MutableTransitionModelImpl<States,Triggers> model = MutableTransitionModelImpl.create(States.class, Triggers.class);
 
 		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, BasicConditions.ALWAYS, Collections.<Action<States, Triggers>>emptyList());
 		StateMachine<States, Triggers> machine = model.newStateMachine(States.INITIAL);
@@ -31,8 +29,7 @@ public class TestFireEvent {
 
 	@Test
 	public void testFireEventWithParams() throws Exception {
-		StateMachineBuilder<States, Triggers> builder = StateMachineBuilder.create(States.class, Triggers.class);
-		MutableTransitionModelImpl<States,Triggers> model = builder.buildTransitionModel();
+		MutableTransitionModelImpl<States,Triggers> model = MutableTransitionModelImpl.create(States.class, Triggers.class);
 
 		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, new Condition() {
 			@Override

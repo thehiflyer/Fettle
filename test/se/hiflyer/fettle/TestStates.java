@@ -1,7 +1,6 @@
 package se.hiflyer.fettle;
 
 import org.junit.Test;
-import se.hiflyer.fettle.builder.StateMachineBuilder;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 
 import java.util.Collections;
@@ -15,8 +14,7 @@ public class TestStates {
 	@Test
 	public void simpleStateTransition() {
 
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
-		MutableTransitionModelImpl<States,String> model = builder.buildTransitionModel();
+		MutableTransitionModelImpl<States,String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -41,8 +39,7 @@ public class TestStates {
 
 	@Test
 	public void entryExitActions() {
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
-		MutableTransitionModelImpl<States,String> model = builder.buildTransitionModel();
+		MutableTransitionModelImpl<States,String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -77,8 +74,7 @@ public class TestStates {
 		TestState one = new TestState();
 		TestState two = new TestState();
 
-		StateMachineBuilder<TestState, String> builder = StateMachineBuilder.create(TestState.class, String.class);
-		MutableTransitionModelImpl<TestState, String> model = builder.buildTransitionModel();
+		MutableTransitionModelImpl<TestState,String> model = MutableTransitionModelImpl.create(TestState.class, String.class);
 
 		model.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 

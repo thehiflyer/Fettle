@@ -1,5 +1,6 @@
 package se.hiflyer.fettle.impl;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.Arguments;
@@ -70,6 +71,14 @@ public abstract class AbstractTransitionModel<S, E> implements TransitionModel<S
 		for (Action<S, E> action : actions) {
 			action.onTransition(from, to, event, args);
 		}
+	}
+
+	public  Map<S, Map<E, Collection<Transition<S, E>>>> getStateTransitions() {
+		return ImmutableMap.copyOf(transitionMap);
+	}
+
+	public Map<E, Collection<Transition<S, E>>> getFromAllTransitions() {
+		return ImmutableMap.copyOf(fromAllTransitions);
 	}
 }
 
