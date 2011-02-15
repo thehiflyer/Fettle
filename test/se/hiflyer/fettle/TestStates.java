@@ -14,7 +14,7 @@ public class TestStates {
 	@Test
 	public void simpleStateTransition() {
 
-		MutableTransitionModelImpl<States,String> model = MutableTransitionModelImpl.create(States.class, String.class);
+		MutableTransitionModelImpl<States, String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -39,7 +39,7 @@ public class TestStates {
 
 	@Test
 	public void entryExitActions() {
-		MutableTransitionModelImpl<States,String> model = MutableTransitionModelImpl.create(States.class, String.class);
+		MutableTransitionModelImpl<States, String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
@@ -74,7 +74,7 @@ public class TestStates {
 		TestState one = new TestState();
 		TestState two = new TestState();
 
-		MutableTransitionModelImpl<TestState,String> model = MutableTransitionModelImpl.create(TestState.class, String.class);
+		MutableTransitionModelImpl<TestState, String> model = MutableTransitionModelImpl.create(TestState.class, String.class);
 
 		model.addTransition(initial, one, "", BasicConditions.ALWAYS, Collections.<Action<TestState, String>>emptyList());
 

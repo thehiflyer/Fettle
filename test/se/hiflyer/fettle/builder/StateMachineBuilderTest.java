@@ -34,7 +34,7 @@ public class StateMachineBuilderTest {
 		machine.fireEvent("hopp");
 
 		assertEquals(States.TWO, machine.getCurrentState());
-		DotExporter<States, String> exporter = new DotExporter<States, String>((AbstractTransitionModel<States,String>) transitionModel, "test");
+		DotExporter<States, String> exporter = new DotExporter<States, String>((AbstractTransitionModel<States, String>) transitionModel, "test");
 		exporter.asDot(System.out, false);
 	}
 
@@ -110,6 +110,7 @@ public class StateMachineBuilderTest {
 
 	private class ConditionImpl implements Condition {
 		boolean pass = false;
+
 		@Override
 		public boolean isSatisfied(Arguments args) {
 			return pass;

@@ -13,7 +13,7 @@ public class FettleTest {
 		MutableTransitionModelImpl<States, String> transitionModel = Fettle.newTransitionModel(States.class, String.class);
 		assertNotNull(transitionModel);
 
-		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);
 		assertNotNull(builder);
 		StateMachine<States, String> machine = builder.build(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());

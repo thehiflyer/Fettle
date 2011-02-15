@@ -34,6 +34,7 @@ public interface StateMachine<S, E> {
 	/**
 	 * Sets the state of the state machine to the rawState even if there are no transitions leading to it
 	 * No transition, entry or exit actions are run
+	 *
 	 * @param rawState the state the machine will be in after this method is called
 	 */
 	void rawSetState(S rawState);
@@ -45,5 +46,5 @@ public interface StateMachine<S, E> {
 	 * @param forcedState the state the machine will be in after this method is called
 	 * @return true if the state machine changed state
 	 */
-    boolean forceSetState(S forcedState);
+	boolean forceSetState(S forcedState);
 }

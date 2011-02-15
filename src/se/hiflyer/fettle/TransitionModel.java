@@ -6,5 +6,5 @@ public interface TransitionModel<S, E> {
 
 	boolean fireEvent(StateMachine<S, E> machine, E event, Arguments args);
 
-    boolean forceSetState(StateMachine<S, E> stateMachine, S forcedState);
+	boolean forceSetState(StateMachine<S, E> stateMachine, S forcedState);
 }

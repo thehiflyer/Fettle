@@ -2,14 +2,12 @@ package se.hiflyer.fettle;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
-import se.hiflyer.fettle.builder.StateMachineBuilder;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 import se.hiflyer.fettle.impl.Transition;
 
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
@@ -19,7 +17,7 @@ public class TestTransitionActions {
 	public void testTransitionCreation() {
 		States to = States.TWO;
 		Condition condition = mock(Condition.class);
-		Transition<States, String> transition = new Transition<States, String>(to, condition, Collections.<Action<States,String>>emptyList());
+		Transition<States, String> transition = new Transition<States, String>(to, condition, Collections.<Action<States, String>>emptyList());
 
 		assertEquals(to, transition.getTo());
 		assertEquals(condition, transition.getCondition());
@@ -70,7 +68,7 @@ public class TestTransitionActions {
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction2));
 
 		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
-		
+
 		Arguments args = new Arguments("arg");
 		machine.fireEvent("", args);
 		verifyOnce().on(transitionAction1).onTransition(States.INITIAL, States.ONE, "", args);

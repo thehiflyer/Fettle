@@ -22,7 +22,7 @@ public class DotExporter<S, E> {
 	public void asDot(OutputStream os, boolean includeFromAllTransitions) {
 		PrintWriter writer = new PrintWriter(os);
 		writer.println("digraph " + name + " {");
-		Map<S,Map<E,Collection<Transition<S,E>>>> stateTransitions = model.getStateTransitions();
+		Map<S, Map<E, Collection<Transition<S, E>>>> stateTransitions = model.getStateTransitions();
 		Set<S> states = stateTransitions.keySet();
 		Set<S> allStates = new HashSet<S>(states);
 		for (S state : states) {
