@@ -30,7 +30,12 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E> {
 
 
 	@Override
-	public void forceSetState(S forcedState) {
-		currentState = forcedState;
+	public void rawSetState(S rawState) {
+		currentState = rawState;
 	}
+
+    @Override
+    public boolean forceSetState(S forcedState) {
+        return model.forceSetState(this, forcedState);
+    }
 }

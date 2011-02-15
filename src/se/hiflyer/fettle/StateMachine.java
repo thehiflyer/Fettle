@@ -32,10 +32,18 @@ public interface StateMachine<S, E> {
 	boolean fireEvent(E event, Arguments args);
 
 	/**
+	 * Sets the state of the state machine to the rawState even if there are no transitions leading to it
+	 * No transition, entry or exit actions are run
+	 * @param rawState the state the machine will be in after this method is called
+	 */
+	void rawSetState(S rawState);
+
+	/**
 	 * Forces the state machine to enter the forcedState even if there are no transitions leading to it
 	 * No transition actions are run but exit actions on the current state and entry actions on the new state are run
 	 *
 	 * @param forcedState the state the machine will be in after this method is called
+	 * @return true if the state machine changed state
 	 */
-	void forceSetState(S forcedState);
+    boolean forceSetState(S forcedState);
 }
