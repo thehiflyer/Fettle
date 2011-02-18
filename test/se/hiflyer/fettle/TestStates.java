@@ -1,11 +1,13 @@
 package se.hiflyer.fettle;
 
 import org.junit.Test;
+import se.hiflyer.fettle.export.DotExporter;
+import se.hiflyer.fettle.impl.AbstractTransitionModel;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
@@ -117,10 +119,14 @@ public class TestStates {
 
 		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
 
-		machine.forceSetState(States.TWO);
+		boolean switched = machine.forceSetState(States.TWO);
+		assertTrue(switched);
 		assertEquals(States.TWO, machine.getCurrentState());
 		verifyOnce().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
 		verifyOnce().on(entryAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+
+		switched = machine.forceSetState(States.TWO);
+		assertFalse(switched);
 	}
 
 	@Test
@@ -157,6 +163,8 @@ public class TestStates {
 		machine.fireEvent("hopp");
 
 		assertEquals(States.TWO, machine.getCurrentState());
+		DotExporter<States, String> exporter = new DotExporter<States, String>((AbstractTransitionModel<States, String>) model, "test");
+		exporter.asDot(System.out, true);
 	}
 
 

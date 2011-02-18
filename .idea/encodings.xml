@@ -3,6 +3,7 @@
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/src/se/hiflyer/fettle/Action.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStates.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/test/se/hiflyer/fettle/TestStatesImmutable.java" charset="UTF-8" />
   </component>
 </project>
 

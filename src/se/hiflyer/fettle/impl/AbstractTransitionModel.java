@@ -53,7 +53,7 @@ public abstract class AbstractTransitionModel<S, E> implements TransitionModel<S
 		return true;
 	}
 
-	private void forceSetState(StateMachine<S, E> stateMachine, S from, S to, Transition transition, E event, Arguments args) {
+	private void forceSetState(StateMachine<S, E> stateMachine, S from, S to, Transition<S, E> transition, E event, Arguments args) {
 		invoke(exitActions.get(from), from, to, event, args);
 		stateMachine.rawSetState(to);
 		if (transition != null) {

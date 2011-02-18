@@ -35,7 +35,7 @@ public class StateMachineBuilderTest {
 
 		assertEquals(States.TWO, machine.getCurrentState());
 		DotExporter<States, String> exporter = new DotExporter<States, String>((AbstractTransitionModel<States, String>) transitionModel, "test");
-		exporter.asDot(System.out, false);
+		exporter.asDot(System.out, true);
 	}
 
 	@Test

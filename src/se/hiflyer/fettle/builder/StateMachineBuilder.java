@@ -41,6 +41,14 @@ public class StateMachineBuilder<S, E> {
 		return actionBuilder;
 	}
 
+	/**
+	 * Builds a state machine with the transitions and states configured by the builder.
+	 * Note that consecutive calls to this method will not share transition models and it's therefore inefficient to
+	 * use this method to create large number of state machines. This method can be considered as a short hand for
+	 * cases when just one state machine of a certain configuration is needed.
+	 * @param initial the state the machine will be in when created
+	 * @return a new state machine configured with all the transitions and actions specified using this builder
+	 */
 	public StateMachine<S, E> build(S initial) {
 		@SuppressWarnings("unchecked")
 		TransitionModel<S, E> build = buildTransitionModel();
