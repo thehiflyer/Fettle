@@ -9,7 +9,7 @@
     body {
       margin-top: 1.0em;
       background-color: #cfddca;
-      font-family: "Helvetica,Arial,FreeSans";
+      font-family: "Helvetica,Arial,FreeSans",serif;
       color: #000000;
     }
     #container {
@@ -24,7 +24,8 @@
     a { color: #302235; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
+    pre { background: #000; color: #fff; padding: 15px;  }
+    code {font-size:11px; }
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
@@ -36,6 +37,8 @@
   <div id="container">
 
     <div class="download">
+		 <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.5.0.jar">
+        <img border="0" width="90" src="jar.png"></a>
       <a href="http://github.com/thehiflyer/Fettle/zipball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
       <a href="http://github.com/thehiflyer/Fettle/tarball/master">
@@ -51,11 +54,48 @@
 
     <p>Fettle is an attempt to write a well tested solid simple framework for statemachines in java. I have tried to keep it easy to use, type safe and still flexible.
 
-To create a new state machine you can either make a builder object or just create a transition model.
+To create a new state machine you can either make a builder object or just create a transition model.<br/>
+		 I'd recommend using the builder since the transition model is more intended for internal use and is quite verbose and not as readable.
 
 	 </p>
 	  <p>
-	  TODO: add code examples
+	  <strong>Using the builder</strong>
+		  <pre><code>
+@Test
+public void usingBuilder() {
+   StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
+
+   builder.transition().from(States.INITIAL).to(States.ONE).on("foo").
+      perform(new SoutAction("Performing fooTransition"));
+   builder.onEntry(States.ONE).perform(new SoutAction("Entering state ONE"));
+
+   TransitionModel&lt;States, String&gt; transitionModel = builder.buildTransitionModel();
+   StateMachine&lt;States, String&gt; stateMachine = transitionModel.newStateMachine(States.INITIAL);
+
+   stateMachine.fireEvent("foo");
+   assertEquals(States.ONE, stateMachine.getCurrentState());
+}</code></pre>
+	  </p>
+	  <p>
+		  <strong>Using transition model</strong>
+		  <pre><code>
+@Test
+public void usingTransitionModelDirectly() {
+   MutableTransitionModel&lt;States,String&gt; model =
+      Fettle.newTransitionModel(States.class, String.class);
+
+
+   List&lt;Action&lt;States,String&gt;&gt; actions =
+      Lists.&lt;Action&lt;States, String&gt;&gt;newArrayList(new SoutAction("Performing fooTransition"));
+   model.addTransition(States.INITIAL, States.ONE, "foo", BasicConditions.ALWAYS, actions);
+   model.addEntryAction(States.ONE, new SoutAction("Entering state ONE"));
+
+   StateMachine&lt;States, String&gt; stateMachine = model.newStateMachine(States.INITIAL);
+
+   stateMachine.fireEvent("foo");
+   assertEquals(States.ONE, stateMachine.getCurrentState());
+}
+</code></pre>
 	  </p>
 <h2>Dependencies</h2>
 <p><strong>Runtime:</strong><br/>
@@ -88,6 +128,10 @@ ant all package</p>
       You can download this project in either
       <a href="http://github.com/thehiflyer/Fettle/zipball/master">zip</a> or
       <a href="http://github.com/thehiflyer/Fettle/tarball/master">tar</a> formats.
+		</p>
+	  <p>
+		  If you don't need the source,
+		 just download the jar of the latest version&nbsp;<a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.5.0.jar">fettle-0.5.0.jar</a>
     </p>
     <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
       by running:
