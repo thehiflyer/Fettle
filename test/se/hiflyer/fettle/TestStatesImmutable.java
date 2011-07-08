@@ -53,18 +53,18 @@ public class TestStatesImmutable {
 
 		machine.fireEvent("foo");
 
-		verifyNever().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyNever().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyOnce().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyOnce().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 	}
 
 	@Test
@@ -119,8 +119,8 @@ public class TestStatesImmutable {
 
 		machine.forceSetState(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());
-		verifyOnce().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
-		verifyOnce().on(entryAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyOnce().on(entryAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 	}
 
 	@Test

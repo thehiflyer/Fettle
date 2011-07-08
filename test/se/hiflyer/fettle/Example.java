@@ -48,7 +48,7 @@ public class Example {
 		}
 
 		@Override
-		public void onTransition(States from, States to, String causedBy, Arguments args) {
+		public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine<States, String> stateMachine) {
 			System.out.println(text);
 		}
 	}

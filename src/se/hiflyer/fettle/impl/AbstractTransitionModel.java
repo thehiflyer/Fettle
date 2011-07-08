@@ -54,12 +54,12 @@ public abstract class AbstractTransitionModel<S, E> implements TransitionModel<S
 	}
 
 	private void forceSetState(StateMachine<S, E> stateMachine, S from, S to, Transition<S, E> transition, E event, Arguments args) {
-		invoke(exitActions.get(from), from, to, event, args);
+		invoke(exitActions.get(from), from, to, event, args, stateMachine);
 		stateMachine.rawSetState(to);
 		if (transition != null) {
-			transition.onTransition(from, to, event, args);
+			transition.onTransition(from, to, event, args, stateMachine);
 		}
-		invoke(enterActions.get(to), from, to, event, args);
+		invoke(enterActions.get(to), from, to, event, args, stateMachine);
 	}
 
 	private boolean fireEvent(StateMachine<S, E> stateMachine, E event, Map<E, Collection<Transition<S, E>>> transitionMap, S from, Arguments args) {
@@ -79,12 +79,12 @@ public abstract class AbstractTransitionModel<S, E> implements TransitionModel<S
 		return false;
 	}
 
-	private void invoke(Collection<Action<S, E>> actions, S from, S to, E event, Arguments args) {
+	private void invoke(Collection<Action<S, E>> actions, S from, S to, E event, Arguments args, StateMachine<S, E> stateMachine) {
 		if (actions == null) {
 			return;
 		}
 		for (Action<S, E> action : actions) {
-			action.onTransition(from, to, event, args);
+			action.onTransition(from, to, event, args, stateMachine);
 		}
 	}
 

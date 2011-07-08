@@ -37,23 +37,23 @@ public class TestTransitionActions {
 
 		machine.fireEvent("");
 
-		verifyNever().on(transitionAction1).onTransition(any(States.class), any(States.class), "", Arguments.NO_ARGS);
-		verifyNever().on(transitionAction2).onTransition(any(States.class), any(States.class), "", Arguments.NO_ARGS);
+		verifyNever().on(transitionAction1).onTransition(any(States.class), any(States.class), "", Arguments.NO_ARGS, machine);
+		verifyNever().on(transitionAction2).onTransition(any(States.class), any(States.class), "", Arguments.NO_ARGS, machine);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(transitionAction1).onTransition(States.ONE, States.TWO, "", Arguments.NO_ARGS);
-		verifyNever().on(transitionAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(transitionAction1).onTransition(States.ONE, States.TWO, "", Arguments.NO_ARGS, machine);
+		verifyNever().on(transitionAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 
 		machine.fireEvent("foo");
 
-		verifyOnce().on(transitionAction1).onTransition(States.ONE, States.TWO, "", Arguments.NO_ARGS);
-		verifyNever().on(transitionAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS);
+		verifyOnce().on(transitionAction1).onTransition(States.ONE, States.TWO, "", Arguments.NO_ARGS, machine);
+		verifyNever().on(transitionAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 
 		machine.fireEvent("");
 
-		verifyOnce().on(transitionAction1).onTransition(States.ONE, States.TWO, "", Arguments.NO_ARGS);
-		verifyOnce().on(transitionAction2).onTransition(States.TWO, States.ONE, "", Arguments.NO_ARGS);
+		verifyOnce().on(transitionAction1).onTransition(States.ONE, States.TWO, "", Arguments.NO_ARGS, machine);
+		verifyOnce().on(transitionAction2).onTransition(States.TWO, States.ONE, "", Arguments.NO_ARGS, machine);
 
 	}
 
@@ -71,6 +71,6 @@ public class TestTransitionActions {
 
 		Arguments args = new Arguments("arg");
 		machine.fireEvent("", args);
-		verifyOnce().on(transitionAction1).onTransition(States.INITIAL, States.ONE, "", args);
+		verifyOnce().on(transitionAction1).onTransition(States.INITIAL, States.ONE, "", args, machine);
 	}
 }

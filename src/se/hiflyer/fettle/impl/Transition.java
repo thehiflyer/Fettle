@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.Arguments;
 import se.hiflyer.fettle.Condition;
+import se.hiflyer.fettle.StateMachine;
 
 import java.util.Collection;
 
@@ -30,9 +31,9 @@ public class Transition<S, E> {
 		return condition;
 	}
 
-	public void onTransition(S from, S to, E event, Arguments args) {
+	public void onTransition(S from, S to, E event, Arguments args, StateMachine<S, E> statemachine) {
 		for (Action<S, E> action : actions) {
-			action.onTransition(from, to, event, args);
+			action.onTransition(from, to, event, args, statemachine);
 		}
 
 	}
