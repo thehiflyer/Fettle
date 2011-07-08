@@ -50,6 +50,10 @@
 		<include name="**/?*.ftl"/>
 	</patternset>
 
+	<patternset id="gwt.exclude">
+		<exclude name="**/export/**"/>
+	</patternset>
+
 
 	<!-- Project Libraries -->
 
@@ -68,6 +72,8 @@
 
 
 	<property name="compiler.args.fettle" value="${compiler.args}"/>
+
+	<property name="gwt.temp" value="gwt-temp"/>
 
 	<property name="fettle.output.dir" value="${module.fettle.basedir}/out/production/Fettle"/>
 	<property name="fettle.testoutput.dir" value="${module.fettle.basedir}/out/test/Fettle"/>
@@ -155,6 +161,7 @@
 	<target name="clean" description="cleanup module">
 		<delete dir="${fettle.output.dir}"/>
 		<delete dir="${fettle.testoutput.dir}"/>
+		<delete dir="${gwt.temp}"/>
 	</target>
 
 	<target name="init" description="Build initialization">
@@ -169,4 +176,28 @@
 
 
 	<target name="all" depends="compile" description="build all"/>
+
+	<property name="gwt.jar.root" value="${gwt.temp}\se\hiflyer\fettle\"/>
+
+	<target name="copy-gwt" depends="compile.source" description="Copies files to temporary gwt folder">
+		<copy todir="${gwt.temp}">
+			<fileset dir="${fettle.output.dir}">
+				<patternset refid="gwt.exclude"/>
+			</fileset>
+		</copy>
+		<copy todir="${gwt.jar.root}/super">
+			<fileset dir="src">
+				<patternset refid="gwt.exclude"/>
+			</fileset>
+		</copy>
+		<copy todir="${gwt.jar.root}">
+			<fileset dir="resources"/>
+		</copy>
+	</target>
+
+	<target name="package-gwt" depends="copy-gwt" description="Creates a jar for GWT projects">
+		<jar destfile="fettle-${version}-gwt.jar" basedir="${gwt.temp}">
+		</jar>
+		<delete dir="${gwt.temp}"/>
+	</target>
 </project>
