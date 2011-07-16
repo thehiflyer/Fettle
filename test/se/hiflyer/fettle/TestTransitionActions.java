@@ -2,8 +2,10 @@ package se.hiflyer.fettle;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import se.hiflyer.fettle.builder.StateMachineBuilder;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 import se.hiflyer.fettle.impl.Transition;
+import se.mockachino.order.OrderingContext;
 
 import java.util.Collections;
 
@@ -72,5 +74,23 @@ public class TestTransitionActions {
 		Arguments args = new Arguments("arg");
 		machine.fireEvent("", args);
 		verifyOnce().on(transitionAction1).onTransition(States.INITIAL, States.ONE, "", args, machine);
+	}
+
+	@Test
+	public void orderOfEntryTransitionAndExitActions() throws Exception {
+		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		Action<States, String> action1 = mock(Action.class);
+		Action<States, String> action2 = mock(Action.class);
+		Action<States, String> action3 = mock(Action.class);
+		builder.transition().on("foo").from(States.INITIAL).to(States.ONE).perform(action2);
+		builder.onEntry(States.ONE).perform(action3);
+		builder.onExit(States.INITIAL).perform(action1);
+
+		StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+		stateMachine.fireEvent("foo");
+		OrderingContext order = newOrdering();
+		order.verify().on(action1).onTransition(States.INITIAL, States.ONE, "foo", Arguments.NO_ARGS, stateMachine);
+		order.verify().on(action2).onTransition(States.INITIAL, States.ONE, "foo", Arguments.NO_ARGS, stateMachine);
+		order.verify().on(action3).onTransition(States.INITIAL, States.ONE, "foo", Arguments.NO_ARGS, stateMachine);
 	}
 }
