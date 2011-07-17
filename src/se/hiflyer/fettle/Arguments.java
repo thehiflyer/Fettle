@@ -31,4 +31,20 @@ public class Arguments {
 		}
 		return rest.length + 1;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("Arguments(");
+		if (first != null) {
+			builder.append(first);
+		}
+		if (rest != null) {
+			for (Object o : rest) {
+				builder.append(", ");
+				builder.append(o);
+			}
+		}
+		builder.append(")");
+		return builder.toString();
+	}
 }
