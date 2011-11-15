@@ -1,13 +1,13 @@
 package se.hiflyer.fettle.impl;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.Arguments;
 import se.hiflyer.fettle.StateMachine;
 import se.hiflyer.fettle.TransitionModel;
+import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public abstract class AbstractTransitionModel<S, E> implements TransitionModel<S
 		if (state.isEnum()) {
 			return new EnumMap(state);
 		} else {
-			return Maps.newHashMap();
+			return GuavaReplacement.newHashMap();
 		}
 	}
 
@@ -89,11 +89,11 @@ public abstract class AbstractTransitionModel<S, E> implements TransitionModel<S
 	}
 
 	public Map<S, Map<E, Collection<Transition<S, E>>>> getStateTransitions() {
-		return ImmutableMap.copyOf(transitionMap);
+		return Collections.unmodifiableMap(transitionMap);
 	}
 
 	public Map<E, Collection<Transition<S, E>>> getFromAllTransitions() {
-		return ImmutableMap.copyOf(fromAllTransitions);
+		return Collections.unmodifiableMap(fromAllTransitions);
 	}
 }
 

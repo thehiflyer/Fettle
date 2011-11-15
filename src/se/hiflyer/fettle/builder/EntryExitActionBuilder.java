@@ -1,8 +1,8 @@
 package se.hiflyer.fettle.builder;
 
-import com.google.common.collect.Lists;
 import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.MutableTransitionModel;
+import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class EntryExitActionBuilder<S, E> {
 		EXIT
 	}
 
-	private final List<Action<S, E>> actions = Lists.newArrayList();
+	private final List<Action<S, E>> actions = GuavaReplacement.newArrayList();
 
 
 	public static <S, E> EntryExitActionBuilder<S, E> entry(S to) {
@@ -32,7 +32,7 @@ public class EntryExitActionBuilder<S, E> {
 	}
 
 	public EntryExitActionBuilder<S, E> perform(Action<S, E>... actions) {
-		this.actions.addAll(Lists.newArrayList(actions));
+		this.actions.addAll(GuavaReplacement.newArrayList(actions));
 		return this;
 	}
 

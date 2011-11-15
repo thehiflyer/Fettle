@@ -1,6 +1,8 @@
-package se.hiflyer.fettle;
+package se.hiflyer.fettle.util;
 
 import com.google.common.base.Predicate;
+import se.hiflyer.fettle.Arguments;
+import se.hiflyer.fettle.Condition;
 
 public class PredicateCondition<T> implements Condition {
 

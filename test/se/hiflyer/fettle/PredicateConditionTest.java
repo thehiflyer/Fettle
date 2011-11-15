@@ -2,6 +2,7 @@ package se.hiflyer.fettle;
 
 import com.google.common.base.Predicates;
 import org.junit.Test;
+import se.hiflyer.fettle.util.PredicateCondition;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -1,10 +1,10 @@
 package se.hiflyer.fettle.builder;
 
-import com.google.common.collect.Lists;
 import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.BasicConditions;
 import se.hiflyer.fettle.Condition;
 import se.hiflyer.fettle.MutableTransitionModel;
+import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class TransitionBuilder<S, E> {
 	private S to;
 	private E event;
 	private Condition condition = BasicConditions.ALWAYS;
-	private final List<Action<S, E>> actions = Lists.newArrayList();
+	private final List<Action<S, E>> actions = GuavaReplacement.newArrayList();
 
 	public TransitionBuilder<S, E> on(E event) {
 		this.event = event;
@@ -37,7 +37,7 @@ public class TransitionBuilder<S, E> {
 	}
 
 	public TransitionBuilder<S, E> perform(Action<S, E>... actions) {
-		this.actions.addAll(Lists.newArrayList(actions));
+		this.actions.addAll(GuavaReplacement.newArrayList(actions));
 		return this;
 	}
 
