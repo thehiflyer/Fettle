@@ -5,5 +5,4 @@
 
   <super-source path="super"/>
 
-  <inherits name="com.google.common.collect.Collect"/>
 </module>
