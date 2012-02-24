@@ -1,4 +1,5 @@
 apply plugin: 'java'
+//apply plugin: 'checkstyle'
 
 sourceCompatibility = 1.6
 
@@ -31,3 +32,6 @@ jar {
     exclude("**/*.xml")
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-milestone-8'
+}
