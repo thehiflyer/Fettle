@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+		"-//Puppy Crawl//DTD Check Configuration 1.2//EN"
+		"http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+
+<module name="Checker">
+
+	<!-- Checks for Size Violations.                    -->
+	<!-- See http://checkstyle.sf.net/config_sizes.html -->
+	<module name="FileLength"/>
+
+	<module name="StrictDuplicateCode">
+		<property name="min" value="12"/>
+		<property name="fileExtensions" value="java, lua"/>
+	</module>
+	
+
+
+	<module name="TreeWalker">
+		<property name="tabWidth" value="3"/>
+        <property name="cacheFile" value="checkStyle-cacheFile"/>
+		<!-- Checks for Naming Conventions.                  -->
+		<!-- See http://checkstyle.sf.net/config_naming.html -->
+		<module name="ConstantName">
+			<property name="severity" value="warning"/>
+			<property name="format" value="^([A-Z][A-Z0-9_]*)|(log)$"/>
+		</module>
+		<module name="LocalFinalVariableName"/>
+		<module name="LocalVariableName"/>
+		<module name="MemberName"/>
+		<module name="MethodName"/>
+		<module name="PackageName"/>
+		<module name="ParameterName"/>
+		<module name="StaticVariableName"/>
+		<module name="TypeName"/>
+
+		<module name="MissingOverride">
+			<property name="severity" value="warning"/>
+		</module>
+
+
+		<!-- Checks for imports                              -->
+		<!-- See http://checkstyle.sf.net/config_import.html -->
+		<module name="AvoidStarImport">
+			<property name="severity" value="warning"/>
+			<property name="excludes" value="se.mockachino, se.mockachino.proxy, se.mockachino.Mockachino,se.mockachino.matchers.Matchers"/>
+		</module>
+		<module name="IllegalImport"/>
+		<!-- defaults to sun.* packages -->
+		<module name="RedundantImport">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="UnusedImports">
+			<property name="severity" value="warning"/>
+		</module>
+
+
+		<!-- Checks for Size Violations.                    -->
+		<!-- See http://checkstyle.sf.net/config_sizes.html -->
+		<module name="LineLength">
+			<property name="max" value="160"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="MethodLength"/>
+
+		<!-- Checks for whitespace                               -->
+		<!-- See http://checkstyle.sf.net/config_whitespace.html -->
+		<module name="EmptyForIteratorPad"/>
+		<module name="GenericWhitespace"/>
+		<module name="MethodParamPad">
+			<property name="severity" value="info"/>
+		</module>
+		<module name="NoWhitespaceAfter">
+			<property name="severity" value="info"/>
+		</module>
+		<module name="NoWhitespaceBefore">
+			<property name="severity" value="info"/>
+		</module>
+		<module name="ParenPad">
+			<property name="severity" value="info"/>
+		</module>
+		<module name="TypecastParenPad">
+			<property name="severity" value="info"/>
+		</module>
+		<module name="WhitespaceAfter">
+			<property name="severity" value="info"/>
+		</module>
+		<module name="WhitespaceAround">
+			<property name="severity" value="info"/> 
+		</module>
+
+
+		<!-- Modifier Checks                                    -->
+		<!-- See http://checkstyle.sf.net/config_modifiers.html -->
+		<module name="ModifierOrder">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="RedundantModifier">
+			<property name="severity" value="warning"/>
+		</module>
+
+
+		<!-- Checks for blocks. You know, those {}'s         -->
+		<!-- See http://checkstyle.sf.net/config_blocks.html -->
+		<module name="AvoidNestedBlocks"/>
+		<module name="EmptyBlock">
+			<property name="option" value="text"/>
+		</module>
+		<module name="LeftCurly">
+			<property name="severity" value="warning"/>	
+		</module>
+		<module name="NeedBraces"/>
+		<module name="RightCurly"/>
+
+
+		<!-- Checks for common coding problems               -->
+		<!-- See http://checkstyle.sf.net/config_coding.html -->
+		<module name="DoubleCheckedLocking"/>
+		<!-- MY FAVOURITE -->
+		<module name="EmptyStatement"/>
+		<module name="EqualsHashCode"/>
+
+		<module name="InnerAssignment"/>
+		<module name="MissingSwitchDefault"/>
+		<module name="RedundantThrows"/>
+		<module name="IllegalThrows"/>
+		<module name="IllegalCatch"/>
+		<module name="SimplifyBooleanExpression"/>
+		<module name="SimplifyBooleanReturn"/>
+
+
+		<module name="NoFinalizer"/>
+
+		<!-- Checks for class design                         -->
+		<!-- See http://checkstyle.sf.net/config_design.html -->
+		<!--<module name="DesignForExtension"/>-->
+		<module name="HideUtilityClassConstructor"/>
+		<module name="InterfaceIsType"/>
+		<module name="VisibilityModifier">
+			<property name="packageAllowed" value="true"/>
+			<property name="protectedAllowed" value="true"/>
+		</module>
+
+
+		<!-- Miscellaneous other checks.                   -->
+		<!-- See http://checkstyle.sf.net/config_misc.html -->
+		<module name="ArrayTypeStyle">
+			<property name="severity" value="warning"/>
+		</module>
+		<module name="UpperEll">
+			<property name="severity" value="info"/>
+		</module>
+
+		<!-- Item 4 - Avoid creating duplicate objects -->
+		<module name="IllegalInstantiation">
+			<property name="classes" value="java.lang.Boolean, java.lang.String"/>
+		</module>
+
+		<!-- Item 25 - Design method signatures carefully -->
+		<!-- Avoid long parameter lists -->
+		<module name="ParameterNumber">
+			<property name="max" value="5"/>
+			<property name="severity" value="warning"/>
+		</module>
+
+
+	</module>
+
+</module>
