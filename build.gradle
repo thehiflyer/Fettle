@@ -14,6 +14,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit-dep', version: '4.10'
     testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.0'
+    testRuntime 'net.sourceforge.cobertura:cobertura:1.9.3'
     compile group: 'com.google.guava', name: 'guava', version: '11.0.1'
 }
 
@@ -33,7 +34,18 @@ jar {
 }
 
 checkstyleMain {
-    ignoreFailures = true
+    doLast {
+        ant.xslt(in: "$buildDir/reports/checkstyle/main.xml",
+                style:"config/checkstyle/checkstyle.xsl",
+                out:"$buildDir/reports/checkstyle/checkstyle.html"
+        )
+    }
+}
+
+task checkstyleReport << {
+    if (file("$buildDir/reports/checkstyle/${checkType}.xml").exists()) {
+
+    }
 }
 
 task wrapper(type: Wrapper) {
