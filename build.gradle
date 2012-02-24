@@ -1,5 +1,5 @@
 apply plugin: 'java'
-//apply plugin: 'checkstyle'
+apply plugin: 'checkstyle'
 
 sourceCompatibility = 1.6
 
@@ -30,6 +30,10 @@ task gwtJar(type: Jar, dependsOn: classes) {
 
 jar {
     exclude("**/*.xml")
+}
+
+checkstyleMain {
+    ignoreFailures = true
 }
 
 task wrapper(type: Wrapper) {
