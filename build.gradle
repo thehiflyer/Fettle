@@ -48,6 +48,12 @@ task checkstyleReport << {
     }
 }
 
+buildscript {
+    // using a variable to make wiki look cleaner
+    def githubBase = 'https://raw.github.com/valkolovos/gradle_cobertura/master/ivy'
+    apply from: "${githubBase}/gradle_cobertura/gradle_cobertura/1.0-rc4/coberturainit.gradle"
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.0-milestone-8'
 }
