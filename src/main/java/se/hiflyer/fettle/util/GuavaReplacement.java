@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public class GuavaReplacement {
-	public static <T> List<T> newArrayList() {
+    private GuavaReplacement() {}
+
+    public static <T> List<T> newArrayList() {
 		return new ArrayList<T>();
 	}
 
