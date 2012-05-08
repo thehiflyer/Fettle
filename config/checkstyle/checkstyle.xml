@@ -160,7 +160,7 @@
 		<!-- Avoid long parameter lists -->
 		<module name="ParameterNumber">
 			<property name="max" value="5"/>
-			<property name="severity" value="warning"/>
+			<property name="severity" value="info"/>
 		</module>
 
 
