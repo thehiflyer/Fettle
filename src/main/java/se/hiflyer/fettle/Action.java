@@ -9,5 +9,5 @@ public interface Action<S, E> {
 	 * @param args the arguments supplied to the transition
 	 * @param stateMachine the machine for which the transition occured
 	 */
-	public void onTransition(S from, S to, E causedBy, Arguments args, StateMachine<S, E> stateMachine);
+	void onTransition(S from, S to, E causedBy, Arguments args, StateMachine<S, E> stateMachine);
 }
