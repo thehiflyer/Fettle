@@ -1,6 +1,10 @@
 package se.hiflyer.fettle.impl;
 
-import se.hiflyer.fettle.*;
+import se.hiflyer.fettle.Action;
+import se.hiflyer.fettle.Condition;
+import se.hiflyer.fettle.MutableTransitionModel;
+import se.hiflyer.fettle.StateMachine;
+import se.hiflyer.fettle.TransitionModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
