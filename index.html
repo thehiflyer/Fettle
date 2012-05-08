@@ -14,7 +14,7 @@
     }
     #container {
       margin: 0 auto;
-      width: 900px;
+      width: 1000px;
     }
     h1 { font-size: 3.8em; color: #302235; margin-bottom: 3px; }
     h1 .small { font-size: 0.4em; }
@@ -85,8 +85,7 @@ public void usingTransitionModelDirectly() {
       Fettle.newTransitionModel(States.class, String.class);
 
 
-   List&lt;Action&lt;States,String&gt;&gt; actions =
-      Lists.&lt;Action&lt;States, String&gt;&gt;newArrayList(new SoutAction("Performing fooTransition"));
+   List&lt;Action&lt;States,String&gt;&gt; actions = Lists.&lt;Action&lt;States, String&gt;&gt;newArrayList(new SoutAction("Performing fooTransition"));
    model.addTransition(States.INITIAL, States.ONE, "foo", BasicConditions.ALWAYS, actions);
    model.addEntryAction(States.ONE, new SoutAction("Entering state ONE"));
 
@@ -113,6 +112,9 @@ All libs are managed by gradle</p>
 <h2>Install</h2>
 <p><strong>To build:</strong><br/>
 gradle build<br/>
+<strong>To build a jar:</strong><br/>
+gradle jar</p>
+<p>
 There is a gradle wrapper checked in so that you can run:<br/>
 ./gradlew build  (on *nix)<br/>
 gradle.bat build (on windows)
