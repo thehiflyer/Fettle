@@ -14,7 +14,7 @@
     }
     #container {
       margin: 0 auto;
-      width: 700px;
+      width: 900px;
     }
     h1 { font-size: 3.8em; color: #302235; margin-bottom: 3px; }
     h1 .small { font-size: 0.4em; }
@@ -109,13 +109,14 @@ public void usingTransitionModelDirectly() {
 <a href="http://code.google.com/p/mockachino/">Mockachino</a><br/>
 <a href="http://code.google.com/p/guava-libraries/">Guava</a>
 </p>
-All libs are checked in</p>
+All libs are managed by gradle</p>
 <h2>Install</h2>
 <p><strong>To build:</strong><br/>
-ant all<br/>
-
-<strong>To make a jar:</strong><br/>
-ant all package</p>
+gradle build<br/>
+There is a gradle wrapper checked in so that you can run:<br/>
+./gradlew build  (on *nix)<br/>
+gradle.bat build (on windows)
+</p>
 <h2>Authors</h2>
 <p>thehiflyer aka hiflyer (per.malmen@gmail.com)
 <br/>
