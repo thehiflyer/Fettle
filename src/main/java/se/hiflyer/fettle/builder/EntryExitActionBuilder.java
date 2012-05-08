@@ -50,6 +50,8 @@ public class EntryExitActionBuilder<S, E> {
 			case EXIT:
 				machineConstructor.addExitAction(state, action);
 				break;
+			default:
+				throw new RuntimeException("Unknown mode " + mode);
 		}
 	}
 }
