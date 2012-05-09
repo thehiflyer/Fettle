@@ -57,4 +57,22 @@ public class BasicConditions {
 			}
 		};
 	}
+
+	public static Condition not(final Condition condition) {
+		return new Condition() {
+			@Override
+			public boolean isSatisfied(Arguments args) {
+				return !condition.isSatisfied(args);
+			}
+		};
+	}
+
+	public static Condition xor(final Condition first, final Condition second) {
+		return new Condition() {
+			@Override
+			public boolean isSatisfied(Arguments args) {
+				return first.isSatisfied(args) ^ second.isSatisfied(args);
+			}
+		};
+	}
 }

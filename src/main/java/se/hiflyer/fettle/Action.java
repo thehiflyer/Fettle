@@ -7,7 +7,7 @@ public interface Action<S, E> {
 	 * @param to the state the machine is in after the transition
 	 * @param causedBy the event that triggered the transition
 	 * @param args the arguments supplied to the transition
-	 * @param stateMachine the machine for which the transition occured
+	 * @param stateMachine the machine for which the transition occurred
 	 */
 	void onTransition(S from, S to, E causedBy, Arguments args, StateMachine<S, E> stateMachine);
 }
