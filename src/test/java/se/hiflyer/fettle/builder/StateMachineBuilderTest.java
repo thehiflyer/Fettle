@@ -6,6 +6,7 @@ import se.hiflyer.fettle.export.DotExporter;
 import se.hiflyer.fettle.impl.AbstractTransitionModel;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
@@ -138,5 +139,16 @@ public class StateMachineBuilderTest {
 
 		verifyOnce().on(action1).onTransition(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS, machine);
 		verifyOnce().on(action2).onTransition(States.INITIAL, States.ONE, "a", Arguments.NO_ARGS, machine);
+	}
+
+	@Test
+	public void nullInitialState() throws Exception {
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
+		try {
+			builder.build(null);
+			fail("Null should not be permitted");
+		} catch (IllegalArgumentException e) {
+
+		}
 	}
 }

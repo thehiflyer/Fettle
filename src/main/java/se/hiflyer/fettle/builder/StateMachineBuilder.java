@@ -48,6 +48,7 @@ public class StateMachineBuilder<S, E> {
 	 * cases when just one state machine of a certain configuration is needed.
 	 * @param initial the state the machine will be in when created
 	 * @return a new state machine configured with all the transitions and actions specified using this builder
+	 * @throws IllegalArgumentException if the initial state is null
 	 */
 	public StateMachine<S, E> build(S initial) {
 		@SuppressWarnings("unchecked")
