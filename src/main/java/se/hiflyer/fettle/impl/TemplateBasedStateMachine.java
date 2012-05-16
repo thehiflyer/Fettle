@@ -10,7 +10,7 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E> {
 
 	public TemplateBasedStateMachine(TransitionModel<S, E> model, S initial) {
 		if (initial == null) {
-			throw new IllegalArgumentException("Initial state may not be null");
+			throw new IllegalArgumentException("Initial state must not be null");
 		}
 		this.model = model;
 		currentState = initial;
