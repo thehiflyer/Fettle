@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="GradleSettings">
-    <option name="expandStates">
-      <map>
-        <entry key="Fettle" value="true" />
-        <entry key="Fettle/Fettle" value="true" />
-        <entry key="dependencies/Fettle/Fettle" value="true" />
-      </map>
-    </option>
-    <option name="linkedProjectPath" value="C:\dev\Fettle\build.gradle" />
+    <option name="linkedProjectPath" value="C:\dev\FettleCode\build.gradle" />
   </component>
 </project>
 

@@ -82,7 +82,7 @@ public class TestTransitionActions {
 		Action<States, String> action1 = mock(Action.class);
 		Action<States, String> action2 = mock(Action.class);
 		Action<States, String> action3 = mock(Action.class);
-		builder.transition().on("foo").from(States.INITIAL).to(States.ONE).perform(action2);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(action2);
 		builder.onEntry(States.ONE).perform(action3);
 		builder.onExit(States.INITIAL).perform(action1);
 

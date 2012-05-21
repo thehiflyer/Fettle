@@ -17,8 +17,8 @@ public class StateMachineBuilderTest {
 	public void testBuilder() {
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
 
-		builder.transition().on("hej").from(States.INITIAL).to(States.ONE);
-		builder.transition().on("hopp").from(States.ONE).to(States.TWO);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
+		builder.transition().from(States.ONE).to(States.TWO).on("hopp");
 
 		TransitionModel<States, String> transitionModel = builder.buildTransitionModel();
 		StateMachine<States, String> machine = transitionModel.newStateMachine(States.INITIAL);
@@ -48,27 +48,6 @@ public class StateMachineBuilderTest {
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
 		builder.transition().from(States.ONE).to(States.TWO).on("hopp");
-		builder.transition().to(States.INITIAL).on("back");
-
-		StateMachine<States, String> machine = builder.build(States.INITIAL);
-
-		machine.fireEvent("hej");
-		machine.fireEvent("hopp");
-		machine.fireEvent("back");
-
-
-		assertEquals(States.INITIAL, machine.getCurrentState());
-
-	}
-
-	@Test
-	public void explicitFromAllTransition() {
-
-		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
-
-
-		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
-		builder.transition().from(States.ONE).to(States.TWO).on("hopp");
 		builder.transition().fromAll().to(States.INITIAL).on("back");
 
 		StateMachine<States, String> machine = builder.build(States.INITIAL);
@@ -81,7 +60,6 @@ public class StateMachineBuilderTest {
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
 	}
-
 
 	@Test
 	public void entryExitActions() {

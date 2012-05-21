@@ -16,38 +16,36 @@ public class TransitionBuilder<S, E> {
 	private Condition condition = BasicConditions.ALWAYS;
 	private final List<Action<S, E>> actions = GuavaReplacement.newArrayList();
 
-	public TransitionBuilder<S, E> on(E event) {
+	void on(E event) {
 		this.event = event;
-		return this;
 	}
 
-	public TransitionBuilder<S, E> from(S fromState) {
-		from = fromState;
-		return this;
+	public FromBuilder<S, E> from(S fromState) {
+		return new FromBuilder<S, E>(this, fromState);
 	}
 
-	public TransitionBuilder<S, E> fromAll() {
-		from = null;
-		return this;
+	void setFrom(S fromState) {
+		this.from = fromState;
 	}
 
-	public TransitionBuilder<S, E> to(S toState) {
+	public FromBuilder<S, E> fromAll() {
+		return new FromBuilder<S, E>(this, null);
+	}
+
+	void to(S toState) {
 		to = toState;
-		return this;
 	}
 
-	public TransitionBuilder<S, E> when(Condition condition) {
+	void when(Condition condition) {
 		this.condition = condition;
-		return this;
 	}
 
-	public TransitionBuilder<S, E> perform(Action<S, E>... actions) {
+	void perform(Action<S, E>... actions) {
 		this.actions.addAll(GuavaReplacement.newArrayList(actions));
-		return this;
 	}
 
 
-	public void addToTransitionModel(MutableTransitionModel<S, E> transitionModel) {
+	void addToTransitionModel(MutableTransitionModel<S, E> transitionModel) {
 		if (event == null) {
 			String fromString = from == null ? "anyState" : from.toString();
 			handleMissingOn(fromString, to.toString());
