@@ -66,7 +66,7 @@ public class StateMachineBuilder<S, E> {
 	public TransitionModel<S, E> buildTransitionModel() {
 		MutableTransitionModelImpl<S, E> template = MutableTransitionModelImpl.create(stateClass, eventClass);
 		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
-			transitionBuilder.addToMachine(template);
+			transitionBuilder.addToTransitionModel(template);
 		}
 		for (EntryExitActionBuilder<S, E> entryExitAction : entryExitActions) {
 			entryExitAction.addToMachine(template);

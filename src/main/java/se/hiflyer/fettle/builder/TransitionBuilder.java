@@ -42,7 +42,7 @@ public class TransitionBuilder<S, E> {
 	}
 
 
-	public void addToMachine(MutableTransitionModel<S, E> transitionModel) {
+	public void addToTransitionModel(MutableTransitionModel<S, E> transitionModel) {
 		if (from == null) {
 			transitionModel.addFromAllTransition(to, event, condition, actions);
 		} else {
