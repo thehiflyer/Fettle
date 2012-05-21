@@ -6,6 +6,7 @@ import se.hiflyer.fettle.export.DotExporter;
 import se.hiflyer.fettle.impl.AbstractTransitionModel;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
@@ -61,6 +62,28 @@ public class StateMachineBuilderTest {
 	}
 
 	@Test
+	public void explicitFromAllTransition() {
+
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
+
+
+		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
+		builder.transition().from(States.ONE).to(States.TWO).on("hopp");
+		builder.transition().fromAll().to(States.INITIAL).on("back");
+
+		StateMachine<States, String> machine = builder.build(States.INITIAL);
+
+		machine.fireEvent("hej");
+		machine.fireEvent("hopp");
+		machine.fireEvent("back");
+
+
+		assertEquals(States.INITIAL, machine.getCurrentState());
+
+	}
+
+
+	@Test
 	public void entryExitActions() {
 
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
@@ -108,6 +131,32 @@ public class StateMachineBuilderTest {
 		machine.fireEvent("");
 		assertEquals(States.ONE, machine.getCurrentState());
 	}
+
+	@Test
+	public void missingOn() throws Exception {
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
+		builder.transition().from(States.INITIAL).to(States.ONE);
+		try {
+			StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+			fail("Should not be allowed to build a state machine with transition on null");
+		} catch (IllegalStateException e) {
+			assertTrue(e.getMessage().contains(States.INITIAL.toString()));
+			assertTrue(e.getMessage().contains(States.ONE.toString()));
+		}
+	}
+
+	@Test
+	public void missingOnFromAll() throws Exception {
+		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
+		builder.transition().to(States.ONE);
+		try {
+			StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+			fail("Should not be allowed to build a state machine with transition on null");
+		} catch (IllegalStateException e) {
+			assertTrue(e.getMessage().contains(States.ONE.toString()));
+		}
+	}
+
 
 	private class ConditionImpl implements Condition {
 		boolean pass = false;

@@ -26,6 +26,11 @@ public class TransitionBuilder<S, E> {
 		return this;
 	}
 
+	public TransitionBuilder<S, E> fromAll() {
+		from = null;
+		return this;
+	}
+
 	public TransitionBuilder<S, E> to(S toState) {
 		to = toState;
 		return this;
@@ -43,10 +48,21 @@ public class TransitionBuilder<S, E> {
 
 
 	public void addToTransitionModel(MutableTransitionModel<S, E> transitionModel) {
+		if (event == null) {
+			String fromString = from == null ? "anyState" : from.toString();
+			handleMissingOn(fromString, to.toString());
+		}
 		if (from == null) {
 			transitionModel.addFromAllTransition(to, event, condition, actions);
 		} else {
 			transitionModel.addTransition(from, to, event, condition, actions);
 		}
 	}
+
+	private void handleMissingOn(String from, String to) {
+		throw new IllegalStateException(
+				String.format("The transition (%s -> %s) has to be performed on an event. " +
+						"Use on() to specify on what event the transition should take place", from, to));
+	}
+
 }
