@@ -23,7 +23,7 @@ public class StateMachineBuilder<S, E> {
 		return new StateMachineBuilder<S, E>(stateClass, eventClass);
 	}
 
-	public TransitionBuilder<S, E> transition() {
+	public Transition<S, E> transition() {
 		TransitionBuilder<S, E> transition = new TransitionBuilder<S, E>();
 		transitionBuilders.add(transition);
 		return transition;

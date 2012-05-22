@@ -39,6 +39,51 @@ public class Example {
 		assertEquals(States.ONE, stateMachine.getCurrentState());
 	}
 
+	@Test
+	public void whenExample() throws Exception {
+		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		Condition firstArgIsOne = new Condition() {
+			@Override
+			public boolean isSatisfied(Arguments args) {
+				return args.getNumberOfArguments() > 0 && args.getFirst().equals(1);
+			}
+		};
+
+		Condition noArguments = new Condition() {
+			@Override
+			public boolean isSatisfied(Arguments args) {
+				return args.getNumberOfArguments() == 0;
+			}
+		};
+
+		builder.transition().from(States.INITIAL).to(States.ONE).on("tick").when(BasicConditions.or(firstArgIsOne, noArguments));
+
+		StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+		stateMachine.fireEvent("tick", new Arguments(3));
+		assertEquals(States.INITIAL, stateMachine.getCurrentState());
+
+		stateMachine.fireEvent("tick", Arguments.NO_ARGS);
+		assertEquals(States.ONE, stateMachine.getCurrentState());
+	}
+
+	@Test
+	public void actionExample() throws Exception {
+		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		Action<States, String> action1 = new Action<States, String>() {
+			@Override
+			public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine<States, String> statesStringStateMachine) {
+				// do whatever is desired
+			}
+		};
+		Action<States, String> action2 = new Action<States, String>() {
+			@Override
+			public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine<States, String> statesStringStateMachine) {
+				// do whatever is desired
+			}
+		};
+
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(action1, action2);
+	}
 
 	private class SoutAction implements Action<States, String> {
 		private final String text;

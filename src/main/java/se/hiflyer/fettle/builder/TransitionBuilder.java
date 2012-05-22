@@ -8,7 +8,7 @@ import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-public class TransitionBuilder<S, E> {
+class TransitionBuilder<S, E> implements Transition<S,E>, From<S, E>, To<S, E>, On<S, E>, When<S, E> {
 
 	private S from;
 	private S to;
@@ -16,31 +16,35 @@ public class TransitionBuilder<S, E> {
 	private Condition condition = BasicConditions.ALWAYS;
 	private final List<Action<S, E>> actions = GuavaReplacement.newArrayList();
 
-	void on(E event) {
+	public On<S, E> on(E event) {
 		this.event = event;
+		return this;
 	}
 
-	public FromBuilder<S, E> from(S fromState) {
-		return new FromBuilder<S, E>(this, fromState);
-	}
-
-	void setFrom(S fromState) {
+	@Override
+	public From<S, E> from(S fromState) {
 		this.from = fromState;
+		return this;
 	}
 
-	public FromBuilder<S, E> fromAll() {
-		return new FromBuilder<S, E>(this, null);
+	@Override
+	public From<S, E> fromAll() {
+		this.from = null;
+		return this;
 	}
 
-	void to(S toState) {
-		to = toState;
+	@Override
+	public To<S, E> to(S toState) {
+		this.to = toState;
+		return this;
 	}
 
-	void when(Condition condition) {
+	public When<S, E> when(Condition condition) {
 		this.condition = condition;
+		return this;
 	}
 
-	void perform(Action<S, E>... actions) {
+	public void perform(Action<S, E>... actions) {
 		this.actions.addAll(GuavaReplacement.newArrayList(actions));
 	}
 

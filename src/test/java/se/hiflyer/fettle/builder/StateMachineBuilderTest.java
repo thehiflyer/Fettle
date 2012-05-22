@@ -126,7 +126,7 @@ public class StateMachineBuilderTest {
 	@Test
 	public void missingOnFromAll() throws Exception {
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
-		builder.transition().to(States.ONE);
+		builder.transition().fromAll().to(States.ONE);
 		try {
 			StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
 			fail("Should not be allowed to build a state machine with transition on null");
