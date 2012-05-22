@@ -20,15 +20,19 @@
     h1 .small { font-size: 0.4em; }
     h1 a { text-decoration: none }
     h2 { font-size: 1.5em; color: #302235; }
-    h3 { text-align: center; color: #302235; }
+    h3 { color: #302235; }
     a { color: #302235; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;  }
-    code {font-size:11px; }
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
+	<script type="text/javascript" src="js/shCore.js"></script>
+	<script type="text/javascript" src="js/shBrushJava.js"></script>
+	<link href="css/shCore.css" rel="stylesheet" type="text/css" />
+	<link href="css/shCoreRDark.css" rel="stylesheet" type="text/css" />
+
+	<!--<link href="css/shThemeDefault.css" rel="stylesheet" type="text/css" />-->
 </head>
 
 <body>
@@ -37,7 +41,7 @@
   <div id="container">
 
     <div class="download">
-		 <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.6.1.jar">
+		 <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.7.0.jar">
         <img border="0" width="90" src="jar.png"></a>
       <a href="http://github.com/thehiflyer/Fettle/zipball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
@@ -52,54 +56,78 @@
       A state machine framework for java
     </div>
 
-    <p>Fettle is an attempt to write a well tested solid simple framework for statemachines in java. I have tried to keep it easy to use, type safe and still flexible.
-
-To create a new state machine you can either make a builder object or just create a transition model.<br/>
-		 I'd recommend using the builder since the transition model is more intended for internal use and is quite verbose and not as readable.
-
-	 </p>
+    <p>Fettle is an attempt to write a well tested solid simple framework for statemachines in java. I have tried to keep it easy to use, type safe and still flexible.</p>
+	
+	<h2>User guide</h2>
+	<p>Fettle uses a template called a transition model that describes the transitions and actions for a state machine. Using this model, thin state machine instances can be created</p>
+	<h3>Creating a builder</h3>
+	 <pre class="brush: java">
+// Create a state machine with the enum States as state space and strings as events
+StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
+</pre>
 	  <p>
-	  <strong>Using the builder</strong>
-		  <pre><code>
-@Test
-public void usingBuilder() {
-   StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
-
-   builder.transition().from(States.INITIAL).to(States.ONE).on("foo").
-      perform(new SoutAction("Performing fooTransition"));
-   builder.onEntry(States.ONE).perform(new SoutAction("Entering state ONE"));
-
-   TransitionModel&lt;States, String&gt; transitionModel = builder.buildTransitionModel();
-   StateMachine&lt;States, String&gt; stateMachine = transitionModel.newStateMachine(States.INITIAL);
-
-   stateMachine.fireEvent("foo");
-   assertEquals(States.ONE, stateMachine.getCurrentState());
-}</code></pre>
+		  To create a new state machine you can either make a builder object or just create a transition model.<br/>
+		  Using the builder is recommended since the transition model is more intended for internal use and is quite verbose and not as readable.
 	  </p>
+
+	  <h3>Adding transitions</h3>
+	<pre class="brush: java">
+// Addding a transition from INITIAL to ONE when the event "foo" is fired
+builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
+</pre>
 	  <p>
-		  <strong>Using transition model</strong>
-		  <pre><code>
-@Test
-public void usingTransitionModelDirectly() {
-   MutableTransitionModel&lt;States,String&gt; model =
-      Fettle.newTransitionModel(States.class, String.class);
-
-
-   List&lt;Action&lt;States,String&gt;&gt; actions = Lists.&lt;Action&lt;States, String&gt;&gt;newArrayList(new SoutAction("Performing fooTransition"));
-   model.addTransition(States.INITIAL, States.ONE, "foo", BasicConditions.ALWAYS, actions);
-   model.addEntryAction(States.ONE, new SoutAction("Entering state ONE"));
-
-   StateMachine&lt;States, String&gt; stateMachine = model.newStateMachine(States.INITIAL);
-
-   stateMachine.fireEvent("foo");
-   assertEquals(States.ONE, stateMachine.getCurrentState());
-}
-</code></pre>
+		  In order to add states to the state machine we have to add transitions since isolated states makes no sense from Fettles points of view. States are added to the transition model as they are encountered in transitions. A transition always has to take place on an event.
 	  </p>
-<h2>Dependencies</h2>
+
+
+	  <h3>Conditional transitions</h3>
+	<pre class="brush: java">
+Condition firstArgIsOne = new Condition() {
+	@Override
+	public boolean isSatisfied(Arguments args) {
+		return args.getNumberOfArguments() &gt; 0 && args.getFirst().equals(1);
+	}
+};
+
+Condition noArguments = new Condition() {
+	@Override
+	public boolean isSatisfied(Arguments args) {
+		return args.getNumberOfArguments() == 0;
+	}
+};
+
+builder.transition().from(States.INITIAL).to(States.ONE).on("tick").when(BasicConditions.or(firstArgIsOne, noArguments));
+
+// The above setup will make this pass
+StateMachine&lt;States, String&gt; stateMachine = builder.build(States.INITIAL);
+stateMachine.fireEvent("tick", new Arguments(3));
+assertEquals(States.INITIAL, stateMachine.getCurrentState());
+
+stateMachine.fireEvent("tick", Arguments.NO_ARGS);
+assertEquals(States.ONE, stateMachine.getCurrentState());
+</pre>
+	  <p>
+		  Conditions can be added to transitions to prevent them from being performed unless the condition is fulfilled. Conditions can be compounded using and, or, not and xor in BasicConditions.
+	  </p>
+<h3>Transition actions</h3>
+<pre class="brush: java">
+Action&lt;States, String&gt; action1 = new Action&lt;States, String&gt;() {
+	@Override
+	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+		// do whatever is desired
+	}
+};
+Action&lt;States, String&gt; action2 = new Action&lt;States, String&gt;() {
+	@Override
+	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+		// do whatever is desired
+	}
+};
+builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(action1, action2);
+</pre>
+	  <h2>Dependencies</h2>
 <p><strong>Runtime:</strong><br/>
-<a href="http://code.google.com/p/guava-libraries/">Guava</a><br/>
-	Only if you want to use the PredicateCondition, otherwise there are no runtime dependencies
+<a href="http://code.google.com/p/guava-libraries/">Guava</a> (Only if you want to use the PredicateCondition, otherwise there are no runtime dependencies)
 </p>
 	  <p>
 <strong>Build time:</strong><br/>
@@ -108,14 +136,15 @@ public void usingTransitionModelDirectly() {
 <a href="http://code.google.com/p/mockachino/">Mockachino</a><br/>
 <a href="http://code.google.com/p/guava-libraries/">Guava</a>
 </p>
-All libs are managed by gradle</p>
+All libs are managed by gradle
 <h2>Install</h2>
+<p>Fettle is using <a href="http://gradle.org">Gradle</a> to build</p>
 <p><strong>To build:</strong><br/>
 gradle build<br/>
 <strong>To build a jar:</strong><br/>
 gradle jar</p>
 <p>
-There is a gradle wrapper checked in so that you can run:<br/>
+There is a gradle wrapper checked in so that you can build without installing gradle on your machine. Gradle is however awesome so you should really get it :)<br/>
 ./gradlew build  (on *nix)<br/>
 gradle.bat build (on windows)
 </p>
@@ -136,8 +165,8 @@ gradle.bat build (on windows)
 		</p>
 	  <p>
 		  If you don't need the source,
-		 just download the jar of the latest version&nbsp;<a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.6.1.jar">fettle-0.6.1.jar</a><br/>
-		  or if you're in a GWT project <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.6.1-gwt.jar">fettle-0.6.1-gwt.jar</a>
+		 just download the jar of the latest version&nbsp;<a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.7.0.jar">fettle-0.7.0.jar</a><br/>
+		  or if you're in a GWT project <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.7.0-gwt.jar">fettle-0.7.0-gwt.jar</a>
     </p>
     <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
       by running:
@@ -161,5 +190,8 @@ try {
 var pageTracker = _gat._getTracker("UA-12038900-3");
 pageTracker._trackPageview();
 } catch(err) {}</script>
+  <script type="text/javascript">
+	  SyntaxHighlighter.all()
+  </script>
 </body>
 </html>
