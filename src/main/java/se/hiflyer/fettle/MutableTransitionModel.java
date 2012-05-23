@@ -2,7 +2,7 @@ package se.hiflyer.fettle;
 
 import java.util.List;
 
-public interface MutableTransitionModel<S, E> extends StateMachineTemplate<S, E> {
+public interface MutableTransitionModel<S, E> extends TransitionModel<S, E>, StateMachineTemplate<S, E> {
 
 	StateMachineTemplate<S, E> createImmutableClone();
 

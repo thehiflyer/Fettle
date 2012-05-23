@@ -1,10 +1,9 @@
 package se.hiflyer.fettle;
 
-public interface TransitionModel<S, E> extends StateMachineTemplate<S,E> {
+public interface TransitionModel<S, E> {
 
 	/**
 	 * Fires the event at the state machine. This can result in a state change and trigger actions to be run.
-	 * This method is only intended to be used by StateMachines
 	 * @param machine the machine to fire the event at
 	 * @param event the event to fire
 	 * @param args the arguments to use for transition conditions and actions

@@ -2,13 +2,14 @@ package se.hiflyer.fettle.impl;
 
 import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.StateMachine;
+import se.hiflyer.fettle.StateMachineTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ImmutableTransitionModel<S, E> extends AbstractTransitionModel<S, E> {
+public class ImmutableTransitionModel<S, E> extends AbstractTransitionModel<S, E> implements StateMachineTemplate<S, E> {
 
 	public ImmutableTransitionModel(Class<S> stateClass, Class<E> eventClass,
 											  Map<S, Map<E, Collection<Transition<S, E>>>> transitionMap,
