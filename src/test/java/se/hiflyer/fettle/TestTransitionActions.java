@@ -1,6 +1,7 @@
 package se.hiflyer.fettle;
 
 import com.google.common.collect.Lists;
+import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 import se.hiflyer.fettle.builder.StateMachineBuilder;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
@@ -14,6 +15,10 @@ import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class TestTransitionActions {
+
+	public static final TypeToken<Action<States,String>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String>>() {
+	};
+
 
 	@Test
 	public void testTransitionCreation() {
@@ -30,9 +35,9 @@ public class TestTransitionActions {
 		MutableTransitionModel<States, String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		Action<States, String> transitionAction1 = mock(Action.class);
+		Action<States, String> transitionAction1 = mock(ACTION_TYPE_TOKEN);
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction1));
-		Action<States, String> transitionAction2 = mock(Action.class);
+		Action<States, String> transitionAction2 = mock(ACTION_TYPE_TOKEN);
 		model.addTransition(States.TWO, States.ONE, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction2));
 
 		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
@@ -64,9 +69,9 @@ public class TestTransitionActions {
 		MutableTransitionModel<States, String> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 
-		Action<States, String> transitionAction1 = mock(Action.class);
+		Action<States, String> transitionAction1 = mock(ACTION_TYPE_TOKEN);
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction1));
-		Action<States, String> transitionAction2 = mock(Action.class);
+		Action<States, String> transitionAction2 = mock(ACTION_TYPE_TOKEN);
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Lists.newArrayList(transitionAction2));
 
 		StateMachine<States, String> machine = model.newStateMachine(States.INITIAL);
@@ -79,9 +84,9 @@ public class TestTransitionActions {
 	@Test
 	public void orderOfEntryTransitionAndExitActions() throws Exception {
 		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
-		Action<States, String> action1 = mock(Action.class);
-		Action<States, String> action2 = mock(Action.class);
-		Action<States, String> action3 = mock(Action.class);
+		Action<States, String> action1 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String> action2 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String> action3 = mock(ACTION_TYPE_TOKEN);
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(action2);
 		builder.onEntry(States.ONE).perform(action3);
 		builder.onExit(States.INITIAL).perform(action1);

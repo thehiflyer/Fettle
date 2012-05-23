@@ -1,5 +1,6 @@
 package se.hiflyer.fettle;
 
+import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 
@@ -10,6 +11,10 @@ import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class TestStatesImmutable {
+
+	public static final TypeToken<Action<States,String>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String>>() {
+	};
+
 
 	@Test
 	public void simpleStateTransition() {
@@ -44,9 +49,9 @@ public class TestStatesImmutable {
 
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
-		Action<States, String> entryAction = mock(Action.class);
+		Action<States, String> entryAction = mock(ACTION_TYPE_TOKEN);
 		model.addEntryAction(States.ONE, entryAction);
-		Action<States, String> exitAction = mock(Action.class);
+		Action<States, String> exitAction = mock(ACTION_TYPE_TOKEN);
 		model.addExitAction(States.ONE, exitAction);
 
 		StateMachine<States, String> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
@@ -105,14 +110,14 @@ public class TestStatesImmutable {
 		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 		model.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.ALWAYS, Collections.<Action<States, String>>emptyList());
 
-		Action<States, String> entryAction1 = mock(Action.class);
+		Action<States, String> entryAction1 = mock(ACTION_TYPE_TOKEN);
 		model.addEntryAction(States.INITIAL, entryAction1);
-		Action<States, String> exitAction1 = mock(Action.class);
+		Action<States, String> exitAction1 = mock(ACTION_TYPE_TOKEN);
 		model.addExitAction(States.INITIAL, exitAction1);
 
-		Action<States, String> entryAction2 = mock(Action.class);
+		Action<States, String> entryAction2 = mock(ACTION_TYPE_TOKEN);
 		model.addEntryAction(States.TWO, entryAction2);
-		Action<States, String> exitAction2 = mock(Action.class);
+		Action<States, String> exitAction2 = mock(ACTION_TYPE_TOKEN);
 		model.addExitAction(States.TWO, exitAction2);
 
 		StateMachine<States, String> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
