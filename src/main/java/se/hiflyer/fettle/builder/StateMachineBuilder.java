@@ -29,13 +29,13 @@ public class StateMachineBuilder<S, E> {
 		return transition;
 	}
 
-	public EntryExitActionBuilder<S, E> onEntry(S state) {
+	public EntryExit<S, E> onEntry(S state) {
 		EntryExitActionBuilder<S, E> actionBuilder = EntryExitActionBuilder.entry(state);
 		entryExitActions.add(actionBuilder);
 		return actionBuilder;
 	}
 
-	public EntryExitActionBuilder<S, E> onExit(S state) {
+	public EntryExit<S, E> onExit(S state) {
 		EntryExitActionBuilder<S, E> actionBuilder = EntryExitActionBuilder.exit(state);
 		entryExitActions.add(actionBuilder);
 		return actionBuilder;

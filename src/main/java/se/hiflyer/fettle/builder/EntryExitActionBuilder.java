@@ -6,7 +6,7 @@ import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-public class EntryExitActionBuilder<S, E> {
+public class EntryExitActionBuilder<S, E> implements EntryExit<S,E> {
 	private final Mode mode;
 	private final S state;
 
@@ -31,12 +31,14 @@ public class EntryExitActionBuilder<S, E> {
 		return new EntryExitActionBuilder<S, E>(Mode.EXIT, from);
 	}
 
-	public EntryExitActionBuilder<S, E> perform(Action<S, E> action) {
+	@Override
+	public EntryExit<S, E> perform(Action<S, E> action) {
 		this.actions.add(action);
 		return this;
 	}
 
-	public EntryExitActionBuilder<S, E> perform(List<Action<S, E>> actions) {
+	@Override
+	public EntryExit<S, E> perform(List<Action<S, E>> actions) {
 		this.actions.addAll(actions);
 		return this;
 	}
