@@ -17,8 +17,8 @@ public class Example {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(new SoutAction("Performing fooTransition"));
 		builder.onEntry(States.ONE).perform(new SoutAction("Entering state ONE"));
 
-		TransitionModel<States, String> transitionModel = builder.buildTransitionModel();
-		StateMachine<States, String> stateMachine = transitionModel.newStateMachine(States.INITIAL);
+		StateMachineTemplate<States, String> stateMachineTemplate = builder.buildTransitionModel();
+		StateMachine<States, String> stateMachine = stateMachineTemplate.newStateMachine(States.INITIAL);
 
 		stateMachine.fireEvent("foo");
 		assertEquals(States.ONE, stateMachine.getCurrentState());

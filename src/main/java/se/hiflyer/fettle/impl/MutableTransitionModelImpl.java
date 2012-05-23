@@ -4,7 +4,7 @@ import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.Condition;
 import se.hiflyer.fettle.MutableTransitionModel;
 import se.hiflyer.fettle.StateMachine;
-import se.hiflyer.fettle.TransitionModel;
+import se.hiflyer.fettle.StateMachineTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +27,7 @@ public class MutableTransitionModelImpl<S, E> extends AbstractTransitionModel<S,
 	}
 
 	@Override
-	public TransitionModel<S, E> createImmutableClone() {
+	public StateMachineTemplate<S, E> createImmutableClone() {
 		return new ImmutableTransitionModel<S, E>(stateClass, eventClass, transitionMap, fromAllTransitions, exitActions, enterActions);
 	}
 

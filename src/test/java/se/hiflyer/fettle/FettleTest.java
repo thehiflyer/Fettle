@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNotNull;
 public class FettleTest {
 	@Test
 	public void useOfUtil() {
-		MutableTransitionModelImpl<States, String> transitionModel = Fettle.newTransitionModel(States.class, String.class);
+		MutableTransitionModel<States, String> transitionModel = Fettle.newTransitionModel(States.class, String.class);
 		assertNotNull(transitionModel);
 
 		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);

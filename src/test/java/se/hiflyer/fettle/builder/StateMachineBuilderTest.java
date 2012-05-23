@@ -20,8 +20,8 @@ public class StateMachineBuilderTest {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
 		builder.transition().from(States.ONE).to(States.TWO).on("hopp");
 
-		TransitionModel<States, String> transitionModel = builder.buildTransitionModel();
-		StateMachine<States, String> machine = transitionModel.newStateMachine(States.INITIAL);
+		StateMachineTemplate<States, String> stateMachineTemplate = builder.buildTransitionModel();
+		StateMachine<States, String> machine = stateMachineTemplate.newStateMachine(States.INITIAL);
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
 
@@ -36,7 +36,7 @@ public class StateMachineBuilderTest {
 		machine.fireEvent("hopp");
 
 		assertEquals(States.TWO, machine.getCurrentState());
-		DotExporter<States, String> exporter = new DotExporter<States, String>((AbstractTransitionModel<States, String>) transitionModel, "test");
+		DotExporter<States, String> exporter = new DotExporter<States, String>((AbstractTransitionModel<States, String>) stateMachineTemplate, "test");
 		exporter.asDot(System.out, true);
 	}
 

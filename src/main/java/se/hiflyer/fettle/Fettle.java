@@ -19,7 +19,7 @@ public class Fettle {
 	 * @param <E> the type of the events triggering state transitions
 	 * @return a builder ready to configure with transitions and actions
 	 */
-	public static <S, E> MutableTransitionModelImpl<S, E> newTransitionModel(Class<S> stateClass, Class<E> eventClass) {
+	public static <S, E> MutableTransitionModel<S, E> newTransitionModel(Class<S> stateClass, Class<E> eventClass) {
 		return MutableTransitionModelImpl.create(stateClass, eventClass);
 	}
 

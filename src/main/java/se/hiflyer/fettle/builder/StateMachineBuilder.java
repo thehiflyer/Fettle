@@ -1,7 +1,7 @@
 package se.hiflyer.fettle.builder;
 
 import se.hiflyer.fettle.StateMachine;
-import se.hiflyer.fettle.TransitionModel;
+import se.hiflyer.fettle.StateMachineTemplate;
 import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 import se.hiflyer.fettle.util.GuavaReplacement;
 
@@ -52,7 +52,7 @@ public class StateMachineBuilder<S, E> {
 	 */
 	public StateMachine<S, E> build(S initial) {
 		@SuppressWarnings("unchecked")
-		TransitionModel<S, E> build = buildTransitionModel();
+		StateMachineTemplate<S, E> build = buildTransitionModel();
 		return build.newStateMachine(initial);
 	}
 
@@ -63,7 +63,7 @@ public class StateMachineBuilder<S, E> {
 	 *
 	 * @return a state machine template configured with all the transitions and actions specified using this builder
 	 */
-	public TransitionModel<S, E> buildTransitionModel() {
+	public StateMachineTemplate<S, E> buildTransitionModel() {
 		MutableTransitionModelImpl<S, E> template = MutableTransitionModelImpl.create(stateClass, eventClass);
 		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
 			transitionBuilder.addToTransitionModel(template);

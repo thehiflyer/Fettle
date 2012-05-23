@@ -2,9 +2,9 @@ package se.hiflyer.fettle;
 
 import java.util.List;
 
-public interface MutableTransitionModel<S, E> extends TransitionModel<S, E> {
+public interface MutableTransitionModel<S, E> extends StateMachineTemplate<S, E> {
 
-	TransitionModel<S, E> createImmutableClone();
+	StateMachineTemplate<S, E> createImmutableClone();
 
 	void addTransition(S from, S to, E event, Condition condition, List<Action<S, E>> actions);
 

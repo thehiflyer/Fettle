@@ -1,13 +1,6 @@
 package se.hiflyer.fettle;
 
-public interface TransitionModel<S, E> {
-
-	/**
-	 * Creates a new state machine using the transition model as a template
-	 * @param init the state the machine will be in when created
-	 * @return a new state machine with the transitions and actions defined in this model
-	 */
-	StateMachine<S, E> newStateMachine(S init);
+public interface TransitionModel<S, E> extends StateMachineTemplate<S,E> {
 
 	/**
 	 * Fires the event at the state machine. This can result in a state change and trigger actions to be run.
