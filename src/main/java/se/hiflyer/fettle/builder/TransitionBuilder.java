@@ -44,8 +44,12 @@ class TransitionBuilder<S, E> implements Transition<S,E>, From<S, E>, To<S, E>, 
 		return this;
 	}
 
-	public void perform(Action<S, E>... actions) {
-		this.actions.addAll(GuavaReplacement.newArrayList(actions));
+	public void perform(List<Action<S, E>> actions) {
+		this.actions.addAll(actions);
+	}
+
+	public void perform(Action<S, E> action) {
+		this.actions.add(action);
 	}
 
 

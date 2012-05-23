@@ -1,9 +1,13 @@
 package se.hiflyer.fettle.builder;
 
+import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 import se.hiflyer.fettle.*;
 import se.hiflyer.fettle.export.DotExporter;
 import se.hiflyer.fettle.impl.AbstractTransitionModel;
+import se.hiflyer.fettle.util.GuavaReplacement;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +16,9 @@ import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class StateMachineBuilderTest {
+
+	public static final TypeToken<Action<States,String>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String>>() {
+	};
 
 	@Test
 	public void testBuilder() {
@@ -69,28 +76,35 @@ public class StateMachineBuilderTest {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("");
 
 		builder.transition().from(States.ONE).to(States.TWO).on("");
-		Action<States, String> entryAction = mock(Action.class);
+		Action<States, String> entryAction = mock(ACTION_TYPE_TOKEN);
 		builder.onEntry(States.ONE).perform(entryAction);
 
-		Action<States, String> exitAction = mock(Action.class);
-		builder.onExit(States.ONE).perform(exitAction);
+		Action<States, String> exitAction1 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String> exitAction2 = mock(ACTION_TYPE_TOKEN);
+		List<Action<States, String>> exitActions = GuavaReplacement.newArrayList();
+		exitActions.add(exitAction1);
+		exitActions.add(exitAction2);
+		builder.onExit(States.ONE).perform(exitActions);
 
 		StateMachine<States, String> machine = builder.build(States.INITIAL);
 
 		machine.fireEvent("foo");
 
 		verifyNever().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
-		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyNever().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyNever().on(exitAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 
 		machine.fireEvent("");
 
 		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
-		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyNever().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyNever().on(exitAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 
 		machine.fireEvent("");
 
 		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
-		verifyOnce().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyOnce().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
+		verifyOnce().on(exitAction2).onTransition(any(States.class), any(States.class), any(String.class), Arguments.NO_ARGS, machine);
 	}
 
 	@Test
@@ -148,10 +162,14 @@ public class StateMachineBuilderTest {
 	@Test
 	public void perform() throws Exception {
 		StateMachineBuilder<States, String> builder = StateMachineBuilder.create(States.class, String.class);
-		Action<States, String> action1 = mock(Action.class);
-		Action<States, String> action2 = mock(Action.class);
+		Action<States, String> action1 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String> action2 = mock(ACTION_TYPE_TOKEN);
 
-		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(action1, action2);
+		List<Action<States, String>> actions = GuavaReplacement.newArrayList();
+		actions.add(action1);
+		actions.add(action2);
+
+		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(actions);
 
 		StateMachine<States, String> machine = builder.build(States.INITIAL);
 

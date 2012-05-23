@@ -3,6 +3,7 @@ package se.hiflyer.fettle;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import se.hiflyer.fettle.builder.StateMachineBuilder;
+import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
@@ -82,7 +83,7 @@ public class Example {
 			}
 		};
 
-		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(action1, action2);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(GuavaReplacement.newArrayList(action1, action2));
 	}
 
 	private class SoutAction implements Action<States, String> {

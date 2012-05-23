@@ -31,8 +31,13 @@ public class EntryExitActionBuilder<S, E> {
 		return new EntryExitActionBuilder<S, E>(Mode.EXIT, from);
 	}
 
-	public EntryExitActionBuilder<S, E> perform(Action<S, E>... actions) {
-		this.actions.addAll(GuavaReplacement.newArrayList(actions));
+	public EntryExitActionBuilder<S, E> perform(Action<S, E> action) {
+		this.actions.add(action);
+		return this;
+	}
+
+	public EntryExitActionBuilder<S, E> perform(List<Action<S, E>> actions) {
+		this.actions.addAll(actions);
 		return this;
 	}
 

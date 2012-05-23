@@ -3,9 +3,9 @@ package se.hiflyer.fettle.builder;
 import se.hiflyer.fettle.Action;
 import se.hiflyer.fettle.Condition;
 
-public interface On<S, E> {
+import java.util.List;
 
-	public When<S, E> when(Condition condition);
+public interface On<S, E> extends When<S, E> {
 
-	public void perform(Action<S, E>... actions);
+	When<S, E> when(Condition condition);
 }
