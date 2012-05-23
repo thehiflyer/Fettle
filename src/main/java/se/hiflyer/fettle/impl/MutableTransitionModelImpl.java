@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MutableTransitionModelImpl<S, E> extends AbstractTransitionModel<S, E> implements MutableTransitionModel<S, E> {
 
@@ -23,8 +25,15 @@ public class MutableTransitionModelImpl<S, E> extends AbstractTransitionModel<S,
 
 	@Override
 	public StateMachine<S, E> newStateMachine(S init) {
-		return new TemplateBasedStateMachine<S, E>(this, init);
+		return newStateMachine(init, new ReentrantLock());
 	}
+
+
+	@Override
+	public StateMachine<S, E> newStateMachine(S init, Lock lock) {
+		return new TemplateBasedStateMachine<S, E>(this, init, lock);
+	}
+
 
 	@Override
 	public StateMachineTemplate<S, E> createImmutableClone() {

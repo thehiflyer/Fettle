@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ImmutableTransitionModel<S, E> extends AbstractTransitionModel<S, E> implements StateMachineTemplate<S, E> {
 
@@ -71,6 +73,11 @@ public class ImmutableTransitionModel<S, E> extends AbstractTransitionModel<S, E
 
 	@Override
 	public StateMachine<S, E> newStateMachine(S init) {
-		return new TemplateBasedStateMachine<S, E>(this, init);
+		return newStateMachine(init, new ReentrantLock());
+	}
+
+	@Override
+	public StateMachine<S, E> newStateMachine(S init, Lock lock) {
+		return new TemplateBasedStateMachine<S, E>(this, init, lock);
 	}
 }

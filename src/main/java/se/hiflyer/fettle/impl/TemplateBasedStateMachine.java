@@ -5,19 +5,19 @@ import se.hiflyer.fettle.StateMachine;
 import se.hiflyer.fettle.TransitionModel;
 
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E> {
 	private final TransitionModel<S, E> model;
 	private S currentState;
-	private final Lock lock = new ReentrantLock();
+	private final Lock lock;
 
-	public TemplateBasedStateMachine(TransitionModel<S, E> model, S initial) {
+	public TemplateBasedStateMachine(TransitionModel<S, E> model, S initial, Lock lock) {
 		if (initial == null) {
 			throw new IllegalArgumentException("Initial state must not be null");
 		}
 		this.model = model;
 		currentState = initial;
+		this.lock = lock;
 	}
 
 	@Override
