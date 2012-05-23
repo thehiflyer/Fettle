@@ -3,5 +3,6 @@ package se.hiflyer.fettle;
 public enum States {
 	INITIAL,
 	ONE,
-	TWO
+	TWO,
+	THREE
 }
