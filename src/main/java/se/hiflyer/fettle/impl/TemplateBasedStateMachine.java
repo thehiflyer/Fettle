@@ -4,9 +4,13 @@ import se.hiflyer.fettle.Arguments;
 import se.hiflyer.fettle.StateMachine;
 import se.hiflyer.fettle.TransitionModel;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E> {
 	private final TransitionModel<S, E> model;
 	private S currentState;
+	private final Lock lock = new ReentrantLock();
 
 	public TemplateBasedStateMachine(TransitionModel<S, E> model, S initial) {
 		if (initial == null) {
@@ -28,17 +32,29 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E> {
 
 	@Override
 	public boolean fireEvent(E event, Arguments args) {
-		return model.fireEvent(this, event, args);
+		lock.lock();
+		try {
+			return model.fireEvent(this, event, args);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 
 	@Override
 	public void rawSetState(S rawState) {
+		lock.lock();
 		currentState = rawState;
+		lock.unlock();
 	}
 
 	@Override
 	public boolean forceSetState(S forcedState) {
-		return model.forceSetState(this, forcedState);
+		lock.lock();
+		try {
+			return model.forceSetState(this, forcedState);
+		} finally {
+			lock.unlock();
+		}
 	}
 }
