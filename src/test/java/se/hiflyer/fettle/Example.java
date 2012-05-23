@@ -83,7 +83,10 @@ public class Example {
 			}
 		};
 
-		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(GuavaReplacement.newArrayList(action1, action2));
+		List<Action<States, String>> actions = GuavaReplacement.newArrayList();
+		actions.add(action1);
+		actions.add(action2);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(actions);
 	}
 
 	private class SoutAction implements Action<States, String> {
