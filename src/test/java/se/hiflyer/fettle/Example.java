@@ -14,15 +14,16 @@ public class Example {
 	public void usingBuilder() {
 		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
 
-
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(new SoutAction("Performing fooTransition"));
 		builder.onEntry(States.ONE).perform(new SoutAction("Entering state ONE"));
 
 		StateMachineTemplate<States, String> stateMachineTemplate = builder.buildTransitionModel();
-		StateMachine<States, String> stateMachine = stateMachineTemplate.newStateMachine(States.INITIAL);
+		StateMachine<States, String> stateMachine1 = stateMachineTemplate.newStateMachine(States.INITIAL);
+		StateMachine<States, String> stateMachine2 = stateMachineTemplate.newStateMachine(States.INITIAL);
 
-		stateMachine.fireEvent("foo");
-		assertEquals(States.ONE, stateMachine.getCurrentState());
+		stateMachine1.fireEvent("foo");
+		assertEquals(States.ONE, stateMachine1.getCurrentState());
+		assertEquals(States.INITIAL, stateMachine2.getCurrentState());
 	}
 
 	@Test
@@ -108,6 +109,17 @@ public class Example {
 
 		builder.onExit(States.INITIAL).perform(action1);
 		builder.onEntry(States.ONE).perform(action2);
+	}
+
+	@Test
+	public void fireEventExample() throws Exception {
+		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		// Setup transitions
+		StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+
+		stateMachine.fireEvent("foo");
+		stateMachine.fireEvent("foo", new Arguments("bar"));
+		stateMachine.fireEvent("foo", new Arguments("bar", 1, 2));
 	}
 
 	private class SoutAction implements Action<States, String> {
