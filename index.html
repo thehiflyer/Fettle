@@ -123,8 +123,29 @@ Action&lt;States, String&gt; action2 = new Action&lt;States, String&gt;() {
 		// do whatever is desired
 	}
 };
-builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(action1, action2);
+List&lt;Action&lt;States, String&gt;&gt; actions = GuavaReplacement.newArrayList();
+actions.add(action1);
+actions.add(action2);
+builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(actions);</pre>
+The actions action1 and action2 will be performed (in the listed order) during the transition from state INITIAL to state ONE.
+<h3>Entry & exit actions</h3>
+<pre class="brush: java">
+Action&lt;States, String&gt; action1 = new Action&lt;States, String&gt;() {
+	@Override
+	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+		// do whatever is desired
+	}
+};
+Action&lt;States, String&gt; action2 = new Action&lt;States, String&gt;() {
+	@Override
+	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+		// do whatever is desired
+	}
+};
+builder.onExit(States.INITIAL).perform(action1);
+builder.onEntry(States.ONE).perform(action2);
 </pre>
+Whenever the state INITIAL is left, the action1 will be performed and whenever the state ONE is entered, the action2 will be performed.
 	  <h2>Dependencies</h2>
 <p><strong>Runtime:</strong><br/>
 <a href="http://code.google.com/p/guava-libraries/">Guava</a> (Only if you want to use the PredicateCondition, otherwise there are no runtime dependencies)
