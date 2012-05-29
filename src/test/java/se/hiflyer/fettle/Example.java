@@ -68,7 +68,7 @@ public class Example {
 	}
 
 	@Test
-	public void actionExample() throws Exception {
+	public void transitionActionExample() throws Exception {
 		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
 		Action<States, String> action1 = new Action<States, String>() {
 			@Override
@@ -87,6 +87,27 @@ public class Example {
 		actions.add(action1);
 		actions.add(action2);
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(actions);
+	}
+
+	@Test
+	public void entryExitActionExample() throws Exception {
+		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		Action<States, String> action1 = new Action<States, String>() {
+			@Override
+			public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine<States, String> statesStringStateMachine) {
+				// do whatever is desired
+			}
+		};
+		Action<States, String> action2 = new Action<States, String>() {
+			@Override
+			public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine<States, String> statesStringStateMachine) {
+				// do whatever is desired
+			}
+		};
+
+
+		builder.onExit(States.INITIAL).perform(action1);
+		builder.onEntry(States.ONE).perform(action2);
 	}
 
 	private class SoutAction implements Action<States, String> {
