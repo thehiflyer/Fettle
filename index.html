@@ -146,6 +146,33 @@ builder.onExit(States.INITIAL).perform(action1);
 builder.onEntry(States.ONE).perform(action2);
 </pre>
 Whenever the state INITIAL is left, the action1 will be performed and whenever the state ONE is entered, the action2 will be performed.
+
+<h3>Creating a state machine</h3>
+<pre class="brush: java">
+StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
+
+// Configure state transitions and actions
+
+StateMachineTemplate&lt;States, String&gt; stateMachineTemplate = builder.buildTransitionModel();
+StateMachine&lt;States, String&gt; stateMachine1 = stateMachineTemplate.newStateMachine(States.INITIAL);
+StateMachine&lt;States, String&gt; stateMachine2 = stateMachineTemplate.newStateMachine(States.INITIAL);
+</pre>
+Both state machines are flyweight objects and will share the transition model, i.e. the definition on what transitions are made on what events but they can change state independently.
+This makes it very cheap to have many state machines using the same transition rules.<br/>
+If only one state machine is required, there is a short hand way to create a state machine directly.
+<pre class="brush: java">
+StateMachine&lt;States, String&gt; stateMachine = builder.build(States.INITIAL);
+</pre>
+<h3>Fire events</h3>
+<pre class="brush: java">
+StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
+// Setup transitions
+StateMachine&lt;States, String&gt; stateMachine = builder.build(States.INITIAL);
+
+stateMachine.fireEvent("foo");
+stateMachine.fireEvent("foo", new Arguments("bar"));
+stateMachine.fireEvent("foo", new Arguments("bar", 1, 2));
+</pre>
 	  <h2>Dependencies</h2>
 <p><strong>Runtime:</strong><br/>
 <a href="http://code.google.com/p/guava-libraries/">Guava</a> (Only if you want to use the PredicateCondition, otherwise there are no runtime dependencies)
@@ -169,6 +196,12 @@ There is a gradle wrapper checked in so that you can build without installing gr
 ./gradlew build  (on *nix)<br/>
 gradle.bat build (on windows)
 </p>
+<h2>Fettle Users</h2>
+<ul>
+	<li><img src="solitaire.png"/> <a href="https://apps.facebook.com/pyramidsolitairesaga/">Pyramid Solitaire Saga</a> by <a href="http://king.com"> King.com</a></li>
+	<li><a href="http://tuer.sourceforge.net/very_experimental/tuer.jnlp">TUER</a> by Julien Gouesse</li>
+</ul>
+
 <h2>Authors</h2>
 <p>thehiflyer aka hiflyer (per.malmen@gmail.com)
 <br/>
