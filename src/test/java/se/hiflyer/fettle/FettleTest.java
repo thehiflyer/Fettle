@@ -2,7 +2,6 @@ package se.hiflyer.fettle;
 
 import org.junit.Test;
 import se.hiflyer.fettle.builder.StateMachineBuilder;
-import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

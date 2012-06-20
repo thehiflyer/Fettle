@@ -5,12 +5,13 @@ import se.hiflyer.fettle.impl.MutableTransitionModelImpl;
 import se.mockachino.Mockachino;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class MovementUsecase {
 
-	private static interface State {
+	private interface State {
 	}
 
 	private static enum MovementEvents {
@@ -27,18 +28,19 @@ public class MovementUsecase {
 
 		MutableTransitionModelImpl<State, MovementEvents> model = MutableTransitionModelImpl.create(State.class, MovementEvents.class);
 
-		model.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		model.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		model.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		model.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
-		model.addTransition(falling, crashed, MovementEvents.HIT_GROUND, BasicConditions.ALWAYS, Collections.<Action<State, MovementEvents>>emptyList());
+		List<Action<State, MovementEvents>> noActions = Collections.<Action<State, MovementEvents>>emptyList();
+		model.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, noActions);
+		model.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, noActions);
+		model.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, noActions);
+		model.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, noActions);
+		model.addTransition(falling, crashed, MovementEvents.HIT_GROUND, BasicConditions.ALWAYS, noActions);
 		model.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition() {
 			@Override
 			public boolean isSatisfied(Arguments args) {
 				// wait until body is upright
 				return true;
 			}
-		}, Collections.<Action<State, MovementEvents>>emptyList());
+		}, noActions);
 
 		StateMachine<State, MovementEvents> machine = model.newStateMachine(walking);
 		assertEquals(walking, machine.getCurrentState());

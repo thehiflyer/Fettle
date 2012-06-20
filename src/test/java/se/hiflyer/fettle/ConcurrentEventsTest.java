@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ConcurrentEventsTest {
 
-	private StateMachineBuilder<States,String> builder;
+	private StateMachineBuilder<States, String> builder;
 
 	@Before
 	public void setUp() throws Exception {

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class Example {
 	@Test
 	public void usingBuilder() {
-		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(new SoutAction("Performing fooTransition"));
 		builder.onEntry(States.ONE).perform(new SoutAction("Entering state ONE"));
@@ -28,10 +28,10 @@ public class Example {
 
 	@Test
 	public void usingTransitionModelDirectly() {
-		MutableTransitionModel<States,String> model = Fettle.newTransitionModel(States.class, String.class);
+		MutableTransitionModel<States, String> model = Fettle.newTransitionModel(States.class, String.class);
 
 
-		List<Action<States,String>> actions = Lists.<Action<States, String>>newArrayList(new SoutAction("Performing fooTransition"));
+		List<Action<States, String>> actions = Lists.<Action<States, String>>newArrayList(new SoutAction("Performing fooTransition"));
 		model.addTransition(States.INITIAL, States.ONE, "foo", BasicConditions.ALWAYS, actions);
 		model.addEntryAction(States.ONE, new SoutAction("Entering state ONE"));
 
@@ -43,7 +43,7 @@ public class Example {
 
 	@Test
 	public void whenExample() throws Exception {
-		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);
 		Condition firstArgIsOne = new Condition() {
 			@Override
 			public boolean isSatisfied(Arguments args) {
@@ -70,7 +70,7 @@ public class Example {
 
 	@Test
 	public void transitionActionExample() throws Exception {
-		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);
 		Action<States, String> action1 = new Action<States, String>() {
 			@Override
 			public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine<States, String> statesStringStateMachine) {
@@ -92,7 +92,7 @@ public class Example {
 
 	@Test
 	public void entryExitActionExample() throws Exception {
-		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);
 		Action<States, String> action1 = new Action<States, String>() {
 			@Override
 			public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine<States, String> statesStringStateMachine) {
@@ -113,7 +113,7 @@ public class Example {
 
 	@Test
 	public void fireEventExample() throws Exception {
-		StateMachineBuilder<States,String> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);
 		// Setup transitions
 		StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
 
