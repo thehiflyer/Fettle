@@ -5,82 +5,82 @@ import se.hiflyer.fettle.Condition;
 import se.hiflyer.fettle.MutableTransitionModel;
 import se.hiflyer.fettle.StateMachine;
 import se.hiflyer.fettle.StateMachineTemplate;
+import se.hiflyer.fettle.util.GuavaReplacement;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class MutableTransitionModelImpl<S, E> extends AbstractTransitionModel<S, E> implements MutableTransitionModel<S, E> {
+public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel<S, E, C> implements MutableTransitionModel<S, E, C> {
 
 	private MutableTransitionModelImpl(Class<S> stateClass, Class<E> eventClass) {
 		super(stateClass, eventClass);
 	}
 
-	public static <S, E> MutableTransitionModelImpl<S, E> create(Class<S> stateClass, Class<E> eventClass) {
-		return new MutableTransitionModelImpl<S, E>(stateClass, eventClass);
+	public static <S, E, C> MutableTransitionModelImpl<S, E, C> create(Class<S> stateClass, Class<E> eventClass) {
+		return new MutableTransitionModelImpl<S, E, C>(stateClass, eventClass);
 	}
 
 	@Override
-	public StateMachine<S, E> newStateMachine(S init) {
+	public StateMachine<S, E, C> newStateMachine(S init) {
 		return newStateMachine(init, new ReentrantLock());
 	}
 
 
 	@Override
-	public StateMachine<S, E> newStateMachine(S init, Lock lock) {
-		return new TemplateBasedStateMachine<S, E>(this, init, lock);
+	public StateMachine<S, E, C> newStateMachine(S init, Lock lock) {
+		return new TemplateBasedStateMachine<S, E, C>(this, init, lock);
 	}
 
 
 	@Override
-	public StateMachineTemplate<S, E> createImmutableClone() {
-		return new ImmutableTransitionModel<S, E>(stateClass, eventClass, transitionMap, fromAllTransitions, exitActions, enterActions);
+	public StateMachineTemplate<S, E, C> createImmutableClone() {
+		return new ImmutableTransitionModel<S, E, C>(stateClass, eventClass, transitionMap, fromAllTransitions, exitActions, enterActions);
 	}
 
 	@Override
-	public void addTransition(S from, S to, E event, Condition condition, List<Action<S, E>> actions) {
-		Map<E, Collection<Transition<S, E>>> map = transitionMap.get(from);
+	public void addTransition(S from, S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
+		Map<E, Collection<Transition<S, E, C>>> map = transitionMap.get(from);
 		if (map == null) {
 			map = createMap(eventClass);
 			transitionMap.put(from, map);
 		}
-		Collection<Transition<S, E>> transitions = map.get(event);
+		Collection<Transition<S, E, C>> transitions = map.get(event);
 		if (transitions == null) {
-			transitions = new ArrayList<Transition<S, E>>();
+			transitions = GuavaReplacement.newArrayList();
 			map.put(event, transitions);
 		}
-		transitions.add(new Transition<S, E>(to, condition, actions));
+		transitions.add(new Transition<S, E, C>(to, condition, actions));
 	}
 
 	@Override
-	public void addFromAllTransition(S to, E event, Condition condition, List<Action<S, E>> actions) {
-		Collection<Transition<S, E>> transitions = fromAllTransitions.get(event);
+	public void addFromAllTransition(S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
+		Collection<Transition<S, E, C>> transitions = fromAllTransitions.get(event);
 		if (transitions == null) {
-			transitions = new ArrayList<Transition<S, E>>();
+			transitions = GuavaReplacement.newArrayList();
 			fromAllTransitions.put(event, transitions);
 		}
-		transitions.add(new Transition<S, E>(to, condition, actions));
+		transitions.add(new Transition<S, E, C>(to, condition, actions));
 	}
 
 	@Override
-	public void addEntryAction(S entryState, Action<S, E> action) {
+	public void addEntryAction(S entryState, Action<S, E, C> action) {
 		addAction(entryState, action, enterActions);
 	}
 
-	private void addAction(S entryState, Action<S, E> action, Map<S, Collection<Action<S, E>>> map) {
-		Collection<Action<S, E>> collection = map.get(entryState);
+	private void addAction(S entryState, Action<S, E, C> action, Map<S, Collection<Action<S, E, C>>> map) {
+		Collection<Action<S, E, C>> collection = map.get(entryState);
 		if (collection == null) {
-			collection = new ArrayList<Action<S, E>>();
+			collection = GuavaReplacement.newArrayList();
 			map.put(entryState, collection);
 		}
 		collection.add(action);
 	}
 
 	@Override
-	public void addExitAction(S exitState, Action<S, E> action) {
+	public void addExitAction(S exitState, Action<S, E, C> action) {
 		addAction(exitState, action, exitActions);
 	}
 }

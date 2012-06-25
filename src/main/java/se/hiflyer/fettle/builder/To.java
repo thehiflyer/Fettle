@@ -1,5 +1,5 @@
 package se.hiflyer.fettle.builder;
 
-public interface To<S, E> {
-	On<S, E> on(E event);
+public interface To<S, E, C> {
+	On<S, E, C> on(E event);
 }

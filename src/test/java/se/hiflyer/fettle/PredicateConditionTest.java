@@ -13,15 +13,8 @@ public class PredicateConditionTest {
 	public void predicate() {
 		PredicateCondition<String> condition = new PredicateCondition<String>(Predicates.containsPattern("foo"));
 
-		assertFalse(condition.isSatisfied(new Arguments("froo")));
-		assertTrue(condition.isSatisfied(new Arguments("foobar")));
+		assertFalse(condition.isSatisfied("froo"));
+		assertTrue(condition.isSatisfied("foobar"));
 
-	}
-
-	@Test
-	public void argumentOfWrongType() {
-		PredicateCondition<String> condition = new PredicateCondition<String>(Predicates.containsPattern("foo"));
-
-		assertFalse(condition.isSatisfied(new Arguments(3)));
 	}
 }

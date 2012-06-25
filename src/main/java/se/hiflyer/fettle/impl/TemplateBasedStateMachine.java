@@ -1,17 +1,16 @@
 package se.hiflyer.fettle.impl;
 
-import se.hiflyer.fettle.Arguments;
 import se.hiflyer.fettle.StateMachine;
 import se.hiflyer.fettle.TransitionModel;
 
 import java.util.concurrent.locks.Lock;
 
-public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E> {
-	private final TransitionModel<S, E> model;
+public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S, E, C> {
+	private final TransitionModel<S, E, C> model;
 	private S currentState;
 	private final Lock lock;
 
-	public TemplateBasedStateMachine(TransitionModel<S, E> model, S initial, Lock lock) {
+	public TemplateBasedStateMachine(TransitionModel<S, E, C> model, S initial, Lock lock) {
 		if (initial == null) {
 			throw new IllegalArgumentException("Initial state must not be null");
 		}
@@ -27,14 +26,14 @@ public class TemplateBasedStateMachine<S, E> implements StateMachine<S, E> {
 
 	@Override
 	public boolean fireEvent(E event) {
-		return fireEvent(event, Arguments.NO_ARGS);
+		return fireEvent(event, null);
 	}
 
 	@Override
-	public boolean fireEvent(E event, Arguments args) {
+	public boolean fireEvent(E event, C context) {
 		lock.lock();
 		try {
-			return model.fireEvent(this, event, args);
+			return model.fireEvent(this, event, context);
 		} finally {
 			lock.unlock();
 		}

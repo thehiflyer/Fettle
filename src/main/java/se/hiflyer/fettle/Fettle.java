@@ -19,7 +19,7 @@ public class Fettle {
 	 * @param <E> the type of the events triggering state transitions
 	 * @return a builder ready to configure with transitions and actions
 	 */
-	public static <S, E> MutableTransitionModel<S, E> newTransitionModel(Class<S> stateClass, Class<E> eventClass) {
+	public static <S, E, C> MutableTransitionModel<S, E, C> newTransitionModel(Class<S> stateClass, Class<E> eventClass) {
 		return MutableTransitionModelImpl.create(stateClass, eventClass);
 	}
 
@@ -29,9 +29,10 @@ public class Fettle {
 	 * @param eventClass the class of the events triggering state transitions
 	 * @param <S> the type of the states in the machine
 	 * @param <E> the type of the events triggering state transitions
+	 * @param <C> the type of the context sent to actions and conditions
 	 * @return a builder ready to configure with transitions and actions
 	 */
-	public static <S, E> StateMachineBuilder<S, E> newBuilder(Class<S> stateClass, Class<E> eventClass) {
+	public static <S, E, C> StateMachineBuilder<S, E, C> newBuilder(Class<S> stateClass, Class<E> eventClass) {
 		return StateMachineBuilder.create(stateClass, eventClass);
 	}
 }

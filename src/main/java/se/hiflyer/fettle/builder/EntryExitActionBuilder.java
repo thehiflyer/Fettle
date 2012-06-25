@@ -6,7 +6,7 @@ import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-public class EntryExitActionBuilder<S, E> implements EntryExit<S,E> {
+public class EntryExitActionBuilder<S, E, C> implements EntryExit<S, E, C> {
 	private final Mode mode;
 	private final S state;
 
@@ -20,36 +20,36 @@ public class EntryExitActionBuilder<S, E> implements EntryExit<S,E> {
 		EXIT
 	}
 
-	private final List<Action<S, E>> actions = GuavaReplacement.newArrayList();
+	private final List<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
 
 
-	public static <S, E> EntryExitActionBuilder<S, E> entry(S to) {
-		return new EntryExitActionBuilder<S, E>(Mode.ENTRY, to);
+	public static <S, E, C> EntryExitActionBuilder<S, E, C> entry(S to) {
+		return new EntryExitActionBuilder<S, E, C>(Mode.ENTRY, to);
 	}
 
-	public static <S, E> EntryExitActionBuilder<S, E> exit(S from) {
-		return new EntryExitActionBuilder<S, E>(Mode.EXIT, from);
+	public static <S, E, C> EntryExitActionBuilder<S, E, C> exit(S from) {
+		return new EntryExitActionBuilder<S, E, C>(Mode.EXIT, from);
 	}
 
 	@Override
-	public EntryExit<S, E> perform(Action<S, E> action) {
+	public EntryExit<S, E, C> perform(Action<S, E, C> action) {
 		this.actions.add(action);
 		return this;
 	}
 
 	@Override
-	public EntryExit<S, E> perform(List<Action<S, E>> actions) {
+	public EntryExit<S, E, C> perform(List<Action<S, E, C>> actions) {
 		this.actions.addAll(actions);
 		return this;
 	}
 
-	public void addToMachine(MutableTransitionModel<S, E> machineConstructor) {
-		for (Action<S, E> action : actions) {
+	public void addToMachine(MutableTransitionModel<S, E, C> machineConstructor) {
+		for (Action<S, E, C> action : actions) {
 			add(machineConstructor, action);
 		}
 	}
 
-	private void add(MutableTransitionModel<S, E> machineConstructor, Action<S, E> action) {
+	private void add(MutableTransitionModel<S, E, C> machineConstructor, Action<S, E, C> action) {
 		switch (mode) {
 			case ENTRY:
 				machineConstructor.addEntryAction(state, action);

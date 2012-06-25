@@ -9,12 +9,12 @@ import static org.junit.Assert.assertNotNull;
 public class FettleTest {
 	@Test
 	public void useOfUtil() {
-		MutableTransitionModel<States, String> transitionModel = Fettle.newTransitionModel(States.class, String.class);
+		MutableTransitionModel<States, String, Void> transitionModel = Fettle.newTransitionModel(States.class, String.class);
 		assertNotNull(transitionModel);
 
-		StateMachineBuilder<States, String> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		assertNotNull(builder);
-		StateMachine<States, String> machine = builder.build(States.TWO);
+		StateMachine<States, String, Void> machine = builder.build(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());
 	}
 }

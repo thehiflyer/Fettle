@@ -1,32 +1,36 @@
 package se.hiflyer.fettle;
 
+import java.util.List;
+
 public class BasicConditions {
 
 	private BasicConditions() {
 	}
 
-	public static final Condition ALWAYS = new Condition() {
-		@Override
-		public boolean isSatisfied(Arguments args) {
-			return true;
-		}
-	};
-
-	public static Condition and(final Condition first, final Condition second) {
-		return new Condition() {
+	public static <C> Condition<C> always()  {
+		return new Condition<C>() {
 			@Override
-			public boolean isSatisfied(Arguments args) {
-				return first.isSatisfied(args) && second.isSatisfied(args);
+			public boolean isSatisfied(C context) {
+				return true;
 			}
 		};
 	}
 
-	public static Condition and(final Condition... conditions) {
-		return new Condition() {
+	public static <C> Condition<C> and(final Condition<C> first, final Condition<C> second) {
+		return new Condition<C>() {
 			@Override
-			public boolean isSatisfied(Arguments args) {
-				for (Condition condition : conditions) {
-					if (!condition.isSatisfied(args)) {
+			public boolean isSatisfied(C context) {
+				return first.isSatisfied(context) && second.isSatisfied(context);
+			}
+		};
+	}
+
+	public static <C> Condition<C> and(final List<Condition<C>> conditions) {
+		return new Condition<C>() {
+			@Override
+			public boolean isSatisfied(C context) {
+				for (Condition<C> condition : conditions) {
+					if (!condition.isSatisfied(context)) {
 						return false;
 					}
 				}
@@ -35,21 +39,21 @@ public class BasicConditions {
 		};
 	}
 
-	public static Condition or(final Condition first, final Condition second) {
-		return new Condition() {
+	public static <C> Condition<C> or(final Condition<C> first, final Condition<C> second) {
+		return new Condition<C>() {
 			@Override
-			public boolean isSatisfied(Arguments args) {
-				return first.isSatisfied(args) || second.isSatisfied(args);
+			public boolean isSatisfied(C context) {
+				return first.isSatisfied(context) || second.isSatisfied(context);
 			}
 		};
 	}
 
-	public static Condition or(final Condition... conditions) {
-		return new Condition() {
+	public static <C> Condition<C> or(final List<Condition<C>> conditions) {
+		return new Condition<C>() {
 			@Override
-			public boolean isSatisfied(Arguments args) {
-				for (Condition condition : conditions) {
-					if (condition.isSatisfied(args)) {
+			public boolean isSatisfied(C context) {
+				for (Condition<C> condition : conditions) {
+					if (condition.isSatisfied(context)) {
 						return true;
 					}
 				}
@@ -58,20 +62,20 @@ public class BasicConditions {
 		};
 	}
 
-	public static Condition not(final Condition condition) {
-		return new Condition() {
+	public static <C> Condition<C> not(final Condition<C> condition) {
+		return new Condition<C>() {
 			@Override
-			public boolean isSatisfied(Arguments args) {
-				return !condition.isSatisfied(args);
+			public boolean isSatisfied(C context) {
+				return !condition.isSatisfied(context);
 			}
 		};
 	}
 
-	public static Condition xor(final Condition first, final Condition second) {
-		return new Condition() {
+	public static <C> Condition<C> xor(final Condition<C> first, final Condition<C> second) {
+		return new Condition<C>() {
 			@Override
-			public boolean isSatisfied(Arguments args) {
-				return first.isSatisfied(args) ^ second.isSatisfied(args);
+			public boolean isSatisfied(C context) {
+				return first.isSatisfied(context) ^ second.isSatisfied(context);
 			}
 		};
 	}

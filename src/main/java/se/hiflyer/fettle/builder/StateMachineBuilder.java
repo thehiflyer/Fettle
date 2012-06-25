@@ -7,9 +7,9 @@ import se.hiflyer.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-public class StateMachineBuilder<S, E> {
-	private final List<TransitionBuilder<S, E>> transitionBuilders = GuavaReplacement.newArrayList();
-	private final List<EntryExitActionBuilder<S, E>> entryExitActions = GuavaReplacement.newArrayList();
+public class StateMachineBuilder<S, E, C> {
+	private final List<TransitionBuilder<S, E, C>> transitionBuilders = GuavaReplacement.newArrayList();
+	private final List<EntryExitActionBuilder<S, E, C>> entryExitActions = GuavaReplacement.newArrayList();
 	private final Class<S> stateClass;
 	private final Class<E> eventClass;
 
@@ -19,24 +19,24 @@ public class StateMachineBuilder<S, E> {
 		this.eventClass = eventClass;
 	}
 
-	public static <S, E> StateMachineBuilder<S, E> create(Class<S> stateClass, Class<E> eventClass) {
-		return new StateMachineBuilder<S, E>(stateClass, eventClass);
+	public static <S, E, C> StateMachineBuilder<S, E, C> create(Class<S> stateClass, Class<E> eventClass) {
+		return new StateMachineBuilder<S, E, C>(stateClass, eventClass);
 	}
 
-	public Transition<S, E> transition() {
-		TransitionBuilder<S, E> transition = new TransitionBuilder<S, E>();
+	public Transition<S, E, C> transition() {
+		TransitionBuilder<S, E, C> transition = new TransitionBuilder<S, E, C>();
 		transitionBuilders.add(transition);
 		return transition;
 	}
 
-	public EntryExit<S, E> onEntry(S state) {
-		EntryExitActionBuilder<S, E> actionBuilder = EntryExitActionBuilder.entry(state);
+	public EntryExit<S, E, C> onEntry(S state) {
+		EntryExitActionBuilder<S, E, C> actionBuilder = EntryExitActionBuilder.entry(state);
 		entryExitActions.add(actionBuilder);
 		return actionBuilder;
 	}
 
-	public EntryExit<S, E> onExit(S state) {
-		EntryExitActionBuilder<S, E> actionBuilder = EntryExitActionBuilder.exit(state);
+	public EntryExit<S, E, C> onExit(S state) {
+		EntryExitActionBuilder<S, E, C> actionBuilder = EntryExitActionBuilder.exit(state);
 		entryExitActions.add(actionBuilder);
 		return actionBuilder;
 	}
@@ -50,9 +50,9 @@ public class StateMachineBuilder<S, E> {
 	 * @return a new state machine configured with all the transitions and actions specified using this builder
 	 * @throws IllegalArgumentException if the initial state is null
 	 */
-	public StateMachine<S, E> build(S initial) {
+	public StateMachine<S, E, C> build(S initial) {
 		@SuppressWarnings("unchecked")
-		StateMachineTemplate<S, E> build = buildTransitionModel();
+		StateMachineTemplate<S, E, C> build = buildTransitionModel();
 		return build.newStateMachine(initial);
 	}
 
@@ -63,16 +63,14 @@ public class StateMachineBuilder<S, E> {
 	 *
 	 * @return a state machine template configured with all the transitions and actions specified using this builder
 	 */
-	public StateMachineTemplate<S, E> buildTransitionModel() {
-		MutableTransitionModelImpl<S, E> template = MutableTransitionModelImpl.create(stateClass, eventClass);
-		for (TransitionBuilder<S, E> transitionBuilder : transitionBuilders) {
+	public StateMachineTemplate<S, E, C> buildTransitionModel() {
+		MutableTransitionModelImpl<S, E, C> template = MutableTransitionModelImpl.create(stateClass, eventClass);
+		for (TransitionBuilder<S, E, C> transitionBuilder : transitionBuilders) {
 			transitionBuilder.addToTransitionModel(template);
 		}
-		for (EntryExitActionBuilder<S, E> entryExitAction : entryExitActions) {
+		for (EntryExitActionBuilder<S, E, C> entryExitAction : entryExitActions) {
 			entryExitAction.addToMachine(template);
 		}
 		return template;
 	}
-
-
 }

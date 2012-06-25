@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ConcurrentEventsTest {
 
-	private StateMachineBuilder<States, String> builder;
+	private StateMachineBuilder<States, String, Void> builder;
 
 	@Before
 	public void setUp() throws Exception {
@@ -25,7 +25,7 @@ public class ConcurrentEventsTest {
 		builder.transition().from(States.ONE).to(States.TWO).on("second");
 		builder.transition().from(States.INITIAL).to(States.THREE).on("second");
 
-		final StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+		final StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
 		final CountDownLatch eventsDone = new CountDownLatch(2);
 		Runnable fireFirst = new Runnable() {
 			@Override
@@ -62,7 +62,7 @@ public class ConcurrentEventsTest {
 		builder.transition().from(States.ONE).to(States.TWO).on("second");
 		builder.transition().from(States.INITIAL).to(States.THREE).on("second");
 
-		final StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+		final StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
 		final CountDownLatch eventsDone = new CountDownLatch(3);
 		Runnable fireFirst = new Runnable() {
 			@Override
@@ -116,7 +116,7 @@ public class ConcurrentEventsTest {
 		builder.transition().from(States.ONE).to(States.TWO).on("second");
 		builder.transition().from(States.INITIAL).to(States.THREE).on("second");
 
-		final StateMachine<States, String> stateMachine = builder.build(States.INITIAL);
+		final StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
 		final CountDownLatch eventsDone = new CountDownLatch(3);
 		Runnable fireFirst = new Runnable() {
 			@Override
@@ -163,7 +163,7 @@ public class ConcurrentEventsTest {
 	}
 
 
-	private class BlockingCondition implements Condition {
+	private class BlockingCondition implements Condition<Void> {
 		CountDownLatch latch = new CountDownLatch(1);
 		private final CountDownLatch inCondition;
 
@@ -172,7 +172,7 @@ public class ConcurrentEventsTest {
 		}
 
 		@Override
-		public boolean isSatisfied(Arguments args) {
+		public boolean isSatisfied(Void ignored) {
 			inCondition.countDown();
 			try {
 				latch.await();

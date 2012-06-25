@@ -26,23 +26,24 @@ public class MovementUsecase {
 		State crashed = Mockachino.mock(State.class);
 		State jetpackthrust = Mockachino.mock(State.class);
 
-		MutableTransitionModelImpl<State, MovementEvents> model = MutableTransitionModelImpl.create(State.class, MovementEvents.class);
+		MutableTransitionModelImpl<State, MovementEvents, Void> model = MutableTransitionModelImpl.create(State.class, MovementEvents.class);
 
-		List<Action<State, MovementEvents>> noActions = Collections.<Action<State, MovementEvents>>emptyList();
-		model.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, noActions);
-		model.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, noActions);
-		model.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, BasicConditions.ALWAYS, noActions);
-		model.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, BasicConditions.ALWAYS, noActions);
-		model.addTransition(falling, crashed, MovementEvents.HIT_GROUND, BasicConditions.ALWAYS, noActions);
-		model.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition() {
+		List<Action<State, MovementEvents, Void>> noActions = Collections.<Action<State, MovementEvents, Void>>emptyList();
+		Condition<Void> always = BasicConditions.<Void>always();
+		model.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, always, noActions);
+		model.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, always, noActions);
+		model.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, always, noActions);
+		model.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, always, noActions);
+		model.addTransition(falling, crashed, MovementEvents.HIT_GROUND, always, noActions);
+		model.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition<Void>() {
 			@Override
-			public boolean isSatisfied(Arguments args) {
+			public boolean isSatisfied(Void ignored) {
 				// wait until body is upright
 				return true;
 			}
 		}, noActions);
 
-		StateMachine<State, MovementEvents> machine = model.newStateMachine(walking);
+		StateMachine<State, MovementEvents, Void> machine = model.newStateMachine(walking);
 		assertEquals(walking, machine.getCurrentState());
 		machine.fireEvent(MovementEvents.RELEASED_SPACE);
 		assertEquals(walking, machine.getCurrentState());

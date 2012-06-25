@@ -5,8 +5,9 @@ package se.hiflyer.fettle;
  *
  * @param <S> the type of the states
  * @param <E> the type of the events that can trigger state changes
+ * @param <C> the context events are fired in
  */
-public interface StateMachine<S, E> {
+public interface StateMachine<S, E, C> {
 	/**
 	 * Gets the current state of the machine
 	 *
@@ -26,10 +27,11 @@ public interface StateMachine<S, E> {
 	 * Fires an event at the state machine, possibly triggering a state change
 	 *
 	 * @param event the event that is fired
-	 * @param args  the arguments to be sent to any actions that are run on a state change
+	 * @param context  the context to be sent to any actions that are run on a state change. Used to supply parameters to
+	 *                 actions and conditions
 	 * @return true if the event resulted in a state change, false otherwise
 	 */
-	boolean fireEvent(E event, Arguments args);
+	boolean fireEvent(E event, C context);
 
 	/**
 	 * Sets the state of the state machine to the rawState even if there are no transitions leading to it
