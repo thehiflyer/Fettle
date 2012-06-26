@@ -97,4 +97,9 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 	public Map<E, Collection<Transition<S, E, C>>> getFromAllTransitions() {
 		return Collections.unmodifiableMap(fromAllTransitions);
 	}
+
+	@Override
+	public C getDefaultContext() {
+		return defaultContext;
+	}
 }

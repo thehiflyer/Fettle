@@ -87,9 +87,4 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 	public void addExitAction(S exitState, Action<S, E, C> action) {
 		addAction(exitState, action, exitActions);
 	}
-
-	@Override
-	public C getDefaultContext() {
-		return defaultContext;
-	}
 }
