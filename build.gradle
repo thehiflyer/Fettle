@@ -42,6 +42,10 @@ checkstyleMain {
     }
 }
 
+checkstyleTest {
+    ignoreFailures = true
+}
+
 task checkstyleReport << {
     if (file("$buildDir/reports/checkstyle/${checkType}.xml").exists()) {
 
