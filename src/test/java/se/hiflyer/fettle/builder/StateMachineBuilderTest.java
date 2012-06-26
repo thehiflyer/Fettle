@@ -1,8 +1,10 @@
 package se.hiflyer.fettle.builder;
 
+import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 import se.hiflyer.fettle.Action;
+import se.hiflyer.fettle.Arguments;
 import se.hiflyer.fettle.Condition;
 import se.hiflyer.fettle.StateMachine;
 import se.hiflyer.fettle.StateMachineTemplate;
@@ -156,6 +158,18 @@ public class StateMachineBuilderTest {
 		}
 	}
 
+	private static class CheckWasCalledAction implements Action<States, String, Arguments> {
+		private int callCount;
+		@Override
+		public void onTransition(States from, States to, String causedBy, Arguments context, StateMachine<States, String, Arguments> statesStringArgumentsStateMachine) {
+			callCount++;
+		}
+
+		public int getCallCount() {
+			return callCount;
+		}
+	}
+
 
 	private class ConditionImpl implements Condition<Void> {
 		boolean pass = false;
@@ -202,5 +216,32 @@ public class StateMachineBuilderTest {
 		} catch (IllegalArgumentException e) {
 
 		}
+	}
+
+	@Test
+	public void specifyDefaultContext() throws Exception {
+		StateMachineBuilder<States, String, Arguments> builder = StateMachineBuilder.create(States.class, String.class);
+		builder.defaultContext(Arguments.NO_ARGS);
+		CheckWasCalledAction wasCalledAction = new CheckWasCalledAction();
+		Action<States, String, Arguments> action = new Action<States, String, Arguments>() {
+			@Override
+			public void onTransition(States from, States to, String causedBy, Arguments context, StateMachine<States, String, Arguments> statesStringArgumentsStateMachine) {
+				assertEquals(Arguments.NO_ARGS, context);
+			}
+		};
+		List<Action<States, String, Arguments>> actions = Lists.newArrayList();
+		actions.add(action);
+		actions.add(wasCalledAction);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(new Condition<Arguments>() {
+			@Override
+			public boolean isSatisfied(Arguments context) {
+				assertEquals(Arguments.NO_ARGS, context);
+				return true;
+			}
+		}).perform(actions);
+		StateMachine<States, String, Arguments> stateMachine = builder.build(States.INITIAL);
+		stateMachine.fireEvent("foo");
+
+		assertEquals(1, wasCalledAction.getCallCount());
 	}
 }

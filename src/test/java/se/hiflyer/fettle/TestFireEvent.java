@@ -29,7 +29,7 @@ public class TestFireEvent {
 
 	@Test
 	public void testFireEventWithParams() throws Exception {
-		MutableTransitionModelImpl<States, Triggers, Arguments> model = MutableTransitionModelImpl.create(States.class, Triggers.class);
+		MutableTransitionModelImpl<States, Triggers, Arguments> model = MutableTransitionModelImpl.create(States.class, Triggers.class, Arguments.NO_ARGS);
 
 		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, new Condition<Arguments>() {
 			@Override

@@ -26,7 +26,7 @@ public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S, E, C>
 
 	@Override
 	public boolean fireEvent(E event) {
-		return fireEvent(event, null);
+		return fireEvent(event, model.getDefaultContext());
 	}
 
 	@Override

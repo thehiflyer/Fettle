@@ -12,6 +12,7 @@ public class StateMachineBuilder<S, E, C> {
 	private final List<EntryExitActionBuilder<S, E, C>> entryExitActions = GuavaReplacement.newArrayList();
 	private final Class<S> stateClass;
 	private final Class<E> eventClass;
+	private C defaultContext;
 
 
 	private StateMachineBuilder(Class<S> stateClass, Class<E> eventClass) {
@@ -41,6 +42,11 @@ public class StateMachineBuilder<S, E, C> {
 		return actionBuilder;
 	}
 
+	public StateMachineBuilder<S, E, C> defaultContext(C defaultContext) {
+		this.defaultContext = defaultContext;
+		return this;
+	}
+
 	/**
 	 * Builds a state machine with the transitions and states configured by the builder.
 	 * Note that consecutive calls to this method will not share transition models and it's therefore inefficient to
@@ -64,7 +70,7 @@ public class StateMachineBuilder<S, E, C> {
 	 * @return a state machine template configured with all the transitions and actions specified using this builder
 	 */
 	public StateMachineTemplate<S, E, C> buildTransitionModel() {
-		MutableTransitionModelImpl<S, E, C> template = MutableTransitionModelImpl.create(stateClass, eventClass);
+		MutableTransitionModelImpl<S, E, C> template = MutableTransitionModelImpl.create(stateClass, eventClass, defaultContext);
 		for (TransitionBuilder<S, E, C> transitionBuilder : transitionBuilders) {
 			transitionBuilder.addToTransitionModel(template);
 		}

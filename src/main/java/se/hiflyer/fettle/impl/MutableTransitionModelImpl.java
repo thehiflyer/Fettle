@@ -15,12 +15,16 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel<S, E, C> implements MutableTransitionModel<S, E, C> {
 
-	private MutableTransitionModelImpl(Class<S> stateClass, Class<E> eventClass) {
-		super(stateClass, eventClass);
+	private MutableTransitionModelImpl(Class<S> stateClass, Class<E> eventClass, C defaultContext) {
+		super(stateClass, eventClass, defaultContext);
+	}
+
+	public static <S, E, C> MutableTransitionModelImpl<S, E, C> create(Class<S> stateClass, Class<E> eventClass, C defaultContext) {
+		return new MutableTransitionModelImpl<S, E, C>(stateClass, eventClass, defaultContext);
 	}
 
 	public static <S, E, C> MutableTransitionModelImpl<S, E, C> create(Class<S> stateClass, Class<E> eventClass) {
-		return new MutableTransitionModelImpl<S, E, C>(stateClass, eventClass);
+		return new MutableTransitionModelImpl<S, E, C>(stateClass, eventClass, null);
 	}
 
 	@Override
@@ -37,7 +41,7 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 
 	@Override
 	public StateMachineTemplate<S, E, C> createImmutableClone() {
-		return new ImmutableTransitionModel<S, E, C>(stateClass, eventClass, transitionMap, fromAllTransitions, exitActions, enterActions);
+		return new ImmutableTransitionModel<S, E, C>(stateClass, eventClass, transitionMap, fromAllTransitions, exitActions, enterActions, defaultContext);
 	}
 
 	@Override
@@ -82,5 +86,10 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 	@Override
 	public void addExitAction(S exitState, Action<S, E, C> action) {
 		addAction(exitState, action, exitActions);
+	}
+
+	@Override
+	public C getDefaultContext() {
+		return defaultContext;
 	}
 }

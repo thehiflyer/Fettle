@@ -21,4 +21,6 @@ public interface TransitionModel<S, E, C> {
 	 * @return true if the state was changed
 	 */
 	boolean forceSetState(StateMachine<S, E, C> stateMachine, S forcedState);
+
+	C getDefaultContext();
 }

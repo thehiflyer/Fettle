@@ -17,10 +17,13 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 	protected final Map<S, Collection<Action<S, E, C>>> enterActions;
 	protected final Class<S> stateClass;
 	protected final Class<E> eventClass;
+	protected final C defaultContext;
 
-	protected AbstractTransitionModel(Class<S> stateClass, Class<E> eventClass) {
+
+	protected AbstractTransitionModel(Class<S> stateClass, Class<E> eventClass, C defaultContext) {
 		this.stateClass = stateClass;
 		this.eventClass = eventClass;
+		this.defaultContext = defaultContext;
 		transitionMap = createMap(stateClass);
 		exitActions = createMap(stateClass);
 		enterActions = createMap(stateClass);

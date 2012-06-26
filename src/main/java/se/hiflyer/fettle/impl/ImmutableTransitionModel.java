@@ -16,8 +16,8 @@ public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S
 											  Map<S, Map<E, Collection<Transition<S, E, C>>>> transitionMap,
 											  Map<E, Collection<Transition<S, E, C>>> fromAllTransitions,
 											  Map<S, Collection<Action<S, E, C>>> exitActions,
-											  Map<S, Collection<Action<S, E, C>>> enterActions) {
-		super(stateClass, eventClass);
+											  Map<S, Collection<Action<S, E, C>>> enterActions, C defaultContext) {
+		super(stateClass, eventClass, defaultContext);
 		this.exitActions.putAll(copy(exitActions));
 		this.enterActions.putAll(copy(enterActions));
 		this.transitionMap.putAll(copyTransitions(transitionMap));
@@ -78,5 +78,10 @@ public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S
 	@Override
 	public StateMachine<S, E, C> newStateMachine(S init, Lock lock) {
 		return new TemplateBasedStateMachine<S, E, C>(this, init, lock);
+	}
+
+	@Override
+	public C getDefaultContext() {
+		return defaultContext;
 	}
 }
