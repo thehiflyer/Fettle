@@ -41,7 +41,7 @@
   <div id="container">
 
     <div class="download">
-		 <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.7.0.jar">
+		 <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.8.0.jar">
         <img border="0" width="90" src="jar.png"></a>
       <a href="http://github.com/thehiflyer/Fettle/zipball/master">
         <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
@@ -63,7 +63,7 @@
 	<h3>Creating a builder</h3>
 	 <pre class="brush: java">
 // Create a state machine with the enum States as state space and strings as events
-StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
+StateMachineBuilder&lt;States, String, Void&gt; builder = Fettle.newBuilder(States.class, String.class);
 </pre>
 	  <p>
 		  To create a new state machine you can either make a builder object or just create a transition model.<br/>
@@ -82,14 +82,14 @@ builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
 
 	  <h3>Conditional transitions</h3>
 	<pre class="brush: java">
-Condition firstArgIsOne = new Condition() {
+Condition&lt;Arguments&gt; firstArgIsOne = new Condition&lt;Arguments&gt;() {
 	@Override
 	public boolean isSatisfied(Arguments args) {
 		return args.getNumberOfArguments() &gt; 0 && args.getFirst().equals(1);
 	}
 };
 
-Condition noArguments = new Condition() {
+Condition&lt;Arguments&gt; noArguments = new Condition&lt;Arguments&gt;() {
 	@Override
 	public boolean isSatisfied(Arguments args) {
 		return args.getNumberOfArguments() == 0;
@@ -99,7 +99,7 @@ Condition noArguments = new Condition() {
 builder.transition().from(States.INITIAL).to(States.ONE).on("tick").when(BasicConditions.or(firstArgIsOne, noArguments));
 
 // The above setup will make this pass
-StateMachine&lt;States, String&gt; stateMachine = builder.build(States.INITIAL);
+StateMachine&lt;States, String, Arguments&gt; stateMachine = builder.build(States.INITIAL);
 stateMachine.fireEvent("tick", new Arguments(3));
 assertEquals(States.INITIAL, stateMachine.getCurrentState());
 
@@ -111,34 +111,34 @@ assertEquals(States.ONE, stateMachine.getCurrentState());
 	  </p>
 <h3>Transition actions</h3>
 <pre class="brush: java">
-Action&lt;States, String&gt; action1 = new Action&lt;States, String&gt;() {
+Action&lt;States, String, Void&gt; action1 = new Action&lt;States, String, Void&gt;() {
 	@Override
-	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+	public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine&lt;States, String&gt; statesStringStateMachine) {
 		// do whatever is desired
 	}
 };
-Action&lt;States, String&gt; action2 = new Action&lt;States, String&gt;() {
+Action&lt;States, String, Void&gt; action2 = new Action&lt;States, String, Void&gt;() {
 	@Override
-	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+	public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine&lt;States, String&gt; statesStringStateMachine) {
 		// do whatever is desired
 	}
 };
-List&lt;Action&lt;States, String&gt;&gt; actions = GuavaReplacement.newArrayList();
+List&lt;Action&lt;States, String, Void&gt;&gt; actions = GuavaReplacement.newArrayList();
 actions.add(action1);
 actions.add(action2);
 builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(actions);</pre>
 The actions action1 and action2 will be performed (in the listed order) during the transition from state INITIAL to state ONE.
 <h3>Entry & exit actions</h3>
 <pre class="brush: java">
-Action&lt;States, String&gt; action1 = new Action&lt;States, String&gt;() {
+Action&lt;States, String, Void&gt; action1 = new Action&lt;States, String, Void&gt;() {
 	@Override
-	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+	public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine&lt;States, String&gt; statesStringStateMachine) {
 		// do whatever is desired
 	}
 };
-Action&lt;States, String&gt; action2 = new Action&lt;States, String&gt;() {
+Action&lt;States, String, Void&gt; action2 = new Action&lt;States, String, Void&gt;() {
 	@Override
-	public void onTransition(States from, States to, String causedBy, Arguments args, StateMachine&lt;States, String&gt; statesStringStateMachine) {
+	public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine&lt;States, String&gt; statesStringStateMachine) {
 		// do whatever is desired
 	}
 };
@@ -149,25 +149,30 @@ Whenever the state INITIAL is left, the action1 will be performed and whenever t
 
 <h3>Creating a state machine</h3>
 <pre class="brush: java">
-StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
+StateMachineBuilder&lt;States,String, ContextClass&gt; builder = Fettle.newBuilder(States.class, String.class);
 
 // Configure state transitions and actions
 
-StateMachineTemplate&lt;States, String&gt; stateMachineTemplate = builder.buildTransitionModel();
-StateMachine&lt;States, String&gt; stateMachine1 = stateMachineTemplate.newStateMachine(States.INITIAL);
-StateMachine&lt;States, String&gt; stateMachine2 = stateMachineTemplate.newStateMachine(States.INITIAL);
+StateMachineTemplate&lt;States, String, ContextClass&gt; stateMachineTemplate = builder.buildTransitionModel();
+StateMachine&lt;States, String, ContextClass&gt; stateMachine1 = stateMachineTemplate.newStateMachine(States.INITIAL);
+StateMachine&lt;States, String, ContextClass&gt; stateMachine2 = stateMachineTemplate.newStateMachine(States.INITIAL);
 </pre>
 Both state machines are flyweight objects and will share the transition model, i.e. the definition on what transitions are made on what events but they can change state independently.
 This makes it very cheap to have many state machines using the same transition rules.<br/>
 If only one state machine is required, there is a short hand way to create a state machine directly.
 <pre class="brush: java">
-StateMachine&lt;States, String&gt; stateMachine = builder.build(States.INITIAL);
+StateMachine&lt;States, String, ContextClass&gt; stateMachine = builder.build(States.INITIAL);
 </pre>
 <h3>Fire events</h3>
 <pre class="brush: java">
-StateMachineBuilder&lt;States,String&gt; builder = Fettle.newBuilder(States.class, String.class);
+StateMachineBuilder&lt;States,String, Arguments&gt; builder = Fettle.newBuilder(States.class, String.class);
 // Setup transitions
-StateMachine&lt;States, String&gt; stateMachine = builder.build(States.INITIAL);
+
+// This changes the default context (passed when fireEvent is called without context) from null to Arguments.NO_ARGS
+builder.defaultContext(Arguments.NO_ARGS);
+
+StateMachine&lt;States, String, Arguments&gt; stateMachine = builder.build(States.INITIAL);
+
 
 stateMachine.fireEvent("foo");
 stateMachine.fireEvent("foo", new Arguments("bar"));
@@ -219,8 +224,8 @@ gradle.bat build (on windows)
 		</p>
 	  <p>
 		  If you don't need the source,
-		 just download the jar of the latest version&nbsp;<a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.7.0.jar">fettle-0.7.0.jar</a><br/>
-		  or if you're in a GWT project <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.7.0-gwt.jar">fettle-0.7.0-gwt.jar</a>
+		 just download the jar of the latest version&nbsp;<a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.8.0.jar">fettle-0.8.0.jar</a><br/>
+		  or if you're in a GWT project <a href="https://github.com/downloads/thehiflyer/Fettle/fettle-0.8.0-gwt.jar">fettle-0.8.0-gwt.jar</a>
     </p>
     <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
       by running:
