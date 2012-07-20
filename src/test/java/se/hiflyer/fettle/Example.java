@@ -115,6 +115,9 @@ public class Example {
 	public void fireEventExample() throws Exception {
 		StateMachineBuilder<States, String, Arguments> builder = Fettle.newBuilder(States.class, String.class);
 		// Setup transitions
+
+		// This changes the default context (passed when fireEvent is called without context) from null to Arguments.NO_ARGS
+		builder.defaultContext(Arguments.NO_ARGS);
 		StateMachine<States, String, Arguments> stateMachine = builder.build(States.INITIAL);
 
 		stateMachine.fireEvent("foo");
