@@ -73,59 +73,63 @@ artifacts {
 }
 
 signing {
-    sign configurations.archives
+    if(hasProperty('sonatypeUsername') && hasProperty('sonatypePassword')) {
+        sign configurations.archives
+    }
 }
 
 uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
+    if(hasProperty('sonatypeUsername') && hasProperty('sonatypePassword')) {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-
-            pom.project {
-                name 'Fettle'
-                packaging 'jar'
-                description 'Fettle is a state machine framework for java'
-                url 'http://http://thehiflyer.github.com/Fettle/'
-
-                scm {
-                    url 'scm:git@github.com:thehiflyer/Fettle.git'
-                    connection 'scm:git@github.com:thehiflyer/Fettle.git'
-                    developerConnection 'scm:git@github.com:thehiflyer/Fettle.git'
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
 
-                licenses {
-                    license {
-                        name 'MIT License'
-                        url 'http://www.opensource.org/licenses/mit-license.php'
-                        distribution 'repo'
+                pom.project {
+                    name 'Fettle'
+                    packaging 'jar'
+                    description 'Fettle is a state machine framework for java'
+                    url 'http://http://thehiflyer.github.com/Fettle/'
+
+                    scm {
+                        url 'scm:git@github.com:thehiflyer/Fettle.git'
+                        connection 'scm:git@github.com:thehiflyer/Fettle.git'
+                        developerConnection 'scm:git@github.com:thehiflyer/Fettle.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'MIT License'
+                            url 'http://www.opensource.org/licenses/mit-license.php'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'thehiflyer'
+                            name 'Per Malmén'
+                        }
                     }
                 }
 
-                developers {
-                    developer {
-                        id 'thehiflyer'
-                        name 'Per Malmén'
-                    }
+                //mess with the generated pom to set the 'packaging' tag
+                pom.withXml { XmlProvider xmlProvider ->
+                    def xml = xmlProvider.asString()
+                    def pomXml = new XmlParser().parse(new ByteArrayInputStream(xml.toString().bytes))
+
+                    pomXml.version[0] + { packaging('jar') }
+
+                    def newXml = new StringWriter()
+                    def printer = new XmlNodePrinter(new PrintWriter(newXml))
+                    printer.preserveWhitespace = true
+                    printer.print(pomXml)
+                    xml.setLength(0)
+                    xml.append(newXml.toString())
                 }
-            }
-
-            //mess with the generated pom to set the 'packaging' tag
-            pom.withXml { XmlProvider xmlProvider ->
-                def xml = xmlProvider.asString()
-                def pomXml = new XmlParser().parse(new ByteArrayInputStream(xml.toString().bytes))
-
-                pomXml.version[0] + { packaging('jar') }
-
-                def newXml = new StringWriter()
-                def printer = new XmlNodePrinter(new PrintWriter(newXml))
-                printer.preserveWhitespace = true
-                printer.print(pomXml)
-                xml.setLength(0)
-                xml.append(newXml.toString())
             }
         }
     }
