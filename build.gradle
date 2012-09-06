@@ -24,10 +24,10 @@ dependencies {
 task gwtJar(type: Jar, dependsOn: classes) {
     classifier = 'gwt'
     from sourceSets.main.getOutput().classesDir
-    into('se/hiflyer/fettle/super') {
+    into('se/fearless/fettle/super') {
         from sourceSets.main.allJava
     }
-    into('se/hiflyer/fettle') {
+    into('se/fearless/fettle') {
         from sourceSets.main.resources
     }
 }
