@@ -24,11 +24,14 @@ dependencies {
 task gwtJar(type: Jar, dependsOn: classes) {
     classifier = 'gwt'
     from sourceSets.main.getOutput().classesDir
+    exclude("**/export/DotExporter*")
     into('se/fearless/fettle/super') {
         from sourceSets.main.allJava
+
     }
     into('se/fearless/fettle') {
         from sourceSets.main.resources
+        exclude("**/export*")
     }
 }
 
