@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="ant-1.7.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-8/filestore/org.apache.ant/ant/1.7.0/jar/9746af1a485e50cf18dcb232489032a847067066/ant-1.7.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.apache.ant/ant/1.7.0/jar/9746af1a485e50cf18dcb232489032a847067066/ant-1.7.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-8/filestore/org.apache.ant/ant/1.7.0/source/58ec0e378f1d33cb72a92ee3a9442909789090db/ant-1.7.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/org.apache.ant/ant/1.7.0/source/58ec0e378f1d33cb72a92ee3a9442909789090db/ant-1.7.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="mockachino-0.6.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-8/filestore/se.mockachino/mockachino/0.6.0/jar/68227a609a1b153afb878f0101d19787cfff11d5/mockachino-0.6.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/se.mockachino/mockachino/0.6.0/jar/68227a609a1b153afb878f0101d19787cfff11d5/mockachino-0.6.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-8/filestore/se.mockachino/mockachino/0.6.0/source/b63ac57e15f49dcffecfb3d73b6ec3910fc403d2/mockachino-0.6.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-14/filestore/se.mockachino/mockachino/0.6.0/source/b63ac57e15f49dcffecfb3d73b6ec3910fc403d2/mockachino-0.6.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
