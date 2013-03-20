@@ -1,5 +1,6 @@
 package se.fearless.fettle;
 
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
@@ -7,6 +8,9 @@ import se.fearless.fettle.builder.StateMachineBuilder;
 import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
+import static se.mockachino.Mockachino.mock;
+import static se.mockachino.Mockachino.verifyOnce;
+import static se.mockachino.matchers.Matchers.any;
 
 public class ConcurrentEventsTest {
 
@@ -162,6 +166,27 @@ public class ConcurrentEventsTest {
 		assertEquals(States.THREE, stateMachine.getCurrentState());
 	}
 
+	@Test
+	public void actionTriggersStateChange() throws Exception {
+		Action<States, String, Void> changeStateAction = new Action<States, String, Void>() {
+			@Override
+			public void onTransition(States from, States to, String causedBy, Void context, StateMachine<States, String, Void> stateMachine) {
+				stateMachine.fireEvent("second");
+			}
+		};
+		Action<States, String, Void> otherAction = mock(Action.class);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("first").perform(Lists.newArrayList(changeStateAction, otherAction));
+
+		builder.transition().from(States.ONE).to(States.TWO).on("second");
+
+		StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
+		stateMachine.fireEvent("first");
+
+		assertEquals(States.TWO, stateMachine.getCurrentState());
+
+		verifyOnce().on(otherAction).onTransition(States.INITIAL, States.ONE, "first", any(Void.class), stateMachine);
+
+	}
 
 	private class BlockingCondition implements Condition<Void> {
 		CountDownLatch latch = new CountDownLatch(1);
