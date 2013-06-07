@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'maven'
 apply plugin: 'signing'
@@ -17,7 +18,6 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit-dep', version: '4.10'
     testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.0'
-    testRuntime 'net.sourceforge.cobertura:cobertura:1.9.3'
     compile group: 'com.google.guava', name: 'guava', version: '11.0.1'
 }
 
@@ -56,6 +56,15 @@ task checkstyleReport << {
     if (file("$buildDir/reports/checkstyle/${checkType}.xml").exists()) {
 
     }
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        csv.enabled = false
+        xml.enabled = false
+    }
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
 }
 
 // custom tasks for creating source jar
@@ -137,12 +146,6 @@ uploadArchives {
         }
     }
 }
-
-//buildscript {
-// using a variable to make wiki look cleaner
-//    def githubBase = 'https://raw.github.com/valkolovos/gradle_cobertura/master/ivy'
-//    apply from: "${githubBase}/gradle_cobertura/gradle_cobertura/1.0-rc4/coberturainit.gradle"
-//}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.6'
