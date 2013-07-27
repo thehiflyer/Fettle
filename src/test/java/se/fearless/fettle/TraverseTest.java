@@ -24,7 +24,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void checkWithNoTransitions() throws Exception {
+	public void queryWithNoTransitions() throws Exception {
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
@@ -33,7 +33,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void checkWithOneTransition() throws Exception {
+	public void queryWithOneTransition() throws Exception {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
@@ -45,7 +45,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void checkWithMultipleTransitionsFromTheState() throws Exception {
+	public void queryWithMultipleTransitionsFromOneState() throws Exception {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(new Condition<Boolean>() {
 			@Override
 			public boolean isSatisfied(Boolean context) {
@@ -69,7 +69,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void checkOtherTransitionsAreNotIncluded() throws Exception {
+	public void irrelevantTransitionsAreNotIncluded() throws Exception {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
 		builder.transition().from(States.ONE).to(States.TWO).on("foo");
 		builder.transition().from(States.THREE).to(States.ONE).on("foo");
@@ -81,6 +81,55 @@ public class TraverseTest {
 		Transition<States, String, Boolean> transition = Iterables.getOnlyElement(transitions);
 		assertEquals(States.ONE, transition.getTo());
 	}
+
+	@Test
+	public void fromAllTransitionsAreIncluded() throws Exception {
+		builder.transition().fromAll().to(States.ONE).on("foo").when(new Condition<Boolean>() {
+			@Override
+			public boolean isSatisfied(Boolean context) {
+				return context;
+			}
+		});
+		builder.transition().fromAll().to(States.TWO).on("foo").when(new Condition<Boolean>() {
+			@Override
+			public boolean isSatisfied(Boolean context) {
+				return !context;
+			}
+		});
+		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
+
+		Map<String, Collection<Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		assertEquals(1, transitionMap.size());
+		Collection<Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
+
+		checkExistenceOfTransitionsTo(States.ONE, transitions);
+		checkExistenceOfTransitionsTo(States.TWO, transitions);
+	}
+
+	@Test
+	public void fromAllTransitionsAndNormalTransitionsCanCoexist() throws Exception {
+		builder.transition().fromAll().to(States.ONE).on("foo").when(new Condition<Boolean>() {
+			@Override
+			public boolean isSatisfied(Boolean context) {
+				return context;
+			}
+		});
+		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(new Condition<Boolean>() {
+			@Override
+			public boolean isSatisfied(Boolean context) {
+				return !context;
+			}
+		});
+		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
+
+		Map<String, Collection<Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		assertEquals(1, transitionMap.size());
+		Collection<Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
+
+		checkExistenceOfTransitionsTo(States.ONE, transitions);
+		checkExistenceOfTransitionsTo(States.TWO, transitions);
+	}
+
 
 	private StateMachine<States, String, Boolean> createStateMachine(StateMachineBuilder<States, String, Boolean> builder) {
 		StateMachineTemplate<States, String, Boolean> template = builder.buildTransitionModel();

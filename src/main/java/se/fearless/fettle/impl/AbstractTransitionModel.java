@@ -111,6 +111,15 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 		if (transitions != null) {
 			map.putAll(transitions);
 		}
+
+		for (Map.Entry<E, Collection<Transition<S, E, C>>> entry : fromAllTransitions.entrySet()) {
+			Collection<Transition<S, E, C>> transitionCollection = map.get(entry.getKey());
+			if (transitionCollection == null) {
+				transitionCollection = GuavaReplacement.newArrayList();
+			}
+			transitionCollection.addAll(entry.getValue());
+			map.put(entry.getKey(), transitionCollection);
+		}
 		return map;
 	}
 }
