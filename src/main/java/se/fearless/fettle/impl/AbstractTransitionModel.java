@@ -1,5 +1,6 @@
 package se.fearless.fettle.impl;
 
+import com.google.common.collect.Iterables;
 import se.fearless.fettle.Action;
 import se.fearless.fettle.StateMachine;
 import se.fearless.fettle.TransitionModel;
@@ -101,5 +102,15 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 	@Override
 	public C getDefaultContext() {
 		return defaultContext;
+	}
+
+	@Override
+	public Map<E, Collection<Transition<S, E, C>>> getPossibleTransitions(S fromState) {
+		Map<E, Collection<Transition<S, E, C>>> map = GuavaReplacement.newHashMap();
+		Map<E, Collection<Transition<S, E, C>>> transitions = transitionMap.get(fromState);
+		if (transitions != null) {
+			map.putAll(transitions);
+		}
+		return map;
 	}
 }

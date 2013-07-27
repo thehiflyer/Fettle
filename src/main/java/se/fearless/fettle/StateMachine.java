@@ -1,5 +1,10 @@
 package se.fearless.fettle;
 
+import se.fearless.fettle.impl.Transition;
+
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * A view of a state machine from a users perspective, i.e it is immutable and already set up.
  *
@@ -49,4 +54,6 @@ public interface StateMachine<S, E, C> {
 	 * @return true if the state machine changed state
 	 */
 	boolean forceSetState(S forcedState);
+
+	Map<E, Collection<Transition<S, E, C>>> getPossibleTransitions(S fromState);
 }
