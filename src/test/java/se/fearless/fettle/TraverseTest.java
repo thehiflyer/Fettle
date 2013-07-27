@@ -68,6 +68,20 @@ public class TraverseTest {
 		checkExistenceOfTransitionsTo(States.TWO, transitions);
 	}
 
+	@Test
+	public void checkOtherTransitionsAreNotIncluded() throws Exception {
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
+		builder.transition().from(States.ONE).to(States.TWO).on("foo");
+		builder.transition().from(States.THREE).to(States.ONE).on("foo");
+		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
+
+		Map<String, Collection<Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		assertEquals(1, transitionMap.size());
+		Collection<Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
+		Transition<States, String, Boolean> transition = Iterables.getOnlyElement(transitions);
+		assertEquals(States.ONE, transition.getTo());
+	}
+
 	private StateMachine<States, String, Boolean> createStateMachine(StateMachineBuilder<States, String, Boolean> builder) {
 		StateMachineTemplate<States, String, Boolean> template = builder.buildTransitionModel();
 		return template.newStateMachine(States.INITIAL);
