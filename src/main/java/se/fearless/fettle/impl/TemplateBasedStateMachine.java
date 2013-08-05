@@ -1,6 +1,7 @@
 package se.fearless.fettle.impl;
 
 import se.fearless.fettle.StateMachine;
+import se.fearless.fettle.Transition;
 import se.fearless.fettle.TransitionModel;
 
 import java.util.Collection;
@@ -60,7 +61,7 @@ public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S,E,C> {
 	}
 
 	@Override
-	public Map<E,Collection<Transition<S,E,C>>> getPossibleTransitions(S fromState) {
+	public Map<E,Collection<? extends Transition<S,E,C>>> getPossibleTransitions(S fromState) {
 		return model.getPossibleTransitions(fromState);
 	}
 }

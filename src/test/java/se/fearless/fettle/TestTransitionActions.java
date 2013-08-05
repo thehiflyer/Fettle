@@ -4,8 +4,8 @@ import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
+import se.fearless.fettle.impl.BasicTransition;
 import se.fearless.fettle.impl.MutableTransitionModelImpl;
-import se.fearless.fettle.impl.Transition;
 import se.mockachino.order.OrderingContext;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class TestTransitionActions {
 		TypeToken<Condition<Void>> conditionTypeToken = new TypeToken<Condition<Void>>() {
 		};
 		Condition<Void> condition = mock(conditionTypeToken);
-		Transition<States, String, Void> transition = new Transition<States, String, Void>(to, condition, Collections.<Action<States, String, Void>>emptyList());
+		BasicTransition<States, String, Void> transition = new BasicTransition<States, String, Void>(to, condition, Collections.<Action<States, String, Void>>emptyList());
 
 		assertEquals(to, transition.getTo());
 		assertEquals(condition, transition.getCondition());

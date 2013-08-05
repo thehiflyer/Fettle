@@ -1,9 +1,8 @@
 package se.fearless.fettle;
 
-import se.fearless.fettle.impl.Transition;
+import se.fearless.fettle.impl.BasicTransition;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 public interface TransitionModel<S, E, C> {
@@ -30,5 +29,5 @@ public interface TransitionModel<S, E, C> {
 
 	C getDefaultContext();
 
-    Map<E, Collection<Transition<S, E, C>>> getPossibleTransitions(S fromState);
+    Map<E, Collection<? extends Transition<S, E, C>>> getPossibleTransitions(S fromState);
 }

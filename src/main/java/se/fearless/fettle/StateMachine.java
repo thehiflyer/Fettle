@@ -1,6 +1,6 @@
 package se.fearless.fettle;
 
-import se.fearless.fettle.impl.Transition;
+import se.fearless.fettle.impl.BasicTransition;
 
 import java.util.Collection;
 import java.util.Map;
@@ -60,5 +60,5 @@ public interface StateMachine<S, E, C> {
 	 * @param fromState the state to retrieve the outgoing transitions from.
 	 * @return a map from all registered events in the fromState to the transitions they would trigger if fired.
 	 */
-	Map<E, Collection<Transition<S, E, C>>> getPossibleTransitions(S fromState);
+	Map<E, Collection<? extends Transition<S, E, C>>> getPossibleTransitions(S fromState);
 }
