@@ -55,5 +55,10 @@ public interface StateMachine<S, E, C> {
 	 */
 	boolean forceSetState(S forcedState);
 
+	/**
+	 * Returns all possible transitions from a given state grouped by the event that triggers the transition.
+	 * @param fromState the state to retrieve the outgoing transitions from.
+	 * @return a map from all registered events in the fromState to the transitions they would trigger if fired.
+	 */
 	Map<E, Collection<Transition<S, E, C>>> getPossibleTransitions(S fromState);
 }
