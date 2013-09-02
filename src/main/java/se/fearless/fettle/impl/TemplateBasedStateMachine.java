@@ -1,11 +1,14 @@
 package se.fearless.fettle.impl;
 
 import se.fearless.fettle.StateMachine;
+import se.fearless.fettle.Transition;
 import se.fearless.fettle.TransitionModel;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 
-public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S, E, C> {
+public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S,E,C> {
 	private final TransitionModel<S, E, C> model;
 	private S currentState;
 	private final Lock lock;
@@ -55,5 +58,10 @@ public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S, E, C>
 		} finally {
 			lock.unlock();
 		}
+	}
+
+	@Override
+	public Map<E,Collection<? extends Transition<S,E,C>>> getPossibleTransitions(S fromState) {
+		return model.getPossibleTransitions(fromState);
 	}
 }
