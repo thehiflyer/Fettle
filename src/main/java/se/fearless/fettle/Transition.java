@@ -1,6 +1,6 @@
 package se.fearless.fettle;
 
-public interface Transition<S, E, C> {
+public interface Transition<S, C> {
 	S getTo();
 
 	boolean isSatisfied(C context);

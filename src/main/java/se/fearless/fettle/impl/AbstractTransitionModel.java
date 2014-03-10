@@ -105,8 +105,8 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 	}
 
 	@Override
-	public Map<E, Collection<? extends Transition<S, E, C>>> getPossibleTransitions(S fromState) {
-		Map<E, Collection<? extends Transition<S, E, C>>> map = GuavaReplacement.newHashMap();
+	public Map<E, Collection<? extends Transition<S, C>>> getPossibleTransitions(S fromState) {
+		Map<E, Collection<? extends Transition<S, C>>> map = GuavaReplacement.newHashMap();
 		Map<E, Collection<BasicTransition<S, E, C>>> transitions = transitionMap.get(fromState);
 		if (transitions != null) {
 			map.putAll(transitions);
@@ -114,7 +114,7 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 
 		for (Map.Entry<E, Collection<BasicTransition<S, E, C>>> entry : fromAllTransitions.entrySet()) {
 			@SuppressWarnings("unchecked")
-			Collection<Transition<S, E, C>> transitionCollection = (Collection<Transition<S, E, C>>) map.get(entry.getKey());
+			Collection<Transition<S, C>> transitionCollection = (Collection<Transition<S, C>>) map.get(entry.getKey());
 			if (transitionCollection == null) {
 				transitionCollection = GuavaReplacement.newArrayList();
 			}

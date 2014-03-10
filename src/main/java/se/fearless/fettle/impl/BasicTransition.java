@@ -8,7 +8,7 @@ import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.Collection;
 
-public class BasicTransition<S, E, C> implements Transition<S, E, C> {
+public class BasicTransition<S, E, C> implements Transition<S, C> {
 	private final S to;
 	private final Condition<C> condition;
 	private final Collection<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
