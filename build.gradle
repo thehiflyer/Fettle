@@ -7,7 +7,8 @@ apply plugin: 'signing'
 sourceCompatibility = 1.6
 
 group = 'se.fearless'
-version = '0.8.1'
+version = '0.8.2'
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 defaultTasks 'build'
 
@@ -53,9 +54,6 @@ checkstyleTest {
 }
 
 task checkstyleReport << {
-    if (file("$buildDir/reports/checkstyle/${checkType}.xml").exists()) {
-
-    }
 }
 
 jacocoTestReport {
@@ -80,14 +78,14 @@ task javadocJar(type: Jar, dependsOn:javadoc) {
 
 artifacts {
     archives jar
+	 archives gwtJar
     archives sourcesJar
     archives javadocJar
 }
 
 signing {
-    if(hasProperty('sonatypeUsername') && hasProperty('sonatypePassword')) {
-        sign configurations.archives
-    }
+	required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
+	sign configurations.archives
 }
 
 uploadArchives {
