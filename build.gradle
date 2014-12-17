@@ -8,7 +8,7 @@ sourceCompatibility = 1.6
 
 group = 'se.fearless'
 archivesBaseName = "fettle"
-version = '0.8.2'
+version = '0.8.4'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 defaultTasks 'build'
@@ -19,14 +19,14 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit-dep', version: '4.11'
-    testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.0'
-    compile group: 'com.google.guava', name: 'guava', version: '14.0.1'
+    testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.1'
+    compile group: 'com.google.guava', name: 'guava', version: '18.0'
 }
 
 task gwtJar(type: Jar, dependsOn: classes) {
     classifier = 'gwt'
     from sourceSets.main.getOutput().classesDir
-    exclude("**/export/DotExporter*")
+    exclude("**/export/DotExporter*", "**/util/PredicateCondition*")
     into('se/fearless/fettle/super') {
         from sourceSets.main.allJava
 
