@@ -10,6 +10,8 @@ public interface MutableTransitionModel<S, E, C> extends TransitionModel<S, E, C
 
 	void addFromAllTransition(S to, E event, Condition<C> condition, List<Action<S, E, C>> actions);
 
+	void addInternalTransition(S from, S to, E event, Condition<C> condition, List<Action<S, E, C>> actions);
+
 	void addEntryAction(S entryState, Action<S, E, C> action);
 
 	void addExitAction(S exitState, Action<S, E, C> action);
