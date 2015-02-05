@@ -5,14 +5,11 @@ import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
-import se.fearless.fettle.impl.BasicTransition;
 
 import java.util.Collection;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TraverseTest {
 
@@ -27,7 +24,7 @@ public class TraverseTest {
 	public void queryWithNoTransitions() throws Exception {
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
-		Map<String, Collection<? extends Transition<States, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 
 		assertTrue(transitionMap.isEmpty());
 	}
@@ -37,10 +34,10 @@ public class TraverseTest {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
-		Map<String, Collection<? extends Transition<States, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 		assertEquals(1, transitionMap.size());
-		Collection<? extends Transition<States, Boolean>> transitions = transitionMap.get("foo");
-		Transition<States, Boolean> transition = Iterables.getOnlyElement(transitions);
+		Collection<? extends Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
+		Transition<States, String, Boolean> transition = Iterables.getOnlyElement(transitions);
 		assertEquals(States.ONE, transition.getTo());
 	}
 
@@ -60,9 +57,9 @@ public class TraverseTest {
 		});
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
-		Map<String, Collection<? extends Transition<States, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 		assertEquals(1, transitionMap.size());
-		Collection<? extends Transition<States, Boolean>> transitions = transitionMap.get("foo");
+		Collection<? extends Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
 
 		checkExistenceOfTransitionsTo(States.ONE, transitions);
 		checkExistenceOfTransitionsTo(States.TWO, transitions);
@@ -75,10 +72,10 @@ public class TraverseTest {
 		builder.transition().from(States.THREE).to(States.ONE).on("foo");
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
-		Map<String, Collection<? extends Transition<States, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 		assertEquals(1, transitionMap.size());
-		Collection<? extends Transition<States, Boolean>> transitions = transitionMap.get("foo");
-		Transition<States, Boolean> transition = Iterables.getOnlyElement(transitions);
+		Collection<? extends Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
+		Transition<States, String, Boolean> transition = Iterables.getOnlyElement(transitions);
 		assertEquals(States.ONE, transition.getTo());
 	}
 
@@ -98,9 +95,9 @@ public class TraverseTest {
 		});
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
-		Map<String, Collection<? extends Transition<States, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 		assertEquals(1, transitionMap.size());
-		Collection<? extends Transition<States, Boolean>> transitions = transitionMap.get("foo");
+		Collection<? extends Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
 
 		checkExistenceOfTransitionsTo(States.ONE, transitions);
 		checkExistenceOfTransitionsTo(States.TWO, transitions);
@@ -122,9 +119,9 @@ public class TraverseTest {
 		});
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
-		Map<String, Collection<? extends Transition<States, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
+		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 		assertEquals(1, transitionMap.size());
-		Collection<? extends Transition<States, Boolean>> transitions = transitionMap.get("foo");
+		Collection<? extends Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
 
 		checkExistenceOfTransitionsTo(States.ONE, transitions);
 		checkExistenceOfTransitionsTo(States.TWO, transitions);
@@ -136,10 +133,10 @@ public class TraverseTest {
 		return template.newStateMachine(States.INITIAL);
 	}
 
-	private void checkExistenceOfTransitionsTo(final States state, Collection<? extends Transition<States, Boolean>> transitions) {
-		Transition<States, Boolean> transition1 = Iterables.find(transitions, new Predicate<Transition<States, Boolean>>() {
+	private void checkExistenceOfTransitionsTo(final States state, Collection<? extends Transition<States, String, Boolean>> transitions) {
+		Transition<States, String, Boolean> transition1 = Iterables.find(transitions, new Predicate<Transition<States, String, Boolean>>() {
 			@Override
-			public boolean apply(Transition<States, Boolean> input) {
+			public boolean apply(Transition<States, String, Boolean> input) {
 				return input.getTo() == state;
 			}
 		});

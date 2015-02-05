@@ -50,13 +50,13 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 		addTransition(from, event, new BasicTransition<S, E, C>(to, condition, actions));
 	}
 
-	private void addTransition(S from, E event, BasicTransition<S, E, C> transition) {
-		Map<E, Collection<BasicTransition<S, E, C>>> map = transitionMap.get(from);
+	private void addTransition(S from, E event, Transition<S, E, C> transition) {
+		Map<E, Collection<Transition<S, E, C>>> map = transitionMap.get(from);
 		if (map == null) {
 			map = createMap(eventClass);
 			transitionMap.put(from, map);
 		}
-		Collection<BasicTransition<S, E, C>> transitions = map.get(event);
+		Collection<Transition<S, E, C>> transitions = map.get(event);
 		if (transitions == null) {
 			transitions = GuavaReplacement.newArrayList();
 			map.put(event, transitions);
@@ -66,7 +66,7 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 
 	@Override
 	public void addFromAllTransition(S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
-		Collection<BasicTransition<S, E, C>> transitions = fromAllTransitions.get(event);
+		Collection<Transition<S, E, C>> transitions = fromAllTransitions.get(event);
 		if (transitions == null) {
 			transitions = GuavaReplacement.newArrayList();
 			fromAllTransitions.put(event, transitions);
