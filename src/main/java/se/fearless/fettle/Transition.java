@@ -6,4 +6,6 @@ public interface Transition<S, E, C> {
 	boolean isSatisfied(C context);
 
 	void onTransition(S from, S to, E event, C context, StateMachine<S, E, C> statemachine);
+
+	boolean shouldExecuteEntryAndExitActions();
 }

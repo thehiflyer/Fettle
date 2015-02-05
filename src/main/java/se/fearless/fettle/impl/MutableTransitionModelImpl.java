@@ -47,7 +47,7 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 
 	@Override
 	public void addInternalTransition(S from, S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
-		addTransition(from, event, new BasicTransition<S, E, C>(to, condition, actions));
+		addTransition(from, event, new InternalTransition<S, E, C>(to, condition, actions));
 	}
 
 	private void addTransition(S from, E event, Transition<S, E, C> transition) {

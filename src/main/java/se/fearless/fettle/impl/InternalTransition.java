@@ -5,14 +5,13 @@ import se.fearless.fettle.Condition;
 
 import java.util.Collection;
 
-public class BasicTransition<S, E, C> extends AbstractTransition<S,E,C> {
-
-	public BasicTransition(S to, Condition<C> condition, Collection<Action<S, E, C>> actions) {
+public class InternalTransition<S, E, C> extends AbstractTransition<S, E, C> {
+	public InternalTransition(S to, Condition<C> condition, Collection<Action<S, E, C>> actions) {
 		super(to, condition, actions);
 	}
 
 	@Override
 	public boolean shouldExecuteEntryAndExitActions() {
-		return true;
+		return false;
 	}
 }

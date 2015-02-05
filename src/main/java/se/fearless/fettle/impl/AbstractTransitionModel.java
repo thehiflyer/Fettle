@@ -57,12 +57,20 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 	}
 
 	private void forceSetState(StateMachine<S, E, C> stateMachine, S from, S to, Transition<S, E, C> transition, E event, C context) {
-		invoke(exitActions.get(from), from, to, event, context, stateMachine);
+		if (shouldExecuteEntryAndExitActions(transition)) {
+			invoke(exitActions.get(from), from, to, event, context, stateMachine);
+		}
 		stateMachine.rawSetState(to);
 		if (transition != null) {
 			transition.onTransition(from, to, event, context, stateMachine);
 		}
-		invoke(enterActions.get(to), from, to, event, context, stateMachine);
+		if (shouldExecuteEntryAndExitActions(transition)) {
+			invoke(enterActions.get(to), from, to, event, context, stateMachine);
+		}
+	}
+
+	private boolean shouldExecuteEntryAndExitActions(Transition<S, E, C> transition) {
+		return transition == null || transition.shouldExecuteEntryAndExitActions();
 	}
 
 	private boolean fireEvent(StateMachine<S, E, C> stateMachine, E event, Map<E, Collection<Transition<S, E, C>>> transitionMap, S from, C context) {
