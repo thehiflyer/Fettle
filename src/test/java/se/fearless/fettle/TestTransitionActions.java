@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.newOrdering;
-import static se.mockachino.Mockachino.verifyNever;
-import static se.mockachino.Mockachino.verifyOnce;
+import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class TestTransitionActions {

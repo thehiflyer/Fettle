@@ -1,10 +1,6 @@
 package se.fearless.fettle.impl;
 
-import se.fearless.fettle.Action;
-import se.fearless.fettle.Condition;
-import se.fearless.fettle.MutableTransitionModel;
-import se.fearless.fettle.StateMachine;
-import se.fearless.fettle.StateMachineTemplate;
+import se.fearless.fettle.*;
 import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.Collection;
@@ -46,22 +42,31 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 
 	@Override
 	public void addTransition(S from, S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
-		Map<E, Collection<BasicTransition<S, E, C>>> map = transitionMap.get(from);
+		addTransition(from, event, new BasicTransition<S, E, C>(to, condition, actions));
+	}
+
+	@Override
+	public void addInternalTransition(S from, S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
+		addTransition(from, event, new InternalTransition<S, E, C>(to, condition, actions));
+	}
+
+	private void addTransition(S from, E event, Transition<S, E, C> transition) {
+		Map<E, Collection<Transition<S, E, C>>> map = transitionMap.get(from);
 		if (map == null) {
 			map = createMap(eventClass);
 			transitionMap.put(from, map);
 		}
-		Collection<BasicTransition<S, E, C>> transitions = map.get(event);
+		Collection<Transition<S, E, C>> transitions = map.get(event);
 		if (transitions == null) {
 			transitions = GuavaReplacement.newArrayList();
 			map.put(event, transitions);
 		}
-		transitions.add(new BasicTransition<S, E, C>(to, condition, actions));
+		transitions.add(transition);
 	}
 
 	@Override
 	public void addFromAllTransition(S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
-		Collection<BasicTransition<S, E, C>> transitions = fromAllTransitions.get(event);
+		Collection<Transition<S, E, C>> transitions = fromAllTransitions.get(event);
 		if (transitions == null) {
 			transitions = GuavaReplacement.newArrayList();
 			fromAllTransitions.put(event, transitions);

@@ -8,13 +8,14 @@ import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, To<S, E, C>, On<S, E, C>, When<S, E, C> {
+class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, To<S, E, C>, On<S, E, C>, When<S, E, C>, Internal<S, E, C> {
 
+	private final List<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
 	private S from;
 	private S to;
 	private E event;
 	private Condition<C> condition = BasicConditions.always();
-	private final List<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
+	private boolean runEntryAndExit = true;
 
 	public On<S, E, C> on(E event) {
 		this.event = event;
@@ -39,6 +40,14 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 		return this;
 	}
 
+	@Override
+	public Internal<S, E, C> internal(S state) {
+		this.from = state;
+		this.to = state;
+		runEntryAndExit = false;
+		return this;
+	}
+
 	public When<S, E, C> when(Condition<C> condition) {
 		this.condition = condition;
 		return this;
@@ -60,8 +69,10 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 		}
 		if (from == null) {
 			transitionModel.addFromAllTransition(to, event, (Condition<C>) condition, actions);
-		} else {
+		} else if (runEntryAndExit) {
 			transitionModel.addTransition(from, to, event, (Condition<C>) condition, actions);
+		} else {
+			transitionModel.addInternalTransition(from, to, event, (Condition<C>) condition, actions);
 		}
 	}
 
