@@ -3,7 +3,6 @@ package se.fearless.fettle;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
-import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
@@ -84,10 +83,7 @@ public class Example {
 			}
 		};
 
-		List<Action<States, String, Void>> actions = GuavaReplacement.newArrayList();
-		actions.add(action1);
-		actions.add(action2);
-		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(actions);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(action1).thenPerform(action2);
 	}
 
 	@Test

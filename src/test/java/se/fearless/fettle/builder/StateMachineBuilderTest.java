@@ -1,26 +1,16 @@
 package se.fearless.fettle.builder;
 
-import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
-import se.fearless.fettle.Action;
-import se.fearless.fettle.Arguments;
-import se.fearless.fettle.Condition;
-import se.fearless.fettle.StateMachine;
-import se.fearless.fettle.StateMachineTemplate;
-import se.fearless.fettle.States;
+import se.fearless.fettle.*;
 import se.fearless.fettle.export.DotExporter;
 import se.fearless.fettle.impl.AbstractTransitionModel;
 import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.verifyNever;
-import static se.mockachino.Mockachino.verifyOnce;
+import static org.junit.Assert.*;
+import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class StateMachineBuilderTest {
@@ -186,11 +176,7 @@ public class StateMachineBuilderTest {
 		Action<States, String, Void> action1 = mock(ACTION_TYPE_TOKEN);
 		Action<States, String, Void> action2 = mock(ACTION_TYPE_TOKEN);
 
-		List<Action<States, String, Void>> actions = GuavaReplacement.newArrayList();
-		actions.add(action1);
-		actions.add(action2);
-
-		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(actions);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(action1).thenPerform(action2);
 
 		StateMachine<States, String, Void> machine = builder.build(States.INITIAL);
 
@@ -229,16 +215,14 @@ public class StateMachineBuilderTest {
 				assertEquals(Arguments.NO_ARGS, context);
 			}
 		};
-		List<Action<States, String, Arguments>> actions = Lists.newArrayList();
-		actions.add(action);
-		actions.add(wasCalledAction);
+
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(new Condition<Arguments>() {
 			@Override
 			public boolean isSatisfied(Arguments context) {
 				assertEquals(Arguments.NO_ARGS, context);
 				return true;
 			}
-		}).perform(actions);
+		}).perform(action).thenPerform(wasCalledAction);
 		StateMachine<States, String, Arguments> stateMachine = builder.build(States.INITIAL);
 		stateMachine.fireEvent("foo");
 

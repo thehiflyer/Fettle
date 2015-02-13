@@ -8,7 +8,7 @@ import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, To<S, E, C>, On<S, E, C>, When<S, E, C>, Internal<S, E, C> {
+class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, To<S, E, C>, On<S, E, C>, When<S, E, C>, Internal<S, E, C>, Then<S, E, C> {
 
 	private final List<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
 	private S from;
@@ -53,12 +53,14 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 		return this;
 	}
 
-	public void perform(List<Action<S, E, C>> actions) {
-		this.actions.addAll(actions);
+	public Then<S, E, C> perform(Action<S, E, C> action) {
+		this.actions.add(action);
+		return this;
 	}
 
-	public void perform(Action<S, E, C> action) {
-		this.actions.add(action);
+	@Override
+	public Then<S, E, C> thenPerform(Action<S, E, C> action) {
+		return perform(action);
 	}
 
 	@SuppressWarnings("unchecked")

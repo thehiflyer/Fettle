@@ -1,6 +1,6 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Lists;
+import com.googlecode.gentyref.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
@@ -15,6 +15,8 @@ import static se.mockachino.matchers.Matchers.any;
 public class ConcurrentEventsTest {
 
 	private StateMachineBuilder<States, String, Void> builder;
+	private static final TypeToken<Action<States, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
+	};
 
 	@Before
 	public void setUp() throws Exception {
@@ -174,8 +176,8 @@ public class ConcurrentEventsTest {
 				stateMachine.fireEvent("second");
 			}
 		};
-		Action<States, String, Void> otherAction = mock(Action.class);
-		builder.transition().from(States.INITIAL).to(States.ONE).on("first").perform(Lists.newArrayList(changeStateAction, otherAction));
+		Action<States, String, Void> otherAction = mock(ACTION_TYPE_TOKEN);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("first").perform(changeStateAction).thenPerform(otherAction);
 
 		builder.transition().from(States.ONE).to(States.TWO).on("second");
 
