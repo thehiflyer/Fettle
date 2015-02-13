@@ -8,7 +8,7 @@ sourceCompatibility = 1.6
 
 group = 'se.fearless'
 archivesBaseName = "fettle"
-version = '0.8.4'
+version = '0.9.0-SNAPSHOT'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 defaultTasks 'build'
