@@ -4,5 +4,4 @@ build/
 .idea
 fettle.iml
 secring.gpg
-gradle.properties
 checkStyle-cacheFile
