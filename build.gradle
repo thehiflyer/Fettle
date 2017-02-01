@@ -1,8 +1,23 @@
+buildscript {
+	repositories {
+		mavenCentral()
+		//Needed only for SNAPSHOT versions
+		//maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+	}
+	dependencies {
+		classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.10'
+	}
+}
+
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'maven'
 apply plugin: 'signing'
+
+
+
+apply plugin: "info.solidsoft.pitest"
 
 sourceCompatibility = 1.6
 
@@ -135,5 +150,5 @@ uploadArchives {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
+    gradleVersion = '3.3'
 }
