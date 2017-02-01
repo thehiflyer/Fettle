@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 
-public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S,E,C> {
+public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S, E, C> {
 	private final TransitionModel<S, E, C> model;
 	private final Lock lock;
 	private S currentState;
@@ -61,7 +61,7 @@ public class TemplateBasedStateMachine<S, E, C> implements StateMachine<S,E,C> {
 	}
 
 	@Override
-	public Map<E,Collection<? extends Transition<S, E, C>>> getPossibleTransitions(S fromState) {
+	public Map<E, Collection<? extends Transition<S, E, C>>> getPossibleTransitions(S fromState) {
 		return model.getPossibleTransitions(fromState);
 	}
 }

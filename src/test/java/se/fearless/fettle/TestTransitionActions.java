@@ -12,14 +12,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static se.mockachino.Mockachino.*;
+import static se.mockachino.Mockachino.mock;
+import static se.mockachino.Mockachino.newOrdering;
+import static se.mockachino.Mockachino.verifyNever;
+import static se.mockachino.Mockachino.verifyOnce;
 import static se.mockachino.matchers.Matchers.any;
 
 public class TestTransitionActions {
 
-	public static final TypeToken<Action<States,String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
+	private static final TypeToken<Action<States, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
 	};
-
 
 	@Test
 	public void testTransitionCreation() {
@@ -39,7 +41,7 @@ public class TestTransitionActions {
 
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
 		Action<States, String, Void> transitionAction1 = mock(ACTION_TYPE_TOKEN);
-		ArrayList<Action<States,String,Void>> actions1 = Lists.newArrayList();
+		ArrayList<Action<States, String, Void>> actions1 = Lists.newArrayList();
 		actions1.add(transitionAction1);
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.<Void>always(), actions1);
 		Action<States, String, Void> transitionAction2 = mock(ACTION_TYPE_TOKEN);
@@ -96,7 +98,7 @@ public class TestTransitionActions {
 
 	@Test
 	public void orderOfEntryTransitionAndExitActions() throws Exception {
-		StateMachineBuilder<States,String, Void> builder = Fettle.newBuilder(States.class, String.class);
+		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		Action<States, String, Void> action1 = mock(ACTION_TYPE_TOKEN);
 		Action<States, String, Void> action2 = mock(ACTION_TYPE_TOKEN);
 		Action<States, String, Void> action3 = mock(ACTION_TYPE_TOKEN);

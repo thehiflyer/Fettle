@@ -5,7 +5,7 @@ import se.fearless.fettle.Condition;
 
 import java.util.Collection;
 
-public class BasicTransition<S, E, C> extends AbstractTransition<S,E,C> {
+public class BasicTransition<S, E, C> extends AbstractTransition<S, E, C> {
 
 	public BasicTransition(S to, Condition<C> condition, Collection<Action<S, E, C>> actions) {
 		super(to, condition, actions);

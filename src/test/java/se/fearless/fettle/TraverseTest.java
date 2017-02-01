@@ -9,9 +9,25 @@ import se.fearless.fettle.builder.StateMachineBuilder;
 import java.util.Collection;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class TraverseTest {
+
+	private static final Condition<Boolean> BOOLEAN_CONDITION = new Condition<Boolean>() {
+		@Override
+		public boolean isSatisfied(Boolean context) {
+			return context;
+		}
+	};
+
+	private static final Condition<Boolean> INVERSE_BOOLEAN_CONDITION = new Condition<Boolean>() {
+		@Override
+		public boolean isSatisfied(Boolean context) {
+			return !context;
+		}
+	};
 
 	private StateMachineBuilder<States, String, Boolean> builder;
 
@@ -43,18 +59,8 @@ public class TraverseTest {
 
 	@Test
 	public void queryWithMultipleTransitionsFromOneState() throws Exception {
-		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(new Condition<Boolean>() {
-			@Override
-			public boolean isSatisfied(Boolean context) {
-				return context;
-			}
-		});
-		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(new Condition<Boolean>() {
-			@Override
-			public boolean isSatisfied(Boolean context) {
-				return !context;
-			}
-		});
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(BOOLEAN_CONDITION);
+		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(INVERSE_BOOLEAN_CONDITION);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
@@ -81,18 +87,8 @@ public class TraverseTest {
 
 	@Test
 	public void fromAllTransitionsAreIncluded() throws Exception {
-		builder.transition().fromAll().to(States.ONE).on("foo").when(new Condition<Boolean>() {
-			@Override
-			public boolean isSatisfied(Boolean context) {
-				return context;
-			}
-		});
-		builder.transition().fromAll().to(States.TWO).on("foo").when(new Condition<Boolean>() {
-			@Override
-			public boolean isSatisfied(Boolean context) {
-				return !context;
-			}
-		});
+		builder.transition().fromAll().to(States.ONE).on("foo").when(BOOLEAN_CONDITION);
+		builder.transition().fromAll().to(States.TWO).on("foo").when(INVERSE_BOOLEAN_CONDITION);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
@@ -105,18 +101,8 @@ public class TraverseTest {
 
 	@Test
 	public void fromAllTransitionsAndNormalTransitionsCanCoexist() throws Exception {
-		builder.transition().fromAll().to(States.ONE).on("foo").when(new Condition<Boolean>() {
-			@Override
-			public boolean isSatisfied(Boolean context) {
-				return context;
-			}
-		});
-		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(new Condition<Boolean>() {
-			@Override
-			public boolean isSatisfied(Boolean context) {
-				return !context;
-			}
-		});
+		builder.transition().fromAll().to(States.ONE).on("foo").when(BOOLEAN_CONDITION);
+		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(INVERSE_BOOLEAN_CONDITION);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);

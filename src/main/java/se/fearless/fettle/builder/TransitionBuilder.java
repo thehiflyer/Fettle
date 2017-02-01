@@ -77,7 +77,7 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 	}
 
 	private void handleMissingOn(String from, String to) {
-		throw new IllegalStateException("The transition (" + from+" -> " + to + ") has to be performed on an event. " +
+		throw new IllegalStateException("The transition (" + from + " -> " + to + ") has to be performed on an event. " +
 						"Use on() to specify on what event the transition should take place");
 	}
 }

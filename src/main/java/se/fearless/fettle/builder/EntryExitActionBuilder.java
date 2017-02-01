@@ -57,6 +57,8 @@ public class EntryExitActionBuilder<S, E, C> implements EntryExit<S, E, C> {
 			case EXIT:
 				machineConstructor.addExitAction(state, action);
 				break;
+			default:
+				throw new IllegalStateException("Unexpected mode " + mode);
 		}
 	}
 }

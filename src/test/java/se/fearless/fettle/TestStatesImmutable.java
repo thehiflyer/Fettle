@@ -14,7 +14,7 @@ import static se.mockachino.matchers.Matchers.any;
 
 public class TestStatesImmutable {
 
-	public static final TypeToken<Action<States,String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
+	private static final TypeToken<Action<States, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
 	};
 
 

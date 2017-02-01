@@ -3,23 +3,33 @@ package se.fearless.fettle.builder;
 import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
-import se.fearless.fettle.*;
+import se.fearless.fettle.Action;
+import se.fearless.fettle.Arguments;
+import se.fearless.fettle.Condition;
+import se.fearless.fettle.StateMachine;
+import se.fearless.fettle.StateMachineTemplate;
+import se.fearless.fettle.States;
 import se.fearless.fettle.export.DotExporter;
 import se.fearless.fettle.impl.AbstractTransitionModel;
 import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static se.mockachino.Mockachino.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static se.mockachino.Mockachino.mock;
+import static se.mockachino.Mockachino.verifyNever;
+import static se.mockachino.Mockachino.verifyOnce;
 import static se.mockachino.matchers.Matchers.any;
 
 public class StateMachineBuilderTest {
 
-	public static final TypeToken<Action<States,String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
+	private static final TypeToken<Action<States, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
 	};
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testBuilder() {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
 

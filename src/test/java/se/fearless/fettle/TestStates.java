@@ -1,6 +1,5 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 import se.fearless.fettle.export.DotExporter;
@@ -13,16 +12,19 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static se.mockachino.Mockachino.*;
+import static se.mockachino.Mockachino.mock;
+import static se.mockachino.Mockachino.verifyNever;
+import static se.mockachino.Mockachino.verifyOnce;
+import static se.mockachino.Mockachino.when;
 import static se.mockachino.matchers.Matchers.any;
 
 public class TestStates {
 
-	public static final TypeToken<Condition<Arguments>> CONDITION_TYPE_TOKEN = new TypeToken<Condition<Arguments>>() {
+	private static final TypeToken<Condition<Arguments>> CONDITION_TYPE_TOKEN = new TypeToken<Condition<Arguments>>() {
 	};
 
-    public static final TypeToken<Action<States,String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
-    };
+	private static final TypeToken<Action<States, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
+	};
 
 	@Test
 	public void simpleStateTransition() {
@@ -178,41 +180,41 @@ public class TestStates {
 		exporter.asDot(System.out, true);
 	}
 
-    @Test
-    public void addMultipleTransitionsFromOneState() throws Exception {
-        MutableTransitionModel<States, String, Arguments> mutableTransitionModel = MutableTransitionModelImpl.create(States.class, String.class);
+	@Test
+	public void addMultipleTransitionsFromOneState() throws Exception {
+		MutableTransitionModel<States, String, Arguments> mutableTransitionModel = MutableTransitionModelImpl.create(States.class, String.class);
 
-        Condition<Arguments> toOne = mock(CONDITION_TYPE_TOKEN);
-        Condition<Arguments> toTwo = mock(CONDITION_TYPE_TOKEN);
-        List<Action<States, String, Arguments>> actions = Collections.emptyList();
-        mutableTransitionModel.addTransition(States.INITIAL, States.ONE, "tick", toOne, actions);
-        mutableTransitionModel.addTransition(States.INITIAL, States.TWO, "tick", toTwo, actions);
+		Condition<Arguments> toOne = mock(CONDITION_TYPE_TOKEN);
+		Condition<Arguments> toTwo = mock(CONDITION_TYPE_TOKEN);
+		List<Action<States, String, Arguments>> actions = Collections.emptyList();
+		mutableTransitionModel.addTransition(States.INITIAL, States.ONE, "tick", toOne, actions);
+		mutableTransitionModel.addTransition(States.INITIAL, States.TWO, "tick", toTwo, actions);
 
-        StateMachine<States, String, Arguments> stateMachine = mutableTransitionModel.newStateMachine(States.INITIAL);
+		StateMachine<States, String, Arguments> stateMachine = mutableTransitionModel.newStateMachine(States.INITIAL);
 
-        when(toTwo.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
-        stateMachine.fireEvent("tick", Arguments.NO_ARGS);
-        assertEquals(States.TWO, stateMachine.getCurrentState());
-    }
+		when(toTwo.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
+		stateMachine.fireEvent("tick", Arguments.NO_ARGS);
+		assertEquals(States.TWO, stateMachine.getCurrentState());
+	}
 
-    @Test
-    public void addMultipleTransitionsFromAllStates() throws Exception {
-        MutableTransitionModel<States, String, Arguments> mutableTransitionModel = MutableTransitionModelImpl.create(States.class, String.class);
+	@Test
+	public void addMultipleTransitionsFromAllStates() throws Exception {
+		MutableTransitionModel<States, String, Arguments> mutableTransitionModel = MutableTransitionModelImpl.create(States.class, String.class);
 
-        Condition<Arguments> toOne = mock(CONDITION_TYPE_TOKEN);
-        Condition<Arguments> toTwo = mock(CONDITION_TYPE_TOKEN);
-        List<Action<States, String, Arguments>> actions = Collections.emptyList();
-        mutableTransitionModel.addFromAllTransition(States.ONE, "tick", toOne, actions);
-        mutableTransitionModel.addFromAllTransition(States.TWO, "tick", toTwo, actions);
+		Condition<Arguments> toOne = mock(CONDITION_TYPE_TOKEN);
+		Condition<Arguments> toTwo = mock(CONDITION_TYPE_TOKEN);
+		List<Action<States, String, Arguments>> actions = Collections.emptyList();
+		mutableTransitionModel.addFromAllTransition(States.ONE, "tick", toOne, actions);
+		mutableTransitionModel.addFromAllTransition(States.TWO, "tick", toTwo, actions);
 
-        StateMachine<States, String, Arguments> stateMachine = mutableTransitionModel.newStateMachine(States.INITIAL);
+		StateMachine<States, String, Arguments> stateMachine = mutableTransitionModel.newStateMachine(States.INITIAL);
 
-        when(toTwo.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
-        stateMachine.fireEvent("tick", Arguments.NO_ARGS);
-        assertEquals(States.TWO, stateMachine.getCurrentState());
-    }
+		when(toTwo.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
+		stateMachine.fireEvent("tick", Arguments.NO_ARGS);
+		assertEquals(States.TWO, stateMachine.getCurrentState());
+	}
 
 
-    private class TestState {
+	private class TestState {
 	}
 }

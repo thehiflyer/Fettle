@@ -15,6 +15,7 @@ public class ActionsTest {
 
 	private static TypeToken<Action<String, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<String, String, Void>>() {
 	};
+
 	private Action<String, String, Void> action1;
 	private Action<String, String, Void> action2;
 	private Action<String, String, Void> action3;
