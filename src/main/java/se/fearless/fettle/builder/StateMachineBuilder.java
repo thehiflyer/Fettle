@@ -21,11 +21,11 @@ public class StateMachineBuilder<S, E, C> {
 	}
 
 	public static <S, E, C> StateMachineBuilder<S, E, C> create(Class<S> stateClass, Class<E> eventClass) {
-		return new StateMachineBuilder<S, E, C>(stateClass, eventClass);
+		return new StateMachineBuilder<>(stateClass, eventClass);
 	}
 
 	public Transition<S, E, C> transition() {
-		TransitionBuilder<S, E, C> transition = new TransitionBuilder<S, E, C>();
+		TransitionBuilder<S, E, C> transition = new TransitionBuilder<>();
 		transitionBuilders.add(transition);
 		return transition;
 	}

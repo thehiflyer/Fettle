@@ -53,7 +53,7 @@ public class StateMachineBuilderTest {
 
 
 		assertEquals(States.TWO, machine.getCurrentState());
-		DotExporter<States, String, Void> exporter = new DotExporter<States, String, Void>((AbstractTransitionModel<States, String, Void>) stateMachineTemplate, "test");
+		DotExporter<States, String, Void> exporter = new DotExporter<>((AbstractTransitionModel<States, String, Void>) stateMachineTemplate, "test");
 		exporter.asDot(System.out, true);
 	}
 
@@ -162,7 +162,7 @@ public class StateMachineBuilderTest {
 	private static class CheckWasCalledAction implements Action<States, String, Arguments> {
 		private int callCount;
 		@Override
-		public void onTransition(States from, States to, String causedBy, Arguments context, StateMachine<States, String, Arguments> statesStringArgumentsStateMachine) {
+		public void onTransition(States from, States to, String causedBy, Arguments context, StateMachine<States, String, Arguments> stateMachine) {
 			callCount++;
 		}
 
@@ -231,8 +231,7 @@ public class StateMachineBuilderTest {
 		try {
 			builder.build(null);
 			fail("Null should not be permitted");
-		} catch (IllegalArgumentException e) {
-
+		} catch (IllegalArgumentException ignored) {
 		}
 	}
 
@@ -243,7 +242,7 @@ public class StateMachineBuilderTest {
 		CheckWasCalledAction wasCalledAction = new CheckWasCalledAction();
 		Action<States, String, Arguments> action = new Action<States, String, Arguments>() {
 			@Override
-			public void onTransition(States from, States to, String causedBy, Arguments context, StateMachine<States, String, Arguments> statesStringArgumentsStateMachine) {
+			public void onTransition(States from, States to, String causedBy, Arguments context, StateMachine<States, String, Arguments> stateMachine) {
 				assertEquals(Arguments.NO_ARGS, context);
 			}
 		};

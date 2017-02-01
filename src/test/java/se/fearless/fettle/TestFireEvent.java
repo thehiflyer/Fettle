@@ -18,7 +18,7 @@ public class TestFireEvent {
 	public void fireEvent() {
 		MutableTransitionModelImpl<States, Triggers, Void> model = MutableTransitionModelImpl.create(States.class, Triggers.class);
 
-		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, BasicConditions.<Void>always(), Collections.<Action<States, Triggers, Void>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, BasicConditions.always(), Collections.emptyList());
 		StateMachine<States, Triggers, Void> machine = model.newStateMachine(States.INITIAL);
 
 		assertFalse(machine.fireEvent(Triggers.BAR));
@@ -40,7 +40,7 @@ public class TestFireEvent {
 				String input = (String) args.getFirst();
 				return "hej".equals(input);
 			}
-		}, Collections.<Action<States, Triggers, Arguments>>emptyList());
+		}, Collections.emptyList());
 
 		StateMachine<States, Triggers, Arguments> machine = model.newStateMachine(States.INITIAL);
 		assertFalse(machine.fireEvent(Triggers.FOO));

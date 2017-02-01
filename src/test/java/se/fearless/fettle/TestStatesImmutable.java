@@ -22,8 +22,8 @@ public class TestStatesImmutable {
 	public void simpleStateTransition() {
 		MutableTransitionModelImpl<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.always(), Collections.emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.always(), Collections.emptyList());
 
 		StateMachine<States, String, Void> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
 
@@ -48,8 +48,8 @@ public class TestStatesImmutable {
 		MutableTransitionModelImpl<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 
-		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addTransition(States.ONE, States.TWO, "", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.always(), Collections.emptyList());
+		model.addTransition(States.ONE, States.TWO, "", BasicConditions.always(), Collections.emptyList());
 		Action<States, String, Void> entryAction = mock(ACTION_TYPE_TOKEN);
 		model.addEntryAction(States.ONE, entryAction);
 		Action<States, String, Void> exitAction = mock(ACTION_TYPE_TOKEN);
@@ -82,9 +82,9 @@ public class TestStatesImmutable {
 
 		MutableTransitionModelImpl<TestState, String, Void> model = MutableTransitionModelImpl.create(TestState.class, String.class);
 
-		model.addTransition(initial, one, "", BasicConditions.<Void>always(), Collections.<Action<TestState, String, Void>>emptyList());
+		model.addTransition(initial, one, "", BasicConditions.always(), Collections.emptyList());
 
-		model.addTransition(one, two, "", BasicConditions.<Void>always(), Collections.<Action<TestState, String, Void>>emptyList());
+		model.addTransition(one, two, "", BasicConditions.always(), Collections.emptyList());
 		StateMachine<TestState, String, Void> machine = model.createImmutableClone().newStateMachine(initial);
 
 		assertEquals(initial, machine.getCurrentState());
@@ -107,9 +107,9 @@ public class TestStatesImmutable {
 	public void forceSetState() {
 		MutableTransitionModel<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.always(), Collections.emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.always(), Collections.emptyList());
+		model.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.always(), Collections.emptyList());
 
 		Action<States, String, Void> entryAction1 = mock(ACTION_TYPE_TOKEN);
 		model.addEntryAction(States.INITIAL, entryAction1);
@@ -134,9 +134,9 @@ public class TestStatesImmutable {
 
 		MutableTransitionModel<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addFromAllTransition(States.INITIAL, "back", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.always(), Collections.emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.always(), Collections.emptyList());
+		model.addFromAllTransition(States.INITIAL, "back", BasicConditions.always(), Collections.emptyList());
 
 		StateMachine<States, String, Void> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
 
@@ -153,9 +153,9 @@ public class TestStatesImmutable {
 		MutableTransitionModel<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 
-		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
-		model.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.always(), Collections.emptyList());
+		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.always(), Collections.emptyList());
+		model.addFromAllTransition(States.INITIAL, "hopp", BasicConditions.always(), Collections.emptyList());
 
 		StateMachine<States, String, Void> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
 

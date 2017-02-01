@@ -1,6 +1,5 @@
 package se.fearless.fettle;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,20 +13,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class TraverseTest {
-
-	private static final Condition<Boolean> BOOLEAN_CONDITION = new Condition<Boolean>() {
-		@Override
-		public boolean isSatisfied(Boolean context) {
-			return context;
-		}
-	};
-
-	private static final Condition<Boolean> INVERSE_BOOLEAN_CONDITION = new Condition<Boolean>() {
-		@Override
-		public boolean isSatisfied(Boolean context) {
-			return !context;
-		}
-	};
 
 	private StateMachineBuilder<States, String, Boolean> builder;
 
@@ -59,8 +44,8 @@ public class TraverseTest {
 
 	@Test
 	public void queryWithMultipleTransitionsFromOneState() throws Exception {
-		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(BOOLEAN_CONDITION);
-		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(INVERSE_BOOLEAN_CONDITION);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(context -> context);
+		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(context -> !context);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
@@ -87,8 +72,8 @@ public class TraverseTest {
 
 	@Test
 	public void fromAllTransitionsAreIncluded() throws Exception {
-		builder.transition().fromAll().to(States.ONE).on("foo").when(BOOLEAN_CONDITION);
-		builder.transition().fromAll().to(States.TWO).on("foo").when(INVERSE_BOOLEAN_CONDITION);
+		builder.transition().fromAll().to(States.ONE).on("foo").when(context -> context);
+		builder.transition().fromAll().to(States.TWO).on("foo").when(context -> !context);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
@@ -101,8 +86,8 @@ public class TraverseTest {
 
 	@Test
 	public void fromAllTransitionsAndNormalTransitionsCanCoexist() throws Exception {
-		builder.transition().fromAll().to(States.ONE).on("foo").when(BOOLEAN_CONDITION);
-		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(INVERSE_BOOLEAN_CONDITION);
+		builder.transition().fromAll().to(States.ONE).on("foo").when(context -> context);
+		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(context -> !context);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
@@ -120,12 +105,7 @@ public class TraverseTest {
 	}
 
 	private void checkExistenceOfTransitionsTo(final States state, Collection<? extends Transition<States, String, Boolean>> transitions) {
-		Transition<States, String, Boolean> transition1 = Iterables.find(transitions, new Predicate<Transition<States, String, Boolean>>() {
-			@Override
-			public boolean apply(Transition<States, String, Boolean> input) {
-				return input.getTo() == state;
-			}
-		});
+		Transition<States, String, Boolean> transition1 = transitions.stream().filter(input -> input.getTo() == state).findFirst().get();
 		assertNotNull(transition1);
 	}
 }

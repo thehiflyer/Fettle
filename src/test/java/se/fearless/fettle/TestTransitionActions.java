@@ -29,7 +29,7 @@ public class TestTransitionActions {
 		TypeToken<Condition<Void>> conditionTypeToken = new TypeToken<Condition<Void>>() {
 		};
 		Condition<Void> condition = mock(conditionTypeToken);
-		BasicTransition<States, String, Void> transition = new BasicTransition<States, String, Void>(to, condition, Collections.<Action<States, String, Void>>emptyList());
+		BasicTransition<States, String, Void> transition = new BasicTransition<>(to, condition, Collections.emptyList());
 
 		assertEquals(to, transition.getTo());
 		assertEquals(condition, transition.getCondition());
@@ -39,15 +39,15 @@ public class TestTransitionActions {
 	public void actionsAreRunOnTransitions() {
 		MutableTransitionModel<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.<Void>always(), Collections.<Action<States, String, Void>>emptyList());
+		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.always(), Collections.emptyList());
 		Action<States, String, Void> transitionAction1 = mock(ACTION_TYPE_TOKEN);
 		ArrayList<Action<States, String, Void>> actions1 = Lists.newArrayList();
 		actions1.add(transitionAction1);
-		model.addTransition(States.ONE, States.TWO, "", BasicConditions.<Void>always(), actions1);
+		model.addTransition(States.ONE, States.TWO, "", BasicConditions.always(), actions1);
 		Action<States, String, Void> transitionAction2 = mock(ACTION_TYPE_TOKEN);
 		ArrayList<Action<States, String, Void>> actions2 = Lists.newArrayList();
 		actions2.add(transitionAction2);
-		model.addTransition(States.TWO, States.ONE, "", BasicConditions.<Void>always(), actions2);
+		model.addTransition(States.TWO, States.ONE, "", BasicConditions.always(), actions2);
 
 		StateMachine<States, String, Void> machine = model.newStateMachine(States.INITIAL);
 
@@ -83,11 +83,11 @@ public class TestTransitionActions {
 		Action<States, String, Arguments> transitionAction1 = mock(argumentTypeToken);
 		ArrayList<Action<States, String, Arguments>> actions1 = Lists.newArrayList();
 		actions1.add(transitionAction1);
-		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.<Arguments>always(), actions1);
+		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.always(), actions1);
 		Action<States, String, Arguments> transitionAction2 = mock(argumentTypeToken);
 		ArrayList<Action<States, String, Arguments>> actions2 = Lists.newArrayList();
 		actions2.add(transitionAction2);
-		model.addTransition(States.ONE, States.TWO, "", BasicConditions.<Arguments>always(), actions2);
+		model.addTransition(States.ONE, States.TWO, "", BasicConditions.always(), actions2);
 
 		StateMachine<States, String, Arguments> machine = model.newStateMachine(States.INITIAL);
 

@@ -31,8 +31,8 @@ public class Example {
 		MutableTransitionModel<States, String, Void> model = Fettle.newTransitionModel(States.class, String.class);
 
 
-		List<Action<States, String, Void>> actions = Lists.<Action<States, String, Void>>newArrayList(new SoutAction("Performing fooTransition"));
-		model.addTransition(States.INITIAL, States.ONE, "foo", BasicConditions.<Void>always(), actions);
+		List<Action<States, String, Void>> actions = Lists.newArrayList(new SoutAction("Performing fooTransition"));
+		model.addTransition(States.INITIAL, States.ONE, "foo", BasicConditions.always(), actions);
 		model.addEntryAction(States.ONE, new SoutAction("Entering state ONE"));
 
 		StateMachine<States, String, Void> stateMachine = model.newStateMachine(States.INITIAL);
@@ -44,19 +44,9 @@ public class Example {
 	@Test
 	public void whenExample() throws Exception {
 		StateMachineBuilder<States, String, Arguments> builder = Fettle.newBuilder(States.class, String.class);
-		Condition<Arguments> firstArgIsOne = new Condition<Arguments>() {
-			@Override
-			public boolean isSatisfied(Arguments args) {
-				return args.getNumberOfArguments() > 0 && args.getFirst().equals(1);
-			}
-		};
+		Condition<Arguments> firstArgIsOne = args -> args.getNumberOfArguments() > 0 && args.getFirst().equals(1);
 
-		Condition<Arguments> noArguments = new Condition<Arguments>() {
-			@Override
-			public boolean isSatisfied(Arguments args) {
-				return args.getNumberOfArguments() == 0;
-			}
-		};
+		Condition<Arguments> noArguments = args -> args.getNumberOfArguments() == 0;
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("tick").when(BasicConditions.or(firstArgIsOne, noArguments));
 
@@ -71,17 +61,11 @@ public class Example {
 	@Test
 	public void transitionActionExample() throws Exception {
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
-		Action<States, String, Void> action1 = new Action<States, String, Void>() {
-			@Override
-			public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine<States, String, Void> statesStringStateMachine) {
-				// do whatever is desired
-			}
+		Action<States, String, Void> action1 = (from, to, causedBy, ignored, statesStringStateMachine) -> {
+			// do whatever is desired
 		};
-		Action<States, String, Void> action2 = new Action<States, String, Void>() {
-			@Override
-			public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine<States, String, Void> statesStringStateMachine) {
-				// do whatever is desired
-			}
+		Action<States, String, Void> action2 = (from, to, causedBy, ignored, statesStringStateMachine) -> {
+			// do whatever is desired
 		};
 
 		List<Action<States, String, Void>> actions = GuavaReplacement.newArrayList();
@@ -93,17 +77,11 @@ public class Example {
 	@Test
 	public void entryExitActionExample() throws Exception {
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
-		Action<States, String, Void> action1 = new Action<States, String, Void>() {
-			@Override
-			public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine<States, String, Void> statesStringStateMachine) {
-				// do whatever is desired
-			}
+		Action<States, String, Void> action1 = (from, to, causedBy, ignored, statesStringStateMachine) -> {
+			// do whatever is desired
 		};
-		Action<States, String, Void> action2 = new Action<States, String, Void>() {
-			@Override
-			public void onTransition(States from, States to, String causedBy, Void ignored, StateMachine<States, String, Void> statesStringStateMachine) {
-				// do whatever is desired
-			}
+		Action<States, String, Void> action2 = (from, to, causedBy, ignored, statesStringStateMachine) -> {
+			// do whatever is desired
 		};
 
 

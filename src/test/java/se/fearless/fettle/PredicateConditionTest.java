@@ -11,7 +11,7 @@ public class PredicateConditionTest {
 
 	@Test
 	public void predicate() {
-		PredicateCondition<String> condition = new PredicateCondition<String>(Predicates.containsPattern("foo"));
+		PredicateCondition<String> condition = new PredicateCondition<>(Predicates.containsPattern("foo")::apply);
 
 		assertFalse(condition.isSatisfied("froo"));
 		assertTrue(condition.isSatisfied("foobar"));

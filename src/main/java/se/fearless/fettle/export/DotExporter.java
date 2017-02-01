@@ -24,7 +24,7 @@ public class DotExporter<S, E, C> {
 		writer.println("digraph " + name + " {");
 		Map<S, Map<E, Collection<Transition<S, E, C>>>> stateTransitions = model.getStateTransitions();
 		Set<S> states = stateTransitions.keySet();
-		Set<S> allStates = new HashSet<S>(states);
+		Set<S> allStates = new HashSet<>(states);
 		for (S state : states) {
 			Map<E, Collection<Transition<S, E, C>>> transitionsFromState = stateTransitions.get(state);
 			for (Map.Entry<E, Collection<Transition<S, E, C>>> transitions : transitionsFromState.entrySet()) {

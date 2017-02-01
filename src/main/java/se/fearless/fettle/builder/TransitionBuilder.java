@@ -68,11 +68,11 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 			handleMissingOn(fromString, to.toString());
 		}
 		if (from == null) {
-			transitionModel.addFromAllTransition(to, event, (Condition<C>) condition, actions);
+			transitionModel.addFromAllTransition(to, event, condition, actions);
 		} else if (runEntryAndExit) {
-			transitionModel.addTransition(from, to, event, (Condition<C>) condition, actions);
+			transitionModel.addTransition(from, to, event, condition, actions);
 		} else {
-			transitionModel.addInternalTransition(from, to, event, (Condition<C>) condition, actions);
+			transitionModel.addInternalTransition(from, to, event, condition, actions);
 		}
 	}
 

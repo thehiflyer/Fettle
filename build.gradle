@@ -19,11 +19,11 @@ apply plugin: 'signing'
 
 apply plugin: "info.solidsoft.pitest"
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.8
 
 group = 'se.fearless'
 archivesBaseName = "fettle"
-version = '0.9.0-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 defaultTasks 'build'
@@ -67,9 +67,6 @@ checkstyleMain {
 
 checkstyleTest {
     ignoreFailures = true
-}
-
-task checkstyleReport << {
 }
 
 jacocoTestReport {

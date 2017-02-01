@@ -13,7 +13,7 @@ import static se.mockachino.Mockachino.mock;
 
 public class ActionsTest {
 
-	private static TypeToken<Action<String, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<String, String, Void>>() {
+	private static final TypeToken<Action<String, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<String, String, Void>>() {
 	};
 
 	private Action<String, String, Void> action1;

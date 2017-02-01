@@ -10,10 +10,10 @@ public class GuavaReplacement {
 	}
 
 	public static <T> List<T> newArrayList() {
-		return new ArrayList<T>();
+		return new ArrayList<>();
 	}
 
 	public static <K, V> Map<K, V> newHashMap() {
-		return new HashMap<K, V>();
+		return new HashMap<>();
 	}
 }

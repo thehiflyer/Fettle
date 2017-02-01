@@ -78,6 +78,6 @@ public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S
 
 	@Override
 	public StateMachine<S, E, C> newStateMachine(S init, Lock lock) {
-		return new TemplateBasedStateMachine<S, E, C>(this, init, lock);
+		return new TemplateBasedStateMachine<>(this, init, lock);
 	}
 }

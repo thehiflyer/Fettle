@@ -14,7 +14,7 @@ public class MovementUsecase {
 	private interface State {
 	}
 
-	private static enum MovementEvents {
+	private enum MovementEvents {
 		RELEASED_SPACE, HIT_GROUND, ON_UPDATE, PRESSED_SPACE
 	}
 
@@ -28,8 +28,8 @@ public class MovementUsecase {
 
 		MutableTransitionModelImpl<State, MovementEvents, Void> model = MutableTransitionModelImpl.create(State.class, MovementEvents.class);
 
-		List<Action<State, MovementEvents, Void>> noActions = Collections.<Action<State, MovementEvents, Void>>emptyList();
-		Condition<Void> always = BasicConditions.<Void>always();
+		List<Action<State, MovementEvents, Void>> noActions = Collections.emptyList();
+		Condition<Void> always = BasicConditions.always();
 		model.addTransition(walking, jumping, MovementEvents.PRESSED_SPACE, always, noActions);
 		model.addTransition(jumping, falling, MovementEvents.RELEASED_SPACE, always, noActions);
 		model.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, always, noActions);

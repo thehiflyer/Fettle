@@ -1,7 +1,8 @@
 package se.fearless.fettle.util;
 
-import com.google.common.base.Predicate;
 import se.fearless.fettle.Condition;
+
+import java.util.function.Predicate;
 
 public class PredicateCondition<C> implements Condition<C> {
 
@@ -13,6 +14,6 @@ public class PredicateCondition<C> implements Condition<C> {
 
 	@Override
 	public boolean isSatisfied(C context) {
-		return predicate.apply(context);
+		return predicate.test(context);
 	}
 }

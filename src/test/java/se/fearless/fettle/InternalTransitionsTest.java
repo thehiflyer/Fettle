@@ -5,12 +5,14 @@ import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
 import se.mockachino.annotations.Mock;
 
-import static se.mockachino.Mockachino.*;
+import static se.mockachino.Mockachino.setupMocks;
+import static se.mockachino.Mockachino.verifyNever;
+import static se.mockachino.Mockachino.verifyOnce;
 import static se.mockachino.matchers.Matchers.any;
 
 public class InternalTransitionsTest {
 
-	public static final String INTERNAL_TRANSITION_TRIGGER = "internal";
+	private static final String INTERNAL_TRANSITION_TRIGGER = "internal";
 	@Mock
 	private Action<States, String, Void> transitionAction;
 

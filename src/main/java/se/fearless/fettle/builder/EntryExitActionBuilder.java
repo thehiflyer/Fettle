@@ -24,11 +24,11 @@ public class EntryExitActionBuilder<S, E, C> implements EntryExit<S, E, C> {
 
 
 	public static <S, E, C> EntryExitActionBuilder<S, E, C> entry(S to) {
-		return new EntryExitActionBuilder<S, E, C>(Mode.ENTRY, to);
+		return new EntryExitActionBuilder<>(Mode.ENTRY, to);
 	}
 
 	public static <S, E, C> EntryExitActionBuilder<S, E, C> exit(S from) {
-		return new EntryExitActionBuilder<S, E, C>(Mode.EXIT, from);
+		return new EntryExitActionBuilder<>(Mode.EXIT, from);
 	}
 
 	@Override
