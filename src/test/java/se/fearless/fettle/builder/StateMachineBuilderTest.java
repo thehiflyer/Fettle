@@ -3,24 +3,15 @@ package se.fearless.fettle.builder;
 import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
-import se.fearless.fettle.Action;
-import se.fearless.fettle.Arguments;
-import se.fearless.fettle.Condition;
-import se.fearless.fettle.StateMachine;
-import se.fearless.fettle.StateMachineTemplate;
-import se.fearless.fettle.States;
+import se.fearless.fettle.*;
 import se.fearless.fettle.export.DotExporter;
 import se.fearless.fettle.impl.AbstractTransitionModel;
 import se.fearless.fettle.util.GuavaReplacement;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.verifyNever;
-import static se.mockachino.Mockachino.verifyOnce;
+import static org.junit.Assert.*;
+import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class StateMachineBuilderTest {
@@ -190,7 +181,7 @@ public class StateMachineBuilderTest {
 		actions.add(action1);
 		actions.add(action2);
 
-		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(actions);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(Actions.actions(action1, action2));
 
 		StateMachine<States, String, Void> machine = builder.build(States.INITIAL);
 
