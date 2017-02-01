@@ -208,6 +208,23 @@ public class StateMachineBuilderTest {
 	}
 
 	@Test
+	public void multiplePerformsInARowForEntryActions() throws Exception {
+		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
+		Action<States, String, Void> action1 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> action2 = mock(ACTION_TYPE_TOKEN);
+
+		builder.onEntry(States.ONE).perform(action1).perform(action2);
+		builder.transition().from(States.INITIAL).to(States.ONE).on("a");
+
+		StateMachine<States, String, Void> machine = builder.build(States.INITIAL);
+
+		machine.fireEvent("a");
+
+		verifyOnce().on(action1).onTransition(States.INITIAL, States.ONE, "a", any(Void.class), machine);
+		verifyOnce().on(action2).onTransition(States.INITIAL, States.ONE, "a", any(Void.class), machine);
+	}
+
+	@Test
 	public void nullInitialState() throws Exception {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
 		try {
