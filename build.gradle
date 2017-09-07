@@ -24,7 +24,7 @@ apply plugin: 'net.ltgt.errorprone'
 
 apply plugin: "info.solidsoft.pitest"
 
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 group = 'se.fearless'
 archivesBaseName = "fettle"
@@ -152,5 +152,5 @@ uploadArchives {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+    gradleVersion = '4.1'
 }

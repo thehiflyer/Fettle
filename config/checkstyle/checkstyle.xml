@@ -9,13 +9,6 @@
 	<!-- See http://checkstyle.sf.net/config_sizes.html -->
 	<module name="FileLength"/>
 
-	<module name="StrictDuplicateCode">
-		<property name="min" value="12"/>
-		<property name="fileExtensions" value="java, lua"/>
-	</module>
-	
-
-
 	<module name="TreeWalker">
 		<property name="tabWidth" value="3"/>
         <property name="cacheFile" value="checkStyle-cacheFile"/>
@@ -123,7 +116,6 @@
 		<module name="MissingSwitchDefault">
             <property name="severity" value="info"/>
 		</module>
-		<module name="RedundantThrows"/>
 		<module name="IllegalThrows"/>
 		<module name="IllegalCatch"/>
 		<module name="SimplifyBooleanExpression"/>

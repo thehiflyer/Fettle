@@ -192,7 +192,7 @@ public class ConcurrentEventsTest {
 		CountDownLatch latch = new CountDownLatch(1);
 		private final CountDownLatch inCondition;
 
-		public BlockingCondition(CountDownLatch inCondition) {
+		BlockingCondition(CountDownLatch inCondition) {
 			this.inCondition = inCondition;
 		}
 

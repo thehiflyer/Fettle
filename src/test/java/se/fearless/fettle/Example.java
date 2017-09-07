@@ -106,7 +106,7 @@ public class Example {
 	private static class SoutAction implements Action<States, String, Void> {
 		private final String text;
 
-		public SoutAction(String text) {
+		SoutAction(String text) {
 			this.text = text;
 		}
 
