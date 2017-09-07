@@ -188,7 +188,7 @@ public class ConcurrentEventsTest {
 
 	}
 
-	private class BlockingCondition implements Condition<Void> {
+	private static class BlockingCondition implements Condition<Void> {
 		CountDownLatch latch = new CountDownLatch(1);
 		private final CountDownLatch inCondition;
 

@@ -172,7 +172,7 @@ public class StateMachineBuilderTest {
 	}
 
 
-	private class ConditionImpl implements Condition<Void> {
+	private static class ConditionImpl implements Condition<Void> {
 		boolean pass = false;
 
 		@Override

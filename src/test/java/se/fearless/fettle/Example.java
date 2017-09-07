@@ -103,7 +103,7 @@ public class Example {
 		stateMachine.fireEvent("foo", new Arguments("bar", 1, 2));
 	}
 
-	private class SoutAction implements Action<States, String, Void> {
+	private static class SoutAction implements Action<States, String, Void> {
 		private final String text;
 
 		public SoutAction(String text) {

@@ -17,6 +17,7 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 	private Condition<C> condition = BasicConditions.always();
 	private boolean runEntryAndExit = true;
 
+	@Override
 	public On<S, E, C> on(E event) {
 		this.event = event;
 		return this;
@@ -48,15 +49,18 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 		return this;
 	}
 
+	@Override
 	public When<S, E, C> when(Condition<C> condition) {
 		this.condition = condition;
 		return this;
 	}
 
+	@Override
 	public void perform(List<Action<S, E, C>> actions) {
 		this.actions.addAll(actions);
 	}
 
+	@Override
 	public void perform(Action<S, E, C> action) {
 		this.actions.add(action);
 	}

@@ -215,6 +215,6 @@ public class TestStates {
 	}
 
 
-	private class TestState {
+	private static class TestState {
 	}
 }

@@ -3,12 +3,16 @@ package se.fearless.fettle.export;
 import se.fearless.fettle.Transition;
 import se.fearless.fettle.impl.AbstractTransitionModel;
 
+import java.io.BufferedWriter;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class DotExporter<S, E, C> {
 	private final AbstractTransitionModel<S, E, C> model;
@@ -20,7 +24,7 @@ public class DotExporter<S, E, C> {
 	}
 
 	public void asDot(OutputStream os, boolean includeFromAllTransitions) {
-		PrintWriter writer = new PrintWriter(os);
+		PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os, UTF_8)));
 		writer.println("digraph " + name + " {");
 		Map<S, Map<E, Collection<Transition<S, E, C>>>> stateTransitions = model.getStateTransitions();
 		Set<S> states = stateTransitions.keySet();

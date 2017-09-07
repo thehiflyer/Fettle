@@ -166,6 +166,6 @@ public class TestStatesImmutable {
 	}
 
 
-	private class TestState {
+	private static class TestState {
 	}
 }
