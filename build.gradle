@@ -1,35 +1,24 @@
-buildscript {
-	repositories {
-		mavenCentral()
-		//Needed only for SNAPSHOT versions
-		//maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-	}
-	dependencies {
-		classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.1.10'
-		classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.11"
-	}
+plugins {
+    id 'java-library'
+    id 'jacoco'
+    id 'checkstyle'
+    id 'maven-publish'
+    id 'signing'
 }
 
-apply plugin: 'java'
-apply plugin: 'jacoco'
-apply plugin: 'checkstyle'
-apply plugin: 'maven'
-apply plugin: 'signing'
-apply plugin: 'net.ltgt.errorprone'
-
-
-
-apply plugin: "info.solidsoft.pitest"
-
-sourceCompatibility = JavaVersion.VERSION_1_8
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
 
 group = 'se.fearless'
-archivesBaseName = "fettle"
+base {
+    archivesName = "fettle"
+}
 version = '1.0.0-SNAPSHOT'
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 defaultTasks 'build'
 
@@ -38,14 +27,15 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit-dep', version: '4.11'
-    testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.1'
-    compile group: 'com.google.guava', name: 'guava', version: '18.0'
+	implementation group: 'com.google.guava', name: 'guava', version: '18.0'
+	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+	testImplementation group: 'se.mockachino', name: 'mockachino', version: '0.6.1'
 }
 
-task gwtJar(type: Jar, dependsOn: classes) {
-    classifier = 'gwt'
-    from sourceSets.main.getOutput().classesDir
+tasks.register('gwtJar', Jar) {
+	dependsOn tasks.classes
+	archiveClassifier = 'gwt'
+	from sourceSets.main.output.classesDirs
     exclude("**/export/DotExporter*", "**/util/PredicateCondition*")
     into('se/fearless/fettle/super') {
         from sourceSets.main.allJava
@@ -57,100 +47,96 @@ task gwtJar(type: Jar, dependsOn: classes) {
     }
 }
 
-jar {
+tasks.named('jar', Jar) {
     exclude("**/*.xml")
 }
 
-checkstyleMain {
+tasks.named('checkstyleMain') {
     doLast {
-        ant.xslt(in: "$buildDir/reports/checkstyle/main.xml",
-                style:"config/checkstyle/checkstyle.xsl",
-                out:"$buildDir/reports/checkstyle/checkstyle.html"
-        )
+        def xmlReport = file("$buildDir/reports/checkstyle/main.xml")
+        if (xmlReport.exists()) {
+            ant.xslt(in: xmlReport,
+                    style: "config/checkstyle/checkstyle.xsl",
+                    out: "$buildDir/reports/checkstyle/checkstyle.html"
+            )
+        }
     }
 }
 
-checkstyleTest {
+tasks.named('checkstyleTest') {
     ignoreFailures = true
 }
 
-jacocoTestReport {
+tasks.named('jacocoTestReport') {
     reports {
-        html.enabled = true
-        csv.enabled = false
-        xml.enabled = false
+        html.required = true
+        csv.required = false
+        xml.required = false
     }
-    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+    additionalSourceDirs.from(files(sourceSets.main.allJava.srcDirs))
 }
 
-// custom tasks for creating source jar
-task sourcesJar(type: Jar, dependsOn:classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-// custom tasks for creating javadoc jar
-task javadocJar(type: Jar, dependsOn:javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+tasks.named('test', Test) {
+    // Mockachino reflects on JDK internals and needs explicit module opens on Java 21+.
+    jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
 }
 
-artifacts {
-    archives jar
-	 archives gwtJar
-    archives sourcesJar
-    archives javadocJar
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact(tasks.named('gwtJar'))
+
+            pom {
+                name = 'Fettle'
+                description = 'Fettle is a state machine framework for java'
+                url = 'https://thehiflyer.github.com/Fettle/'
+
+                scm {
+                    url = 'https://github.com/thehiflyer/Fettle.git'
+                    connection = 'scm:git:https://github.com/thehiflyer/Fettle.git'
+                    developerConnection = 'scm:git:https://github.com/thehiflyer/Fettle.git'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://www.opensource.org/licenses/mit-license.php'
+                        distribution = 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'hiflyer'
+                        name = 'Per Malmen'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'sonatype'
+            def releases = uri('https://oss.sonatype.org/service/local/staging/deploy/maven2/')
+            def snapshots = uri('https://oss.sonatype.org/content/repositories/snapshots/')
+            url = version.toString().endsWith('SNAPSHOT') ? snapshots : releases
+            credentials {
+                username = findProperty('sonatypeUsername') ?: ''
+                password = findProperty('sonatypePassword') ?: ''
+            }
+        }
+    }
 }
 
 signing {
-	required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-	sign configurations.archives
+    required {
+        !version.toString().endsWith('SNAPSHOT') && gradle.taskGraph.allTasks.any { it.name.startsWith('publish') }
+    }
+    sign publishing.publications.mavenJava
 }
 
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-				authentication(userName: sonatypeUsername, password: sonatypePassword)
-			}
-
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-				authentication(userName: sonatypeUsername, password: sonatypePassword)
-			}
-
-			pom.project {
-				name 'Fettle'
-				packaging 'jar'
-				description 'Fettle is a state machine framework for java'
-				url 'http://http://thehiflyer.github.com/Fettle/'
-
-				scm {
-					url 'https://github.com/thehiflyer/Fettle.git'
-					connection 'https://github.com/thehiflyer/Fettle.git'
-					developerConnection 'https://github.com/thehiflyer/Fettle.git'
-				}
-
-				licenses {
-					license {
-						name 'MIT License'
-						url 'http://www.opensource.org/licenses/mit-license.php'
-						distribution 'repo'
-					}
-				}
-
-				developers {
-					developer {
-						id 'hiflyer'
-						name 'Per Malmén'
-					}
-				}
-			}
-		}
-	}
-
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.1'
+artifacts {
+    add('default', tasks.named('gwtJar'))
 }
