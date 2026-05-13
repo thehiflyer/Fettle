@@ -57,7 +57,6 @@ public class StateMachineBuilder<S, E, C> {
 	 * @throws IllegalArgumentException if the initial state is null
 	 */
 	public StateMachine<S, E, C> build(S initial) {
-		@SuppressWarnings("unchecked")
 		StateMachineTemplate<S, E, C> build = buildTransitionModel();
 		return build.newStateMachine(initial);
 	}

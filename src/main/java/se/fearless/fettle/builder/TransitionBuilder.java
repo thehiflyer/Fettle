@@ -65,7 +65,6 @@ class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, 
 		this.actions.add(action);
 	}
 
-	@SuppressWarnings("unchecked")
 	void addToTransitionModel(MutableTransitionModel<S, E, C> transitionModel) {
 		if (event == null) {
 			String fromString = from == null ? "anyState" : from.toString();

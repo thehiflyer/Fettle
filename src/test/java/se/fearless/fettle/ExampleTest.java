@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class Example {
+public class ExampleTest {
 	@Test
 	public void usingBuilder() {
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
@@ -42,7 +42,7 @@ public class Example {
 	}
 
 	@Test
-	public void whenExample() throws Exception {
+	public void whenExample() {
 		StateMachineBuilder<States, String, Arguments> builder = Fettle.newBuilder(States.class, String.class);
 		Condition<Arguments> firstArgIsOne = args -> args.getNumberOfArguments() > 0 && args.getFirst().equals(1);
 
@@ -59,7 +59,7 @@ public class Example {
 	}
 
 	@Test
-	public void transitionActionExample() throws Exception {
+	public void transitionActionExample() {
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		Action<States, String, Void> action1 = (from, to, causedBy, ignored, statesStringStateMachine) -> {
 			// do whatever is desired
@@ -75,7 +75,7 @@ public class Example {
 	}
 
 	@Test
-	public void entryExitActionExample() throws Exception {
+	public void entryExitActionExample() {
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		Action<States, String, Void> action1 = (from, to, causedBy, ignored, statesStringStateMachine) -> {
 			// do whatever is desired
@@ -90,7 +90,7 @@ public class Example {
 	}
 
 	@Test
-	public void fireEventExample() throws Exception {
+	public void fireEventExample() {
 		StateMachineBuilder<States, String, Arguments> builder = Fettle.newBuilder(States.class, String.class);
 		// Setup transitions
 

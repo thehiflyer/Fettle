@@ -29,7 +29,7 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 
 	protected static <S, T> Map<S, T> createMap(Class<S> state) {
 		if (state.isEnum()) {
-			return new EnumMap(state);
+			return new EnumMap<>(state);
 		} else {
 			return new HashMap<>();
 		}

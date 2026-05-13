@@ -31,7 +31,7 @@ public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S
 		for (Map.Entry<E, Collection<Transition<S, E, C>>> entry : input.entrySet()) {
 			E key = entry.getKey();
 			Collection<Transition<S, E, C>> value = entry.getValue();
-			res.put(key, copy(value));
+			res.put(key, new ArrayList<>(value));
 		}
 		return res;
 	}
@@ -51,7 +51,7 @@ public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S
 		for (Map.Entry<E, Collection<Transition<S, E, C>>> entry : input.entrySet()) {
 			E key = entry.getKey();
 			Collection<Transition<S, E, C>> value = entry.getValue();
-			res.put(key, copy(value));
+			res.put(key, new ArrayList<>(value));
 		}
 		return res;
 	}
@@ -61,14 +61,8 @@ public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S
 		for (Map.Entry<S, Collection<Action<S, E, C>>> entry : input.entrySet()) {
 			S key = entry.getKey();
 			Collection<Action<S, E, C>> value = entry.getValue();
-			res.put(key, copy(value));
+			res.put(key, new ArrayList<>(value));
 		}
-		return res;
-	}
-
-	private <T> Collection<T> copy(Collection<T> input) {
-        Collection<T> res = new ArrayList<>();
-		res.addAll(input);
 		return res;
 	}
 

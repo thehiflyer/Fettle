@@ -14,7 +14,7 @@ public class CompleteCoverageTest {
 		Constructor<?>[] constructors = Fettle.class.getDeclaredConstructors();
 		Constructor<?> privateConstructor = constructors[0];
 		privateConstructor.setAccessible(true);
-		Fettle f = (Fettle) privateConstructor.newInstance();
+		privateConstructor.newInstance();
 	}
 
 	@Test
@@ -22,6 +22,6 @@ public class CompleteCoverageTest {
 		Constructor<?>[] constructors = BasicConditions.class.getDeclaredConstructors();
 		Constructor<?> privateConstructor = constructors[0];
 		privateConstructor.setAccessible(true);
-		BasicConditions b = (BasicConditions) privateConstructor.newInstance();
+		privateConstructor.newInstance();
 	}
 }
