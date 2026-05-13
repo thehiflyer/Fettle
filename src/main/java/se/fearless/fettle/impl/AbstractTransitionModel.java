@@ -4,12 +4,8 @@ import se.fearless.fettle.Action;
 import se.fearless.fettle.StateMachine;
 import se.fearless.fettle.Transition;
 import se.fearless.fettle.TransitionModel;
-import se.fearless.fettle.util.GuavaReplacement;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractTransitionModel<S, E, C> implements TransitionModel<S, E, C> {
 	protected final Map<S, Map<E, Collection<Transition<S, E, C>>>> transitionMap;
@@ -35,7 +31,7 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 		if (state.isEnum()) {
 			return new EnumMap(state);
 		} else {
-			return GuavaReplacement.newHashMap();
+			return new HashMap<>();
 		}
 	}
 
@@ -114,7 +110,7 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 
 	@Override
 	public Map<E, Collection<? extends Transition<S, E, C>>> getPossibleTransitions(S fromState) {
-		Map<E, Collection<? extends Transition<S, E, C>>> map = GuavaReplacement.newHashMap();
+		Map<E, Collection<? extends Transition<S, E, C>>> map = new HashMap<>();
 		Map<E, Collection<Transition<S, E, C>>> transitions = transitionMap.get(fromState);
 		if (transitions != null) {
 			map.putAll(transitions);
@@ -124,7 +120,7 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 			@SuppressWarnings("unchecked")
 			Collection<Transition<S, E, C>> transitionCollection = (Collection<Transition<S, E, C>>) map.get(entry.getKey());
 			if (transitionCollection == null) {
-				transitionCollection = GuavaReplacement.newArrayList();
+                transitionCollection = new ArrayList<>();
 			}
 
 			transitionCollection.addAll(entry.getValue());

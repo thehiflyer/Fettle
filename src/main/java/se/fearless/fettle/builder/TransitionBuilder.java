@@ -4,14 +4,14 @@ import se.fearless.fettle.Action;
 import se.fearless.fettle.BasicConditions;
 import se.fearless.fettle.Condition;
 import se.fearless.fettle.MutableTransitionModel;
-import se.fearless.fettle.util.GuavaReplacement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class TransitionBuilder<S, E, C> implements Transition<S, E, C>, From<S, E, C>, To<S, E, C>, On<S, E, C>, When<S, E, C>, Internal<S, E, C> {
 
-	private final List<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
-	private S from;
+	private final List<Action<S, E, C>> actions = new ArrayList<>();
+    private S from;
 	private S to;
 	private E event;
 	private Condition<C> condition = BasicConditions.always();

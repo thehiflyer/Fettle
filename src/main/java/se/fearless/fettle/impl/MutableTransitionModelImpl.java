@@ -6,8 +6,8 @@ import se.fearless.fettle.MutableTransitionModel;
 import se.fearless.fettle.StateMachine;
 import se.fearless.fettle.StateMachineTemplate;
 import se.fearless.fettle.Transition;
-import se.fearless.fettle.util.GuavaReplacement;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -57,13 +57,13 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 
 	private void addTransition(S from, E event, Transition<S, E, C> transition) {
 		Map<E, Collection<Transition<S, E, C>>> map = transitionMap.computeIfAbsent(from, k -> createMap(eventClass));
-		Collection<Transition<S, E, C>> transitions = map.computeIfAbsent(event, k -> GuavaReplacement.newArrayList());
+		Collection<Transition<S, E, C>> transitions = map.computeIfAbsent(event, k -> new ArrayList<>());
 		transitions.add(transition);
 	}
 
 	@Override
 	public void addFromAllTransition(S to, E event, Condition<C> condition, List<Action<S, E, C>> actions) {
-		Collection<Transition<S, E, C>> transitions = fromAllTransitions.computeIfAbsent(event, k -> GuavaReplacement.newArrayList());
+		Collection<Transition<S, E, C>> transitions = fromAllTransitions.computeIfAbsent(event, k -> new ArrayList<>());
 		transitions.add(new BasicTransition<>(to, condition, actions));
 	}
 
@@ -73,7 +73,7 @@ public class MutableTransitionModelImpl<S, E, C> extends AbstractTransitionModel
 	}
 
 	private void addAction(S entryState, Action<S, E, C> action, Map<S, Collection<Action<S, E, C>>> map) {
-		Collection<Action<S, E, C>> collection = map.computeIfAbsent(entryState, k -> GuavaReplacement.newArrayList());
+		Collection<Action<S, E, C>> collection = map.computeIfAbsent(entryState, k -> new ArrayList<>());
 		collection.add(action);
 	}
 

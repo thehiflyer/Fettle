@@ -11,8 +11,8 @@ import se.fearless.fettle.StateMachineTemplate;
 import se.fearless.fettle.States;
 import se.fearless.fettle.export.DotExporter;
 import se.fearless.fettle.impl.AbstractTransitionModel;
-import se.fearless.fettle.util.GuavaReplacement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -91,7 +91,7 @@ public class StateMachineBuilderTest {
 
 		Action<States, String, Void> exitAction1 = mock(ACTION_TYPE_TOKEN);
 		Action<States, String, Void> exitAction2 = mock(ACTION_TYPE_TOKEN);
-		List<Action<States, String, Void>> exitActions = GuavaReplacement.newArrayList();
+        List<Action<States, String, Void>> exitActions = new ArrayList<>();
 		exitActions.add(exitAction1);
 		exitActions.add(exitAction2);
 		builder.onExit(States.ONE).perform(exitActions);
@@ -187,7 +187,7 @@ public class StateMachineBuilderTest {
 		Action<States, String, Void> action1 = mock(ACTION_TYPE_TOKEN);
 		Action<States, String, Void> action2 = mock(ACTION_TYPE_TOKEN);
 
-		List<Action<States, String, Void>> actions = GuavaReplacement.newArrayList();
+        List<Action<States, String, Void>> actions = new ArrayList<>();
 		actions.add(action1);
 		actions.add(action2);
 

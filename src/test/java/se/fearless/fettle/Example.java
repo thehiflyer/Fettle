@@ -3,8 +3,8 @@ package se.fearless.fettle;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
-import se.fearless.fettle.util.GuavaReplacement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -68,7 +68,7 @@ public class Example {
 			// do whatever is desired
 		};
 
-		List<Action<States, String, Void>> actions = GuavaReplacement.newArrayList();
+        List<Action<States, String, Void>> actions = new ArrayList<>();
 		actions.add(action1);
 		actions.add(action2);
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").perform(actions);

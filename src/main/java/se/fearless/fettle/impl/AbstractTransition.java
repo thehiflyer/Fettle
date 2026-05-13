@@ -4,14 +4,14 @@ import se.fearless.fettle.Action;
 import se.fearless.fettle.Condition;
 import se.fearless.fettle.StateMachine;
 import se.fearless.fettle.Transition;
-import se.fearless.fettle.util.GuavaReplacement;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class AbstractTransition<S, E, C> implements Transition<S, E, C> {
 	protected final S to;
 	protected final Condition<C> condition;
-	protected final Collection<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
+	protected final Collection<Action<S, E, C>> actions = new ArrayList<>();
 
 	public AbstractTransition(S to, Condition<C> condition, Collection<Action<S, E, C>> actions) {
 		this.condition = condition;

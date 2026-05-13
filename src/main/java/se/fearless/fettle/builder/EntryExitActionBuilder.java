@@ -2,8 +2,8 @@ package se.fearless.fettle.builder;
 
 import se.fearless.fettle.Action;
 import se.fearless.fettle.MutableTransitionModel;
-import se.fearless.fettle.util.GuavaReplacement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntryExitActionBuilder<S, E, C> implements EntryExit<S, E, C> {
@@ -20,10 +20,10 @@ public class EntryExitActionBuilder<S, E, C> implements EntryExit<S, E, C> {
 		EXIT
 	}
 
-	private final List<Action<S, E, C>> actions = GuavaReplacement.newArrayList();
+	private final List<Action<S, E, C>> actions = new ArrayList<>();
 
 
-	public static <S, E, C> EntryExitActionBuilder<S, E, C> entry(S to) {
+    public static <S, E, C> EntryExitActionBuilder<S, E, C> entry(S to) {
 		return new EntryExitActionBuilder<>(Mode.ENTRY, to);
 	}
 

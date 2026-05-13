@@ -3,14 +3,14 @@ package se.fearless.fettle.builder;
 import se.fearless.fettle.StateMachine;
 import se.fearless.fettle.StateMachineTemplate;
 import se.fearless.fettle.impl.MutableTransitionModelImpl;
-import se.fearless.fettle.util.GuavaReplacement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StateMachineBuilder<S, E, C> {
-	private final List<TransitionBuilder<S, E, C>> transitionBuilders = GuavaReplacement.newArrayList();
-	private final List<EntryExitActionBuilder<S, E, C>> entryExitActions = GuavaReplacement.newArrayList();
-	private final Class<S> stateClass;
+	private final List<TransitionBuilder<S, E, C>> transitionBuilders = new ArrayList<>();
+    private final List<EntryExitActionBuilder<S, E, C>> entryExitActions = new ArrayList<>();
+    private final Class<S> stateClass;
 	private final Class<E> eventClass;
 	private C defaultContext;
 
