@@ -44,21 +44,14 @@ public class EntryExitActionBuilder<S, E, C> implements EntryExit<S, E, C> {
 	}
 
 	public void addToMachine(MutableTransitionModel<S, E, C> machineConstructor) {
-		for (Action<S, E, C> action : actions) {
-			add(machineConstructor, action);
-		}
+		actions.forEach(action -> add(machineConstructor, action));
 	}
 
 	private void add(MutableTransitionModel<S, E, C> machineConstructor, Action<S, E, C> action) {
 		switch (mode) {
-			case ENTRY:
-				machineConstructor.addEntryAction(state, action);
-				break;
-			case EXIT:
-				machineConstructor.addExitAction(state, action);
-				break;
-			default:
-				throw new IllegalStateException("Unexpected mode " + mode);
+			case ENTRY -> machineConstructor.addEntryAction(state, action);
+			case EXIT -> machineConstructor.addExitAction(state, action);
+			default -> throw new IllegalStateException("Unexpected mode " + mode);
 		}
 	}
 }

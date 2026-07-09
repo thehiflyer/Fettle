@@ -71,28 +71,23 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 	}
 
 	private boolean fireEvent(StateMachine<S, E, C> stateMachine, E event, Map<E, Collection<Transition<S, E, C>>> transitionMap, S from, C context) {
-		if (transitionMap == null) {
-			return false;
-		}
-		Collection<Transition<S, E, C>> transitions = transitionMap.get(event);
+		var transitions = transitionMap == null ? null : transitionMap.get(event);
 		if (transitions == null) {
 			return false;
 		}
-		for (Transition<S, E, C> transition : transitions) {
-			if (transition.isSatisfied(context)) {
+		return transitions.stream()
+			.filter(t -> t.isSatisfied(context))
+			.findFirst()
+			.map(transition -> {
 				forceSetState(stateMachine, from, transition.getTo(), transition, event, context);
 				return true;
-			}
-		}
-		return false;
+			})
+			.orElse(false);
 	}
 
 	private void invoke(Collection<Action<S, E, C>> actions, S from, S to, E event, C context, StateMachine<S, E, C> stateMachine) {
-		if (actions == null) {
-			return;
-		}
-		for (Action<S, E, C> action : actions) {
-			action.onTransition(from, to, event, context, stateMachine);
+		if (actions != null) {
+			actions.forEach(action -> action.onTransition(from, to, event, context, stateMachine));
 		}
 	}
 
@@ -112,21 +107,20 @@ public abstract class AbstractTransitionModel<S, E, C> implements TransitionMode
 	@Override
 	public Map<E, Collection<? extends Transition<S, E, C>>> getPossibleTransitions(S fromState) {
 		Map<E, Collection<? extends Transition<S, E, C>>> map = new HashMap<>();
-		Map<E, Collection<Transition<S, E, C>>> transitions = transitionMap.get(fromState);
+		var transitions = transitionMap.get(fromState);
 		if (transitions != null) {
 			map.putAll(transitions);
 		}
 
-		for (Map.Entry<E, Collection<Transition<S, E, C>>> entry : fromAllTransitions.entrySet()) {
+		fromAllTransitions.forEach((event, transitionCollection) -> {
 			@SuppressWarnings("unchecked")
-			Collection<Transition<S, E, C>> transitionCollection = (Collection<Transition<S, E, C>>) map.get(entry.getKey());
-			if (transitionCollection == null) {
-                transitionCollection = new ArrayList<>();
+			var existing = (Collection<Transition<S, E, C>>) map.get(event);
+			if (existing == null) {
+				map.put(event, transitionCollection);
+			} else {
+				existing.addAll(transitionCollection);
 			}
-
-			transitionCollection.addAll(entry.getValue());
-			map.put(entry.getKey(), transitionCollection);
-		}
+		});
 		return map;
 	}
 }

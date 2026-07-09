@@ -1,5 +1,8 @@
 package se.fearless.fettle;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public class Arguments {
 	private final Object first;
 	private final Object[] rest;
@@ -16,35 +19,26 @@ public class Arguments {
 	}
 
 	public Object getArgument(int number) {
-		if (number > rest.length || number < 0) {
+		if (number < 0 || number > rest.length) {
 			return null;
 		}
-		if (number == 0) {
-			return first;
-		}
-		return rest[number - 1];
+		return number == 0 ? first : rest[number - 1];
 	}
 
 	public int getNumberOfArguments() {
-		if (first == null) {
-			return 0;
-		}
-		return rest.length + 1;
+		return first == null ? 0 : rest.length + 1;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("Arguments(");
-		if (first != null) {
-			builder.append(first);
+		if (first == null) {
+			return "Arguments()";
 		}
-		if (rest != null) {
-			for (Object o : rest) {
-				builder.append(", ");
-				builder.append(o);
-			}
-		}
-		builder.append(")");
-		return builder.toString();
+		String allArgs = Stream.concat(
+			Stream.of(first),
+			Arrays.stream(rest)
+		).map(String::valueOf).reduce((a, b) -> a + ", " + b).orElse("");
+		return "Arguments(" + allArgs + ")";
 	}
 }
+

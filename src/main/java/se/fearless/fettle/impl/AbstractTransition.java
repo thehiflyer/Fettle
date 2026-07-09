@@ -35,8 +35,6 @@ public abstract class AbstractTransition<S, E, C> implements Transition<S, E, C>
 
 	@Override
 	public void onTransition(S from, S to, E event, C context, StateMachine<S, E, C> statemachine) {
-		for (Action<S, E, C> action : actions) {
-			action.onTransition(from, to, event, context, statemachine);
-		}
+		actions.forEach(action -> action.onTransition(from, to, event, context, statemachine));
 	}
 }

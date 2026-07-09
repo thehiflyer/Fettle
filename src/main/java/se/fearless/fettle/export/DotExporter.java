@@ -27,28 +27,26 @@ public class DotExporter<S, E, C> {
 		PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os, UTF_8)));
 		writer.println("digraph " + name + " {");
 		Map<S, Map<E, Collection<Transition<S, E, C>>>> stateTransitions = model.getStateTransitions();
-		Set<S> states = stateTransitions.keySet();
-		Set<S> allStates = new HashSet<>(states);
-		for (S state : states) {
-			Map<E, Collection<Transition<S, E, C>>> transitionsFromState = stateTransitions.get(state);
-			for (Map.Entry<E, Collection<Transition<S, E, C>>> transitions : transitionsFromState.entrySet()) {
-				for (Transition<S, E, C> transition : transitions.getValue()) {
-					printTransition(writer, state, transition.getTo(), transitions.getKey(), "");
-					allStates.add(transition.getTo());
-				}
-			}
+		Set<S> allStates = new HashSet<>();
 
-		}
+		stateTransitions.forEach((state, transitionsFromState) ->
+			transitionsFromState.forEach((event, transitions) ->
+				transitions.forEach(transition -> {
+					printTransition(writer, state, transition.getTo(), event, "");
+					allStates.add(transition.getTo());
+				})
+			)
+		);
+
 		if (includeFromAllTransitions) {
 			Map<E, Collection<Transition<S, E, C>>> fromAllTransitions = model.getFromAllTransitions();
-			for (E event : fromAllTransitions.keySet()) {
-				Collection<Transition<S, E, C>> fromAll = fromAllTransitions.get(event);
-				for (S state : allStates) {
-					for (Transition<S, E, C> transition : fromAll) {
-						printTransition(writer, state, transition.getTo(), event, "(fromall)");
-					}
-				}
-			}
+			fromAllTransitions.forEach((event, fromAll) ->
+				allStates.forEach(state ->
+					fromAll.forEach(transition ->
+						printTransition(writer, state, transition.getTo(), event, "(fromall)")
+					)
+				)
+			);
 		}
 		writer.println("}");
 		writer.flush();

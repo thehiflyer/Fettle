@@ -7,10 +7,10 @@ import se.fearless.fettle.Transition;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S, E, C> implements StateMachineTemplate<S, E, C> {
 
@@ -27,43 +27,35 @@ public class ImmutableTransitionModel<S, E, C> extends AbstractTransitionModel<S
 	}
 
 	private Map<E, Collection<Transition<S, E, C>>> copyTransitions3(Map<E, Collection<Transition<S, E, C>>> input) {
-		Map<E, Collection<Transition<S, E, C>>> res = new HashMap<>();
-		for (Map.Entry<E, Collection<Transition<S, E, C>>> entry : input.entrySet()) {
-			E key = entry.getKey();
-			Collection<Transition<S, E, C>> value = entry.getValue();
-			res.put(key, new ArrayList<>(value));
-		}
-		return res;
+		return input.entrySet().stream()
+			.collect(Collectors.toMap(
+				Map.Entry::getKey,
+				e -> new ArrayList<>(e.getValue())
+			));
 	}
 
 	private Map<S, Map<E, Collection<Transition<S, E, C>>>> copyTransitions(Map<S, Map<E, Collection<Transition<S, E, C>>>> input) {
-		Map<S, Map<E, Collection<Transition<S, E, C>>>> res = new HashMap<>();
-		for (Map.Entry<S, Map<E, Collection<Transition<S, E, C>>>> entry : input.entrySet()) {
-			S key = entry.getKey();
-			Map<E, Collection<Transition<S, E, C>>> value = entry.getValue();
-			res.put(key, copyTransitions2(value));
-		}
-		return res;
+		return input.entrySet().stream()
+			.collect(Collectors.toMap(
+				Map.Entry::getKey,
+				e -> copyTransitions2(e.getValue())
+			));
 	}
 
 	private Map<E, Collection<Transition<S, E, C>>> copyTransitions2(Map<E, Collection<Transition<S, E, C>>> input) {
-		Map<E, Collection<Transition<S, E, C>>> res = new HashMap<>();
-		for (Map.Entry<E, Collection<Transition<S, E, C>>> entry : input.entrySet()) {
-			E key = entry.getKey();
-			Collection<Transition<S, E, C>> value = entry.getValue();
-			res.put(key, new ArrayList<>(value));
-		}
-		return res;
+		return input.entrySet().stream()
+			.collect(Collectors.toMap(
+				Map.Entry::getKey,
+				e -> new ArrayList<>(e.getValue())
+			));
 	}
 
 	private Map<S, Collection<Action<S, E, C>>> copy(Map<S, Collection<Action<S, E, C>>> input) {
-		Map<S, Collection<Action<S, E, C>>> res = new HashMap<>();
-		for (Map.Entry<S, Collection<Action<S, E, C>>> entry : input.entrySet()) {
-			S key = entry.getKey();
-			Collection<Action<S, E, C>> value = entry.getValue();
-			res.put(key, new ArrayList<>(value));
-		}
-		return res;
+		return input.entrySet().stream()
+			.collect(Collectors.toMap(
+				Map.Entry::getKey,
+				e -> new ArrayList<>(e.getValue())
+			));
 	}
 
 	@Override
