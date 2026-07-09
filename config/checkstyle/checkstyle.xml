@@ -41,7 +41,6 @@
 		<!-- See http://checkstyle.sf.net/config_import.html -->
 		<module name="AvoidStarImport">
 			<property name="severity" value="warning"/>
-			<property name="excludes" value="se.mockachino, se.mockachino.proxy, se.mockachino.Mockachino,se.mockachino.matchers.Matchers"/>
 		</module>
 		<module name="IllegalImport"/>
 		<!-- defaults to sun.* packages -->

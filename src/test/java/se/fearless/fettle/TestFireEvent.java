@@ -31,16 +31,13 @@ public class TestFireEvent {
 	public void testFireEventWithParams() {
 		MutableTransitionModelImpl<States, Triggers, Arguments> model = MutableTransitionModelImpl.create(States.class, Triggers.class, Arguments.NO_ARGS);
 
-		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, new Condition<Arguments>() {
-			@Override
-			public boolean isSatisfied(Arguments args) {
-				if (args.getNumberOfArguments() < 1) {
-					return false;
-				}
-				String input = (String) args.getFirst();
-				return "hej".equals(input);
-			}
-		}, Collections.emptyList());
+		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, args -> {
+            if (args.getNumberOfArguments() < 1) {
+                return false;
+            }
+            String input = (String) args.getFirst();
+            return "hej".equals(input);
+        }, Collections.emptyList());
 
 		StateMachine<States, Triggers, Arguments> machine = model.newStateMachine(States.INITIAL);
 		assertFalse(machine.fireEvent(Triggers.FOO));

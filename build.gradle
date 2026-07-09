@@ -77,7 +77,7 @@ tasks.named('jacocoTestReport') {
         csv.required = false
         xml.required = false
     }
-    additionalSourceDirs.from(files(sourceSets.main.allJava.srcDirs))
+    sourceDirectories.setFrom(files(sourceSets.main.allJava.srcDirs))
 }
 
 tasks.named('test', Test) {

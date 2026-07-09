@@ -2,15 +2,18 @@ package se.fearless.fettle;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 
+@SuppressWarnings("unchecked")
+@ExtendWith(MockitoExtension.class)
 public class InternalTransitionsTest {
 
 	private static final String INTERNAL_TRANSITION_TRIGGER = "internal";
@@ -27,8 +30,7 @@ public class InternalTransitionsTest {
 	private StateMachine<States, String, Void> stateMachine;
 
 	@BeforeEach
-	public void setUp() throws Exception {
-		openMocks(this);
+	public void setUp() {
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		builder.transition().internal(States.INITIAL).on(INTERNAL_TRANSITION_TRIGGER).perform(transitionAction);
 		builder.onEntry(States.INITIAL).perform(entryAction);

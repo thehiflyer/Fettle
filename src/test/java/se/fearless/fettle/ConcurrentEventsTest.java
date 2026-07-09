@@ -124,7 +124,7 @@ public class ConcurrentEventsTest {
 	}
 
 	@Test
-	public void actionTriggersStateChange() throws Exception {
+	public void actionTriggersStateChange() {
 		Action<States, String, Void> changeStateAction = (from, to, causedBy, context, stateMachine) ->
 				stateMachine.fireEvent("second");
 		Action<States, String, Void> otherAction = mock(Action.class);

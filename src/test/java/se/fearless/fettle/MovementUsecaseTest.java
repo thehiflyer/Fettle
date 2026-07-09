@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("unchecked")
-public class MovementUsecase {
+public class MovementUsecaseTest {
 
 	private interface State {
 	}
@@ -36,13 +36,10 @@ public class MovementUsecase {
 		model.addTransition(falling, jetpackthrust, MovementEvents.PRESSED_SPACE, always, noActions);
 		model.addTransition(jetpackthrust, falling, MovementEvents.RELEASED_SPACE, always, noActions);
 		model.addTransition(falling, crashed, MovementEvents.HIT_GROUND, always, noActions);
-		model.addTransition(crashed, walking, MovementEvents.ON_UPDATE, new Condition<Void>() {
-			@Override
-			public boolean isSatisfied(Void ignored) {
-				// wait until body is upright
-				return true;
-			}
-		}, noActions);
+		model.addTransition(crashed, walking, MovementEvents.ON_UPDATE, ignored -> {
+            // wait until body is upright
+            return true;
+        }, noActions);
 
 		StateMachine<State, MovementEvents, Void> machine = model.newStateMachine(walking);
 		assertEquals(walking, machine.getCurrentState());
