@@ -2,12 +2,13 @@ package se.fearless.fettle;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
@@ -17,8 +18,6 @@ import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("unchecked")
 public class ConcurrentEventsTest {
-
-	private static final Logger log = LoggerFactory.getLogger(ConcurrentEventsTest.class);
 
 	private StateMachineBuilder<States, String, Void> builder;
 
@@ -36,32 +35,21 @@ public class ConcurrentEventsTest {
 		builder.transition().from(States.INITIAL).to(States.THREE).on("second");
 
 		final StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
-		final CountDownLatch eventsDone = new CountDownLatch(2);
-		Runnable fireFirst = new Runnable() {
-			@Override
-			public void run() {
-				stateMachine.fireEvent("first");
-				eventsDone.countDown();
-			}
-		};
-		new Thread(fireFirst).start();
 
-		Runnable fireSecond = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					inCondition.await();
-					condition.latch.countDown();
-				} catch (InterruptedException e) {
-					log.error("Thread interrupted while waiting for condition", e);
-					Thread.currentThread().interrupt();
-				}
+		try (ExecutorService executor = Executors.newCachedThreadPool()) {
+			var f1 = executor.submit((Callable<Void>) () -> {
+				stateMachine.fireEvent("first");
+				return null;
+			});
+			var f2 = executor.submit((Callable<Void>) () -> {
+				inCondition.await();
+				condition.latch.countDown();
 				stateMachine.fireEvent("second");
-				eventsDone.countDown();
-			}
-		};
-		new Thread(fireSecond).start();
-		eventsDone.await();
+				return null;
+			});
+			f1.get();
+			f2.get();
+		}
 		assertEquals(States.TWO, stateMachine.getCurrentState());
 	}
 
@@ -74,50 +62,29 @@ public class ConcurrentEventsTest {
 		builder.transition().from(States.INITIAL).to(States.THREE).on("second");
 
 		final StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
-		final CountDownLatch eventsDone = new CountDownLatch(3);
-		Runnable fireFirst = new Runnable() {
-			@Override
-			public void run() {
-				stateMachine.fireEvent("first");
-				eventsDone.countDown();
-			}
-		};
-		new Thread(fireFirst).start();
-
 		final CountDownLatch rawSetDone = new CountDownLatch(1);
-		Runnable rawSetInitial = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					inCondition.await();
-					condition.latch.countDown();
-				} catch (InterruptedException e) {
-					log.error("Thread interrupted while waiting for condition", e);
-					Thread.currentThread().interrupt();
-				}
+
+		try (ExecutorService executor = Executors.newCachedThreadPool()) {
+			var f1 = executor.submit((Callable<Void>) () -> {
+				stateMachine.fireEvent("first");
+				return null;
+			});
+			var f2 = executor.submit((Callable<Void>) () -> {
+				inCondition.await();
+				condition.latch.countDown();
 				stateMachine.rawSetState(States.INITIAL);
 				rawSetDone.countDown();
-				eventsDone.countDown();
-			}
-		};
-		new Thread(rawSetInitial).start();
-
-		Runnable fireSecond = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					rawSetDone.await();
-				} catch (InterruptedException e) {
-					log.error("Thread interrupted while waiting for rawSet", e);
-					Thread.currentThread().interrupt();
-				}
+				return null;
+			});
+			var f3 = executor.submit((Callable<Void>) () -> {
+				rawSetDone.await();
 				stateMachine.fireEvent("second");
-				eventsDone.countDown();
-			}
-		};
-		new Thread(fireSecond).start();
-
-		eventsDone.await();
+				return null;
+			});
+			f1.get();
+			f2.get();
+			f3.get();
+		}
 		assertEquals(States.THREE, stateMachine.getCurrentState());
 	}
 
@@ -130,71 +97,44 @@ public class ConcurrentEventsTest {
 		builder.transition().from(States.INITIAL).to(States.THREE).on("second");
 
 		final StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
-		final CountDownLatch eventsDone = new CountDownLatch(3);
-		Runnable fireFirst = new Runnable() {
-			@Override
-			public void run() {
+		final CountDownLatch forceSetDone = new CountDownLatch(1);
+
+		try (ExecutorService executor = Executors.newCachedThreadPool()) {
+			var f1 = executor.submit((Callable<Void>) () -> {
 				stateMachine.fireEvent("first");
-				eventsDone.countDown();
-			}
-		};
-		new Thread(fireFirst).start();
-
-		final CountDownLatch rawSetDone = new CountDownLatch(1);
-		Runnable rawSetInitial = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					inCondition.await();
-					condition.latch.countDown();
-				} catch (InterruptedException e) {
-					log.error("Thread interrupted while waiting for condition", e);
-					Thread.currentThread().interrupt();
-				}
+				return null;
+			});
+			var f2 = executor.submit((Callable<Void>) () -> {
+				inCondition.await();
+				condition.latch.countDown();
 				stateMachine.forceSetState(States.INITIAL);
-				rawSetDone.countDown();
-				eventsDone.countDown();
-			}
-		};
-		new Thread(rawSetInitial).start();
-
-		Runnable fireSecond = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					rawSetDone.await();
-				} catch (InterruptedException e) {
-					log.error("Thread interrupted while waiting for rawSet", e);
-					Thread.currentThread().interrupt();
-				}
+				forceSetDone.countDown();
+				return null;
+			});
+			var f3 = executor.submit((Callable<Void>) () -> {
+				forceSetDone.await();
 				stateMachine.fireEvent("second");
-				eventsDone.countDown();
-			}
-		};
-		new Thread(fireSecond).start();
-
-		eventsDone.await();
+				return null;
+			});
+			f1.get();
+			f2.get();
+			f3.get();
+		}
 		assertEquals(States.THREE, stateMachine.getCurrentState());
 	}
 
 	@Test
 	public void actionTriggersStateChange() throws Exception {
-		Action<States, String, Void> changeStateAction = new Action<States, String, Void>() {
-			@Override
-			public void onTransition(States from, States to, String causedBy, Void context, StateMachine<States, String, Void> stateMachine) {
+		Action<States, String, Void> changeStateAction = (from, to, causedBy, context, stateMachine) ->
 				stateMachine.fireEvent("second");
-			}
-		};
 		Action<States, String, Void> otherAction = mock(Action.class);
 		builder.transition().from(States.INITIAL).to(States.ONE).on("first").perform(List.of(changeStateAction, otherAction));
-
 		builder.transition().from(States.ONE).to(States.TWO).on("second");
 
 		StateMachine<States, String, Void> stateMachine = builder.build(States.INITIAL);
 		stateMachine.fireEvent("first");
 
 		assertEquals(States.TWO, stateMachine.getCurrentState());
-
 		verify(otherAction).onTransition(eq(States.INITIAL), eq(States.ONE), eq("first"), isNull(), eq(stateMachine));
 	}
 
@@ -212,8 +152,8 @@ public class ConcurrentEventsTest {
 			try {
 				latch.await();
 			} catch (InterruptedException e) {
-				log.error("Thread interrupted while waiting for latch", e);
 				Thread.currentThread().interrupt();
+				throw new RuntimeException("Interrupted while waiting for latch", e);
 			}
 			return true;
 		}
