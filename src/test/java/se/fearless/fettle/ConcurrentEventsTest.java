@@ -1,10 +1,10 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
@@ -175,7 +175,7 @@ public class ConcurrentEventsTest {
 			}
 		};
 		Action<States, String, Void> otherAction = mock(Action.class);
-		builder.transition().from(States.INITIAL).to(States.ONE).on("first").perform(Lists.newArrayList(changeStateAction, otherAction));
+		builder.transition().from(States.INITIAL).to(States.ONE).on("first").perform(List.of(changeStateAction, otherAction));
 
 		builder.transition().from(States.ONE).to(States.TWO).on("second");
 

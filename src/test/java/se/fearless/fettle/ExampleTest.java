@@ -1,6 +1,5 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
@@ -31,7 +30,8 @@ public class ExampleTest {
 		MutableTransitionModel<States, String, Void> model = Fettle.newTransitionModel(States.class, String.class);
 
 
-		List<Action<States, String, Void>> actions = Lists.newArrayList(new SoutAction("Performing fooTransition"));
+		List<Action<States, String, Void>> actions = List.of(new SoutAction("Performing fooTransition"));
+
 		model.addTransition(States.INITIAL, States.ONE, "foo", BasicConditions.always(), actions);
 		model.addEntryAction(States.ONE, new SoutAction("Entering state ONE"));
 

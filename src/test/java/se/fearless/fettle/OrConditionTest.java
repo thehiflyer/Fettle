@@ -1,6 +1,5 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 
@@ -48,10 +47,7 @@ public class OrConditionTest {
 		Condition<Void> cond1 = mock(VOID_CONDITION_TYPE_TOKEN);
 		Condition<Void> cond2 = mock(VOID_CONDITION_TYPE_TOKEN);
 		Condition<Void> cond3 = mock(VOID_CONDITION_TYPE_TOKEN);
-		List<Condition<Void>> conditions = Lists.newArrayList();
-		conditions.add(cond1);
-		conditions.add(cond2);
-		conditions.add(cond3);
+		List<Condition<Void>> conditions = List.of(cond1, cond2, cond3);
 
 		Condition<Void> condition = BasicConditions.or(conditions);
 
@@ -63,10 +59,7 @@ public class OrConditionTest {
 		Condition<Void> cond1 = mock(VOID_CONDITION_TYPE_TOKEN);
 		Condition<Void> cond2 = mock(VOID_CONDITION_TYPE_TOKEN);
 		Condition<Void> cond3 = mock(VOID_CONDITION_TYPE_TOKEN);
-		List<Condition<Void>> conditions = Lists.newArrayList();
-		conditions.add(cond1);
-		conditions.add(cond2);
-		conditions.add(cond3);
+		List<Condition<Void>> conditions = List.of(cond1, cond2, cond3);
 
 		Condition<Void> condition = BasicConditions.or(conditions);
 

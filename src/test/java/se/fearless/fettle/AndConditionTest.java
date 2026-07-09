@@ -1,10 +1,10 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -31,7 +31,7 @@ public class AndConditionTest {
 		argumentsCondition2 = mock(ARGUMENT_CONDITION_TYPE_TOKEN);
 		argumentsCondition3 = mock(ARGUMENT_CONDITION_TYPE_TOKEN);
 
-		List<Condition<Arguments>> conditions = Lists.newArrayList();
+		List<Condition<Arguments>> conditions = new ArrayList<>();
 		conditions.add(argumentsCondition1);
 		conditions.add(argumentsCondition2);
 		conditions.add(argumentsCondition3);

@@ -1,6 +1,5 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
@@ -38,7 +37,7 @@ public class TraverseTest {
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 		assertEquals(1, transitionMap.size());
 		Collection<? extends Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
-		Transition<States, String, Boolean> transition = Iterables.getOnlyElement(transitions);
+		Transition<States, String, Boolean> transition = transitions.stream().findFirst().orElseThrow();
 		assertEquals(States.ONE, transition.getTo());
 	}
 
@@ -66,7 +65,8 @@ public class TraverseTest {
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
 		assertEquals(1, transitionMap.size());
 		Collection<? extends Transition<States, String, Boolean>> transitions = transitionMap.get("foo");
-		Transition<States, String, Boolean> transition = Iterables.getOnlyElement(transitions);
+		assertEquals(1, transitions.size());
+		Transition<States, String, Boolean> transition = transitions.iterator().next();
 		assertEquals(States.ONE, transition.getTo());
 	}
 

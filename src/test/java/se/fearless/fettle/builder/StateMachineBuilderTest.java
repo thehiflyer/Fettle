@@ -1,6 +1,5 @@
 package se.fearless.fettle.builder;
 
-import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
@@ -238,7 +237,7 @@ public class StateMachineBuilderTest {
 		builder.defaultContext(Arguments.NO_ARGS);
 		CheckWasCalledAction wasCalledAction = new CheckWasCalledAction();
 		Action<States, String, Arguments> action = (from, to, causedBy, context, stateMachine) -> Assert.assertEquals(Arguments.NO_ARGS, context);
-		List<Action<States, String, Arguments>> actions = Lists.newArrayList();
+		List<Action<States, String, Arguments>> actions = new ArrayList<>();
 		actions.add(action);
 		actions.add(wasCalledAction);
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(context -> {

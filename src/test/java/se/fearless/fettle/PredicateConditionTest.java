@@ -1,6 +1,5 @@
 package se.fearless.fettle;
 
-import com.google.common.base.Predicates;
 import org.junit.Test;
 import se.fearless.fettle.util.PredicateCondition;
 
@@ -11,7 +10,7 @@ public class PredicateConditionTest {
 
 	@Test
 	public void predicate() {
-		PredicateCondition<String> condition = new PredicateCondition<>(Predicates.containsPattern("foo")::apply);
+		PredicateCondition<String> condition = new PredicateCondition<>(s -> s.contains("foo"));
 
 		assertFalse(condition.isSatisfied("froo"));
 		assertTrue(condition.isSatisfied("foobar"));

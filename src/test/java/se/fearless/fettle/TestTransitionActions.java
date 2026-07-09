@@ -1,6 +1,5 @@
 package se.fearless.fettle;
 
-import com.google.common.collect.Lists;
 import com.googlecode.gentyref.TypeToken;
 import org.junit.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
@@ -12,10 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.newOrdering;
-import static se.mockachino.Mockachino.verifyNever;
-import static se.mockachino.Mockachino.verifyOnce;
+import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class TestTransitionActions {
@@ -41,11 +37,11 @@ public class TestTransitionActions {
 
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.always(), Collections.emptyList());
 		Action<States, String, Void> transitionAction1 = mock(ACTION_TYPE_TOKEN);
-		ArrayList<Action<States, String, Void>> actions1 = Lists.newArrayList();
+		ArrayList<Action<States, String, Void>> actions1 = new ArrayList<>();
 		actions1.add(transitionAction1);
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.always(), actions1);
 		Action<States, String, Void> transitionAction2 = mock(ACTION_TYPE_TOKEN);
-		ArrayList<Action<States, String, Void>> actions2 = Lists.newArrayList();
+		ArrayList<Action<States, String, Void>> actions2 = new ArrayList<>();
 		actions2.add(transitionAction2);
 		model.addTransition(States.TWO, States.ONE, "", BasicConditions.always(), actions2);
 
@@ -81,11 +77,11 @@ public class TestTransitionActions {
 		};
 
 		Action<States, String, Arguments> transitionAction1 = mock(argumentTypeToken);
-		ArrayList<Action<States, String, Arguments>> actions1 = Lists.newArrayList();
+		ArrayList<Action<States, String, Arguments>> actions1 = new ArrayList<>();
 		actions1.add(transitionAction1);
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.always(), actions1);
 		Action<States, String, Arguments> transitionAction2 = mock(argumentTypeToken);
-		ArrayList<Action<States, String, Arguments>> actions2 = Lists.newArrayList();
+		ArrayList<Action<States, String, Arguments>> actions2 = new ArrayList<>();
 		actions2.add(transitionAction2);
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.always(), actions2);
 
