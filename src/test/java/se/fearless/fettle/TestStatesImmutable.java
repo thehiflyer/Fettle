@@ -1,22 +1,21 @@
 package se.fearless.fettle;
 
-import com.googlecode.gentyref.TypeToken;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.fearless.fettle.impl.MutableTransitionModelImpl;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.verifyNever;
-import static se.mockachino.Mockachino.verifyOnce;
-import static se.mockachino.matchers.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("unchecked")
 public class TestStatesImmutable {
-
-	private static final TypeToken<Action<States, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<States, String, Void>>() {
-	};
-
 
 	@Test
 	public void simpleStateTransition() {
@@ -28,54 +27,45 @@ public class TestStatesImmutable {
 		StateMachine<States, String, Void> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
-
 		machine.fireEvent("hej");
-
 		assertEquals(States.ONE, machine.getCurrentState());
-
 		machine.fireEvent("hej");
-
 		assertEquals(States.ONE, machine.getCurrentState());
-
 		machine.fireEvent("hopp");
-
 		assertEquals(States.TWO, machine.getCurrentState());
-
 	}
 
 	@Test
 	public void entryExitActions() {
 		MutableTransitionModelImpl<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
-
 		model.addTransition(States.INITIAL, States.ONE, "", BasicConditions.always(), Collections.emptyList());
 		model.addTransition(States.ONE, States.TWO, "", BasicConditions.always(), Collections.emptyList());
-		Action<States, String, Void> entryAction = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> entryAction = mock(Action.class);
 		model.addEntryAction(States.ONE, entryAction);
-		Action<States, String, Void> exitAction = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> exitAction = mock(Action.class);
 		model.addExitAction(States.ONE, exitAction);
 
 		StateMachine<States, String, Void> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
 
 		machine.fireEvent("foo");
 
-		verifyNever().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(entryAction, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(entryAction).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyOnce().on(exitAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(entryAction).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 	}
 
 	@Test
 	public void simpleStateTransitionUsingNonEnums() {
-
 		TestState initial = new TestState();
 		TestState one = new TestState();
 		TestState two = new TestState();
@@ -83,24 +73,16 @@ public class TestStatesImmutable {
 		MutableTransitionModelImpl<TestState, String, Void> model = MutableTransitionModelImpl.create(TestState.class, String.class);
 
 		model.addTransition(initial, one, "", BasicConditions.always(), Collections.emptyList());
-
 		model.addTransition(one, two, "", BasicConditions.always(), Collections.emptyList());
 		StateMachine<TestState, String, Void> machine = model.createImmutableClone().newStateMachine(initial);
 
 		assertEquals(initial, machine.getCurrentState());
-
 		machine.fireEvent("");
-
 		assertEquals(one, machine.getCurrentState());
-
 		machine.fireEvent("foo");
-
 		assertEquals(one, machine.getCurrentState());
-
 		machine.fireEvent("");
-
 		assertEquals(two, machine.getCurrentState());
-
 	}
 
 	@Test
@@ -111,27 +93,26 @@ public class TestStatesImmutable {
 		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.always(), Collections.emptyList());
 		model.addTransition(States.TWO, States.INITIAL, "hej", BasicConditions.always(), Collections.emptyList());
 
-		Action<States, String, Void> entryAction1 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> entryAction1 = mock(Action.class);
 		model.addEntryAction(States.INITIAL, entryAction1);
-		Action<States, String, Void> exitAction1 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> exitAction1 = mock(Action.class);
 		model.addExitAction(States.INITIAL, exitAction1);
 
-		Action<States, String, Void> entryAction2 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> entryAction2 = mock(Action.class);
 		model.addEntryAction(States.TWO, entryAction2);
-		Action<States, String, Void> exitAction2 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> exitAction2 = mock(Action.class);
 		model.addExitAction(States.TWO, exitAction2);
 
 		StateMachine<States, String, Void> machine = model.createImmutableClone().newStateMachine(States.INITIAL);
 
 		machine.forceSetState(States.TWO);
 		assertEquals(States.TWO, machine.getCurrentState());
-		verifyOnce().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyOnce().on(entryAction2).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(exitAction1).onTransition(any(States.class), any(States.class), nullable(String.class), isNull(), eq(machine));
+		verify(entryAction2).onTransition(any(States.class), any(States.class), nullable(String.class), isNull(), eq(machine));
 	}
 
 	@Test
 	public void fromAllTransition() {
-
 		MutableTransitionModel<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
 
 		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.always(), Collections.emptyList());
@@ -149,9 +130,7 @@ public class TestStatesImmutable {
 
 	@Test
 	public void singleFiresBeforeFromAllTransition() {
-
 		MutableTransitionModel<States, String, Void> model = MutableTransitionModelImpl.create(States.class, String.class);
-
 
 		model.addTransition(States.INITIAL, States.ONE, "hej", BasicConditions.always(), Collections.emptyList());
 		model.addTransition(States.ONE, States.TWO, "hopp", BasicConditions.always(), Collections.emptyList());

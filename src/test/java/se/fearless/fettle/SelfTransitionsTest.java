@@ -1,13 +1,14 @@
 package se.fearless.fettle;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import se.fearless.fettle.builder.StateMachineBuilder;
-import se.mockachino.annotations.Mock;
 
-import static se.mockachino.Mockachino.setupMocks;
-import static se.mockachino.Mockachino.verifyOnce;
-import static se.mockachino.matchers.Matchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class SelfTransitionsTest {
 
@@ -22,9 +23,9 @@ public class SelfTransitionsTest {
 
 	private StateMachine<States, String, Void> stateMachine;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		setupMocks(this);
+		openMocks(this);
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		builder.transition().from(States.INITIAL).to(States.INITIAL).on("self").perform(transitionAction);
 		builder.onEntry(States.INITIAL).perform(entryAction);
@@ -35,22 +36,21 @@ public class SelfTransitionsTest {
 	}
 
 	@Test
-	public void selfTransitionPerformsTransitionActions() throws Exception {
+	public void selfTransitionPerformsTransitionActions() {
 		verifyActionInvocation(transitionAction);
 	}
 
 	@Test
-	public void selfTransitionPerformsEntryActions() throws Exception {
+	public void selfTransitionPerformsEntryActions() {
 		verifyActionInvocation(entryAction);
 	}
 
 	@Test
-	public void selfTransitionPerformsExitActions() throws Exception {
+	public void selfTransitionPerformsExitActions() {
 		verifyActionInvocation(exitAction);
 	}
 
 	private void verifyActionInvocation(Action<States, String, Void> action) {
-		verifyOnce().on(action).onTransition(States.INITIAL, States.INITIAL, "self", any(Void.class), stateMachine);
+		verify(action).onTransition(eq(States.INITIAL), eq(States.INITIAL), eq("self"), isNull(), eq(stateMachine));
 	}
-
 }

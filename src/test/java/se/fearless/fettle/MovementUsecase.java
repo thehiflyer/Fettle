@@ -1,14 +1,15 @@
 package se.fearless.fettle;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.fearless.fettle.impl.MutableTransitionModelImpl;
-import se.mockachino.Mockachino;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
+@SuppressWarnings("unchecked")
 public class MovementUsecase {
 
 	private interface State {
@@ -20,11 +21,11 @@ public class MovementUsecase {
 
 	@Test
 	public void testMovement() {
-		State walking = Mockachino.mock(State.class);
-		State jumping = Mockachino.mock(State.class);
-		State falling = Mockachino.mock(State.class);
-		State crashed = Mockachino.mock(State.class);
-		State jetpackthrust = Mockachino.mock(State.class);
+		State walking = mock(State.class);
+		State jumping = mock(State.class);
+		State falling = mock(State.class);
+		State crashed = mock(State.class);
+		State jetpackthrust = mock(State.class);
 
 		MutableTransitionModelImpl<State, MovementEvents, Void> model = MutableTransitionModelImpl.create(State.class, MovementEvents.class);
 
@@ -50,6 +51,4 @@ public class MovementUsecase {
 		machine.fireEvent(MovementEvents.PRESSED_SPACE);
 		assertEquals(jumping, machine.getCurrentState());
 	}
-
-
 }

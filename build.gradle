@@ -27,8 +27,12 @@ repositories {
 }
 
 dependencies {
-	testImplementation 'junit:junit:4.13.2'
-	testImplementation 'se.mockachino:mockachino:0.6.1'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+	testImplementation 'org.mockito:mockito-core:5.14.2'
+	testImplementation 'org.hamcrest:hamcrest:2.2'
+	testImplementation 'org.slf4j:slf4j-api:2.0.16'
+	testRuntimeOnly 'ch.qos.logback:logback-classic:1.5.12'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.register('gwtJar', Jar) {
@@ -77,7 +81,8 @@ tasks.named('jacocoTestReport') {
 }
 
 tasks.named('test', Test) {
-    // Mockachino reflects on JDK internals and needs explicit module opens on Java 21+.
+    useJUnitPlatform()
+    // Mockito's ByteBuddy and CompleteCoverageTest's setAccessible() need this on Java 21+.
     jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
 }
 

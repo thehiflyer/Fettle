@@ -1,8 +1,6 @@
 package se.fearless.fettle.builder;
 
-import com.googlecode.gentyref.TypeToken;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.fearless.fettle.Action;
 import se.fearless.fettle.Arguments;
 import se.fearless.fettle.Condition;
@@ -15,21 +13,20 @@ import se.fearless.fettle.impl.AbstractTransitionModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.verifyNever;
-import static se.mockachino.Mockachino.verifyOnce;
-import static se.mockachino.matchers.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("unchecked")
 public class StateMachineBuilderTest {
 
-	private static final TypeToken<Action<States, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<>() {
-    };
-
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testBuilder() {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
 
@@ -40,18 +37,11 @@ public class StateMachineBuilderTest {
 		StateMachine<States, String, Void> machine = stateMachineTemplate.newStateMachine(States.INITIAL);
 
 		assertEquals(States.INITIAL, machine.getCurrentState());
-
 		machine.fireEvent("hej");
-
 		assertEquals(States.ONE, machine.getCurrentState());
-
 		machine.fireEvent("hej");
-
 		assertEquals(States.ONE, machine.getCurrentState());
-
 		machine.fireEvent("hopp");
-
-
 		assertEquals(States.TWO, machine.getCurrentState());
 		DotExporter<States, String, Void> exporter = new DotExporter<>((AbstractTransitionModel<States, String, Void>) stateMachineTemplate, "test");
 		exporter.asDot(System.out, true);
@@ -59,9 +49,7 @@ public class StateMachineBuilderTest {
 
 	@Test
 	public void fromAllTransition() {
-
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
-
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("hej");
 		builder.transition().from(States.ONE).to(States.TWO).on("hopp");
@@ -73,25 +61,21 @@ public class StateMachineBuilderTest {
 		machine.fireEvent("hopp");
 		machine.fireEvent("back");
 
-
 		assertEquals(States.INITIAL, machine.getCurrentState());
-
 	}
 
 	@Test
 	public void entryExitActions() {
-
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("");
-
 		builder.transition().from(States.ONE).to(States.TWO).on("");
-		Action<States, String, Void> entryAction = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> entryAction = mock(Action.class);
 		builder.onEntry(States.ONE).perform(entryAction);
 
-		Action<States, String, Void> exitAction1 = mock(ACTION_TYPE_TOKEN);
-		Action<States, String, Void> exitAction2 = mock(ACTION_TYPE_TOKEN);
-        List<Action<States, String, Void>> exitActions = new ArrayList<>();
+		Action<States, String, Void> exitAction1 = mock(Action.class);
+		Action<States, String, Void> exitAction2 = mock(Action.class);
+		List<Action<States, String, Void>> exitActions = new ArrayList<>();
 		exitActions.add(exitAction1);
 		exitActions.add(exitAction2);
 		builder.onExit(States.ONE).perform(exitActions);
@@ -100,21 +84,21 @@ public class StateMachineBuilderTest {
 
 		machine.fireEvent("foo");
 
-		verifyNever().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(exitAction2).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(entryAction, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction1, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction2, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(exitAction2).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(entryAction).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction1, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction2, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 
 		machine.fireEvent("");
 
-		verifyOnce().on(entryAction).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyOnce().on(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyOnce().on(exitAction2).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(entryAction).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction1).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(exitAction2).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 	}
 
 	@Test
@@ -138,29 +122,22 @@ public class StateMachineBuilderTest {
 	public void missingOn() {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
 		builder.transition().from(States.INITIAL).to(States.ONE);
-		try {
-			builder.build(States.INITIAL);
-			fail("Should not be allowed to build a state machine with transition on null");
-		} catch (IllegalStateException e) {
-			assertTrue(e.getMessage().contains(States.INITIAL.toString()));
-			assertTrue(e.getMessage().contains(States.ONE.toString()));
-		}
+		IllegalStateException ex = assertThrows(IllegalStateException.class, () -> builder.build(States.INITIAL));
+		assertTrue(ex.getMessage().contains(States.INITIAL.toString()));
+		assertTrue(ex.getMessage().contains(States.ONE.toString()));
 	}
 
 	@Test
 	public void missingOnFromAll() {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
 		builder.transition().fromAll().to(States.ONE);
-		try {
-			builder.build(States.INITIAL);
-			fail("Should not be allowed to build a state machine with transition on null");
-		} catch (IllegalStateException e) {
-			assertTrue(e.getMessage().contains(States.ONE.toString()));
-		}
+		IllegalStateException ex = assertThrows(IllegalStateException.class, () -> builder.build(States.INITIAL));
+		assertTrue(ex.getMessage().contains(States.ONE.toString()));
 	}
 
 	private static class CheckWasCalledAction implements Action<States, String, Arguments> {
 		private int callCount;
+
 		@Override
 		public void onTransition(States from, States to, String causedBy, Arguments context, StateMachine<States, String, Arguments> stateMachine) {
 			callCount++;
@@ -170,7 +147,6 @@ public class StateMachineBuilderTest {
 			return callCount;
 		}
 	}
-
 
 	private static class ConditionImpl implements Condition<Void> {
 		boolean pass = false;
@@ -184,31 +160,31 @@ public class StateMachineBuilderTest {
 	@Test
 	public void perform() {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
-		Action<States, String, Void> action1 = mock(ACTION_TYPE_TOKEN);
-		Action<States, String, Void> action2 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> action1 = mock(Action.class);
+		Action<States, String, Void> action2 = mock(Action.class);
 
 		builder.transition().from(States.INITIAL).to(States.ONE).on("a").perform(Actions.actions(action1, action2));
 
 		StateMachine<States, String, Void> machine = builder.build(States.INITIAL);
 
-		verifyNever().on(action1).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(action2).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(action1, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(action2, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 		machine.fireEvent("");
 
-		verifyNever().on(action1).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
-		verifyNever().on(action2).onTransition(any(States.class), any(States.class), any(String.class), any(Void.class), machine);
+		verify(action1, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
+		verify(action2, never()).onTransition(any(States.class), any(States.class), any(String.class), isNull(), eq(machine));
 
 		machine.fireEvent("a");
 
-		verifyOnce().on(action1).onTransition(States.INITIAL, States.ONE, "a", any(Void.class), machine);
-		verifyOnce().on(action2).onTransition(States.INITIAL, States.ONE, "a", any(Void.class), machine);
+		verify(action1).onTransition(eq(States.INITIAL), eq(States.ONE), eq("a"), isNull(), eq(machine));
+		verify(action2).onTransition(eq(States.INITIAL), eq(States.ONE), eq("a"), isNull(), eq(machine));
 	}
 
 	@Test
 	public void multiplePerformsInARowForEntryActions() {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
-		Action<States, String, Void> action1 = mock(ACTION_TYPE_TOKEN);
-		Action<States, String, Void> action2 = mock(ACTION_TYPE_TOKEN);
+		Action<States, String, Void> action1 = mock(Action.class);
+		Action<States, String, Void> action2 = mock(Action.class);
 
 		builder.onEntry(States.ONE).perform(action1).perform(action2);
 		builder.transition().from(States.INITIAL).to(States.ONE).on("a");
@@ -217,18 +193,14 @@ public class StateMachineBuilderTest {
 
 		machine.fireEvent("a");
 
-		verifyOnce().on(action1).onTransition(States.INITIAL, States.ONE, "a", any(Void.class), machine);
-		verifyOnce().on(action2).onTransition(States.INITIAL, States.ONE, "a", any(Void.class), machine);
+		verify(action1).onTransition(eq(States.INITIAL), eq(States.ONE), eq("a"), isNull(), eq(machine));
+		verify(action2).onTransition(eq(States.INITIAL), eq(States.ONE), eq("a"), isNull(), eq(machine));
 	}
 
 	@Test
 	public void nullInitialState() {
 		StateMachineBuilder<States, String, Void> builder = StateMachineBuilder.create(States.class, String.class);
-		try {
-			builder.build(null);
-			fail("Null should not be permitted");
-		} catch (IllegalArgumentException ignored) {
-		}
+		assertThrows(IllegalArgumentException.class, () -> builder.build(null));
 	}
 
 	@Test
@@ -236,14 +208,14 @@ public class StateMachineBuilderTest {
 		StateMachineBuilder<States, String, Arguments> builder = StateMachineBuilder.create(States.class, String.class);
 		builder.defaultContext(Arguments.NO_ARGS);
 		CheckWasCalledAction wasCalledAction = new CheckWasCalledAction();
-		Action<States, String, Arguments> action = (from, to, causedBy, context, stateMachine) -> Assert.assertEquals(Arguments.NO_ARGS, context);
+		Action<States, String, Arguments> action = (from, to, causedBy, context, stateMachine) -> assertEquals(Arguments.NO_ARGS, context);
 		List<Action<States, String, Arguments>> actions = new ArrayList<>();
 		actions.add(action);
 		actions.add(wasCalledAction);
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(context -> {
-            Assert.assertEquals(Arguments.NO_ARGS, context);
-            return true;
-        }).perform(actions);
+			assertEquals(Arguments.NO_ARGS, context);
+			return true;
+		}).perform(actions);
 		StateMachine<States, String, Arguments> stateMachine = builder.build(States.INITIAL);
 		stateMachine.fireEvent("foo");
 

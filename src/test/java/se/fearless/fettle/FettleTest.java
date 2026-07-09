@@ -1,12 +1,13 @@
 package se.fearless.fettle;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class FettleTest {
+
 	@Test
 	public void useOfUtil() {
 		MutableTransitionModel<States, String, Void> transitionModel = Fettle.newTransitionModel(States.class, String.class);

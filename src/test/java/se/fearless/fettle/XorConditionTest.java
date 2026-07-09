@@ -1,16 +1,17 @@
 package se.fearless.fettle;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.stubReturn;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+@SuppressWarnings("unchecked")
 public class XorConditionTest {
 
 	@Test
-	public void twoWayXor() throws Exception {
+	public void twoWayXor() {
 		Condition cond1 = mock(Condition.class);
 		Condition cond2 = mock(Condition.class);
 
@@ -18,16 +19,16 @@ public class XorConditionTest {
 
 		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
-		stubReturn(false).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		when(cond1.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
+		when(cond2.isSatisfied(Arguments.NO_ARGS)).thenReturn(false);
 		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(false).on(cond1).isSatisfied(Arguments.NO_ARGS);
-		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		when(cond1.isSatisfied(Arguments.NO_ARGS)).thenReturn(false);
+		when(cond2.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
 		assertTrue(condition.isSatisfied(Arguments.NO_ARGS));
 
-		stubReturn(true).on(cond1).isSatisfied(Arguments.NO_ARGS);
-		stubReturn(true).on(cond2).isSatisfied(Arguments.NO_ARGS);
+		when(cond1.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
+		when(cond2.isSatisfied(Arguments.NO_ARGS)).thenReturn(true);
 		assertFalse(condition.isSatisfied(Arguments.NO_ARGS));
 	}
 }

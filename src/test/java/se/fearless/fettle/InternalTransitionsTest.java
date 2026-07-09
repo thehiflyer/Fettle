@@ -1,18 +1,20 @@
 package se.fearless.fettle;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import se.fearless.fettle.builder.StateMachineBuilder;
-import se.mockachino.annotations.Mock;
 
-import static se.mockachino.Mockachino.setupMocks;
-import static se.mockachino.Mockachino.verifyNever;
-import static se.mockachino.Mockachino.verifyOnce;
-import static se.mockachino.matchers.Matchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class InternalTransitionsTest {
 
 	private static final String INTERNAL_TRANSITION_TRIGGER = "internal";
+
 	@Mock
 	private Action<States, String, Void> transitionAction;
 
@@ -24,9 +26,9 @@ public class InternalTransitionsTest {
 
 	private StateMachine<States, String, Void> stateMachine;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		setupMocks(this);
+		openMocks(this);
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		builder.transition().internal(States.INITIAL).on(INTERNAL_TRANSITION_TRIGGER).perform(transitionAction);
 		builder.onEntry(States.INITIAL).perform(entryAction);
@@ -37,22 +39,21 @@ public class InternalTransitionsTest {
 	}
 
 	@Test
-	public void internalTransitionPerformsTransitionActions() throws Exception {
+	public void internalTransitionPerformsTransitionActions() {
 		verifyActionInvocation(transitionAction);
 	}
 
 	@Test
-	public void internalTransitionDoesNotPerformEntryActions() throws Exception {
-		verifyNever().on(entryAction).onTransition(States.INITIAL, States.INITIAL, INTERNAL_TRANSITION_TRIGGER, any(Void.class), stateMachine);
+	public void internalTransitionDoesNotPerformEntryActions() {
+		verify(entryAction, never()).onTransition(eq(States.INITIAL), eq(States.INITIAL), eq(INTERNAL_TRANSITION_TRIGGER), isNull(), eq(stateMachine));
 	}
 
 	@Test
-	public void internalTransitionDoesNotPerformExitActions() throws Exception {
-		verifyNever().on(exitAction).onTransition(States.INITIAL, States.INITIAL, INTERNAL_TRANSITION_TRIGGER, any(Void.class), stateMachine);
+	public void internalTransitionDoesNotPerformExitActions() {
+		verify(exitAction, never()).onTransition(eq(States.INITIAL), eq(States.INITIAL), eq(INTERNAL_TRANSITION_TRIGGER), isNull(), eq(stateMachine));
 	}
 
 	private void verifyActionInvocation(Action<States, String, Void> action) {
-		verifyOnce().on(action).onTransition(States.INITIAL, States.INITIAL, INTERNAL_TRANSITION_TRIGGER, any(Void.class), stateMachine);
+		verify(action).onTransition(eq(States.INITIAL), eq(States.INITIAL), eq(INTERNAL_TRANSITION_TRIGGER), isNull(), eq(stateMachine));
 	}
-
 }

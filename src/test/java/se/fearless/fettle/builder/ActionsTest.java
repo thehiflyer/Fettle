@@ -1,20 +1,16 @@
 package se.fearless.fettle.builder;
 
-import com.googlecode.gentyref.TypeToken;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.fearless.fettle.Action;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.junit.Assert.assertThat;
-import static se.fearless.fettle.builder.Actions.actions;
-import static se.mockachino.Mockachino.mock;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+
+@SuppressWarnings("unchecked")
 public class ActionsTest {
-
-	private static final TypeToken<Action<String, String, Void>> ACTION_TYPE_TOKEN = new TypeToken<Action<String, String, Void>>() {
-	};
 
 	private Action<String, String, Void> action1;
 	private Action<String, String, Void> action2;
@@ -22,41 +18,51 @@ public class ActionsTest {
 	private Action<String, String, Void> action4;
 	private Action<String, String, Void> action5;
 
-	@Before
-	public void setUp() throws Exception {
-		action1 = mock(ACTION_TYPE_TOKEN);
-		action2 = mock(ACTION_TYPE_TOKEN);
-		action3 = mock(ACTION_TYPE_TOKEN);
-		action4 = mock(ACTION_TYPE_TOKEN);
-		action5 = mock(ACTION_TYPE_TOKEN);
+	@BeforeEach
+	public void setUp() {
+		action1 = mock(Action.class);
+		action2 = mock(Action.class);
+		action3 = mock(Action.class);
+		action4 = mock(Action.class);
+		action5 = mock(Action.class);
 	}
 
 	@Test
-	public void singleActionIsIncludedInList() throws Exception {
-		assertThat(actions(action1), hasItem(action1));
+	public void singleActionIsIncludedInList() {
+		assertTrue(Actions.actions(action1).contains(action1));
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
-	public void twoActionsAreIncludedInList() throws Exception {
-		assertThat(actions(action1, action2), hasItems(action1, action2));
+	public void twoActionsAreIncludedInList() {
+		List<?> result = Actions.actions(action1, action2);
+		assertTrue(result.contains(action1));
+		assertTrue(result.contains(action2));
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
-	public void threeActionsAreIncludedInList() throws Exception {
-		assertThat(actions(action1, action2, action3), hasItems(action1, action2, action3));
+	public void threeActionsAreIncludedInList() {
+		List<?> result = Actions.actions(action1, action2, action3);
+		assertTrue(result.contains(action1));
+		assertTrue(result.contains(action2));
+		assertTrue(result.contains(action3));
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
-	public void fourActionsAreIncludedInList() throws Exception {
-		assertThat(actions(action1, action2, action3, action4), hasItems(action1, action2, action3, action4));
+	public void fourActionsAreIncludedInList() {
+		List<?> result = Actions.actions(action1, action2, action3, action4);
+		assertTrue(result.contains(action1));
+		assertTrue(result.contains(action2));
+		assertTrue(result.contains(action3));
+		assertTrue(result.contains(action4));
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
-	public void fiveActionsAreIncludedInList() throws Exception {
-		assertThat(actions(action1, action2, action3, action4, action5), hasItems(action1, action2, action3, action4, action5));
+	public void fiveActionsAreIncludedInList() {
+		List<?> result = Actions.actions(action1, action2, action3, action4, action5);
+		assertTrue(result.contains(action1));
+		assertTrue(result.contains(action2));
+		assertTrue(result.contains(action3));
+		assertTrue(result.contains(action4));
+		assertTrue(result.contains(action5));
 	}
 }

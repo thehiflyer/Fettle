@@ -1,6 +1,6 @@
 package se.fearless.fettle;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 
@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
  * I don't care about that metric hitting 100 as much as it makes any place I've missed to cover really stand out
  */
 public class CompleteCoverageTest {
+
 	@Test
 	public void createFettle() throws Exception {
 		Constructor<?>[] constructors = Fettle.class.getDeclaredConstructors();

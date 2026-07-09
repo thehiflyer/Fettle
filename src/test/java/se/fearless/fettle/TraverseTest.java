@@ -1,27 +1,27 @@
 package se.fearless.fettle;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
 import java.util.Collection;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TraverseTest {
 
 	private StateMachineBuilder<States, String, Boolean> builder;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void setUp() {
 		builder = StateMachineBuilder.create(States.class, String.class);
 	}
 
 	@Test
-	public void queryWithNoTransitions() throws Exception {
+	public void queryWithNoTransitions() {
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
 		Map<String, Collection<? extends Transition<States, String, Boolean>>> transitionMap = stateMachine.getPossibleTransitions(States.INITIAL);
@@ -30,7 +30,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void queryWithOneTransition() throws Exception {
+	public void queryWithOneTransition() {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
 
@@ -42,7 +42,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void queryWithMultipleTransitionsFromOneState() throws Exception {
+	public void queryWithMultipleTransitionsFromOneState() {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo").when(context -> context);
 		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(context -> !context);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
@@ -56,7 +56,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void irrelevantTransitionsAreNotIncluded() throws Exception {
+	public void irrelevantTransitionsAreNotIncluded() {
 		builder.transition().from(States.INITIAL).to(States.ONE).on("foo");
 		builder.transition().from(States.ONE).to(States.TWO).on("foo");
 		builder.transition().from(States.THREE).to(States.ONE).on("foo");
@@ -71,7 +71,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void fromAllTransitionsAreIncluded() throws Exception {
+	public void fromAllTransitionsAreIncluded() {
 		builder.transition().fromAll().to(States.ONE).on("foo").when(context -> context);
 		builder.transition().fromAll().to(States.TWO).on("foo").when(context -> !context);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
@@ -85,7 +85,7 @@ public class TraverseTest {
 	}
 
 	@Test
-	public void fromAllTransitionsAndNormalTransitionsCanCoexist() throws Exception {
+	public void fromAllTransitionsAndNormalTransitionsCanCoexist() {
 		builder.transition().fromAll().to(States.ONE).on("foo").when(context -> context);
 		builder.transition().from(States.INITIAL).to(States.TWO).on("foo").when(context -> !context);
 		StateMachine<States, String, Boolean> stateMachine = createStateMachine(builder);
@@ -105,7 +105,7 @@ public class TraverseTest {
 	}
 
 	private void checkExistenceOfTransitionsTo(final States state, Collection<? extends Transition<States, String, Boolean>> transitions) {
-		Transition<States, String, Boolean> transition1 = transitions.stream().filter(input -> input.getTo() == state).findFirst().get();
+		Transition<States, String, Boolean> transition1 = transitions.stream().filter(input -> input.getTo() == state).findFirst().orElseThrow();
 		assertNotNull(transition1);
 	}
 }

@@ -1,52 +1,45 @@
 package se.fearless.fettle;
 
-import com.googlecode.gentyref.TypeToken;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.stubReturn;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+@SuppressWarnings("unchecked")
 public class OrConditionTest {
-
-	public static final TypeToken<Condition<Arguments>> ARGUMENT_CONDITION_TYPE_TOKEN = new TypeToken<Condition<Arguments>>() {
-	};
-
-	public static final TypeToken<Condition<Void>> VOID_CONDITION_TYPE_TOKEN = new TypeToken<Condition<Void>>() {
-	};
-
 
 	@Test
 	public void twoWayOr() {
-		Condition<Void> cond1 = mock(VOID_CONDITION_TYPE_TOKEN);
-		Condition<Void> cond2 = mock(VOID_CONDITION_TYPE_TOKEN);
+		Condition<Void> cond1 = mock(Condition.class);
+		Condition<Void> cond2 = mock(Condition.class);
 
 		Condition<Void> condition = BasicConditions.or(cond1, cond2);
 
 		assertFalse(condition.isSatisfied(null));
 
-		stubReturn(true).on(cond1).isSatisfied(null);
-		stubReturn(false).on(cond2).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(true);
+		when(cond2.isSatisfied(null)).thenReturn(false);
 		assertTrue(condition.isSatisfied(null));
 
-		stubReturn(false).on(cond1).isSatisfied(null);
-		stubReturn(true).on(cond2).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(false);
+		when(cond2.isSatisfied(null)).thenReturn(true);
 		assertTrue(condition.isSatisfied(null));
 
-		stubReturn(true).on(cond1).isSatisfied(null);
-		stubReturn(true).on(cond2).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(true);
+		when(cond2.isSatisfied(null)).thenReturn(true);
 		assertTrue(condition.isSatisfied(null));
 	}
 
 
 	@Test
 	public void notSatisfied() {
-		Condition<Void> cond1 = mock(VOID_CONDITION_TYPE_TOKEN);
-		Condition<Void> cond2 = mock(VOID_CONDITION_TYPE_TOKEN);
-		Condition<Void> cond3 = mock(VOID_CONDITION_TYPE_TOKEN);
+		Condition<Void> cond1 = mock(Condition.class);
+		Condition<Void> cond2 = mock(Condition.class);
+		Condition<Void> cond3 = mock(Condition.class);
 		List<Condition<Void>> conditions = List.of(cond1, cond2, cond3);
 
 		Condition<Void> condition = BasicConditions.or(conditions);
@@ -56,48 +49,46 @@ public class OrConditionTest {
 
 	@Test
 	public void satisfied() {
-		Condition<Void> cond1 = mock(VOID_CONDITION_TYPE_TOKEN);
-		Condition<Void> cond2 = mock(VOID_CONDITION_TYPE_TOKEN);
-		Condition<Void> cond3 = mock(VOID_CONDITION_TYPE_TOKEN);
+		Condition<Void> cond1 = mock(Condition.class);
+		Condition<Void> cond2 = mock(Condition.class);
+		Condition<Void> cond3 = mock(Condition.class);
 		List<Condition<Void>> conditions = List.of(cond1, cond2, cond3);
 
 		Condition<Void> condition = BasicConditions.or(conditions);
 
-
-		stubReturn(true).on(cond1).isSatisfied(null);
-		stubReturn(false).on(cond2).isSatisfied(null);
-		stubReturn(false).on(cond3).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(true);
+		when(cond2.isSatisfied(null)).thenReturn(false);
+		when(cond3.isSatisfied(null)).thenReturn(false);
 		assertTrue(condition.isSatisfied(null));
 
-		stubReturn(false).on(cond1).isSatisfied(null);
-		stubReturn(true).on(cond2).isSatisfied(null);
-		stubReturn(false).on(cond3).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(false);
+		when(cond2.isSatisfied(null)).thenReturn(true);
+		when(cond3.isSatisfied(null)).thenReturn(false);
 		assertTrue(condition.isSatisfied(null));
 
-		stubReturn(false).on(cond1).isSatisfied(null);
-		stubReturn(false).on(cond2).isSatisfied(null);
-		stubReturn(true).on(cond3).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(false);
+		when(cond2.isSatisfied(null)).thenReturn(false);
+		when(cond3.isSatisfied(null)).thenReturn(true);
 		assertTrue(condition.isSatisfied(null));
 
-		stubReturn(true).on(cond1).isSatisfied(null);
-		stubReturn(true).on(cond2).isSatisfied(null);
-		stubReturn(false).on(cond3).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(true);
+		when(cond2.isSatisfied(null)).thenReturn(true);
+		when(cond3.isSatisfied(null)).thenReturn(false);
 		assertTrue(condition.isSatisfied(null));
 
-
-		stubReturn(true).on(cond1).isSatisfied(null);
-		stubReturn(false).on(cond2).isSatisfied(null);
-		stubReturn(true).on(cond3).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(true);
+		when(cond2.isSatisfied(null)).thenReturn(false);
+		when(cond3.isSatisfied(null)).thenReturn(true);
 		assertTrue(condition.isSatisfied(null));
 
-		stubReturn(false).on(cond1).isSatisfied(null);
-		stubReturn(true).on(cond2).isSatisfied(null);
-		stubReturn(true).on(cond3).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(false);
+		when(cond2.isSatisfied(null)).thenReturn(true);
+		when(cond3.isSatisfied(null)).thenReturn(true);
 		assertTrue(condition.isSatisfied(null));
 
-		stubReturn(true).on(cond1).isSatisfied(null);
-		stubReturn(true).on(cond2).isSatisfied(null);
-		stubReturn(true).on(cond3).isSatisfied(null);
+		when(cond1.isSatisfied(null)).thenReturn(true);
+		when(cond2.isSatisfied(null)).thenReturn(true);
+		when(cond3.isSatisfied(null)).thenReturn(true);
 		assertTrue(condition.isSatisfied(null));
 	}
 }

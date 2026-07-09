@@ -1,23 +1,29 @@
 package se.fearless.fettle;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import static org.junit.Assert.assertEquals;
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.verifyOnce;
-import static se.mockachino.matchers.Matchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("unchecked")
 public class ConcurrentEventsTest {
+
+	private static final Logger log = LoggerFactory.getLogger(ConcurrentEventsTest.class);
 
 	private StateMachineBuilder<States, String, Void> builder;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	public void setUp() {
 		builder = Fettle.newBuilder(States.class, String.class);
 	}
 
@@ -47,7 +53,8 @@ public class ConcurrentEventsTest {
 					inCondition.await();
 					condition.latch.countDown();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.error("Thread interrupted while waiting for condition", e);
+					Thread.currentThread().interrupt();
 				}
 				stateMachine.fireEvent("second");
 				eventsDone.countDown();
@@ -85,7 +92,8 @@ public class ConcurrentEventsTest {
 					inCondition.await();
 					condition.latch.countDown();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.error("Thread interrupted while waiting for condition", e);
+					Thread.currentThread().interrupt();
 				}
 				stateMachine.rawSetState(States.INITIAL);
 				rawSetDone.countDown();
@@ -100,7 +108,8 @@ public class ConcurrentEventsTest {
 				try {
 					rawSetDone.await();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.error("Thread interrupted while waiting for rawSet", e);
+					Thread.currentThread().interrupt();
 				}
 				stateMachine.fireEvent("second");
 				eventsDone.countDown();
@@ -139,7 +148,8 @@ public class ConcurrentEventsTest {
 					inCondition.await();
 					condition.latch.countDown();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.error("Thread interrupted while waiting for condition", e);
+					Thread.currentThread().interrupt();
 				}
 				stateMachine.forceSetState(States.INITIAL);
 				rawSetDone.countDown();
@@ -154,7 +164,8 @@ public class ConcurrentEventsTest {
 				try {
 					rawSetDone.await();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					log.error("Thread interrupted while waiting for rawSet", e);
+					Thread.currentThread().interrupt();
 				}
 				stateMachine.fireEvent("second");
 				eventsDone.countDown();
@@ -184,8 +195,7 @@ public class ConcurrentEventsTest {
 
 		assertEquals(States.TWO, stateMachine.getCurrentState());
 
-		verifyOnce().on(otherAction).onTransition(States.INITIAL, States.ONE, "first", any(Void.class), stateMachine);
-
+		verify(otherAction).onTransition(eq(States.INITIAL), eq(States.ONE), eq("first"), isNull(), eq(stateMachine));
 	}
 
 	private static class BlockingCondition implements Condition<Void> {
@@ -202,7 +212,8 @@ public class ConcurrentEventsTest {
 			try {
 				latch.await();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				log.error("Thread interrupted while waiting for latch", e);
+				Thread.currentThread().interrupt();
 			}
 			return true;
 		}

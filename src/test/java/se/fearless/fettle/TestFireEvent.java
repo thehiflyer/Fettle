@@ -1,12 +1,12 @@
 package se.fearless.fettle;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import se.fearless.fettle.impl.MutableTransitionModelImpl;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestFireEvent {
 
@@ -28,7 +28,7 @@ public class TestFireEvent {
 	}
 
 	@Test
-	public void testFireEventWithParams() throws Exception {
+	public void testFireEventWithParams() {
 		MutableTransitionModelImpl<States, Triggers, Arguments> model = MutableTransitionModelImpl.create(States.class, Triggers.class, Arguments.NO_ARGS);
 
 		model.addTransition(States.INITIAL, States.ONE, Triggers.FOO, new Condition<Arguments>() {
@@ -46,6 +46,5 @@ public class TestFireEvent {
 		assertFalse(machine.fireEvent(Triggers.FOO));
 		assertFalse(machine.fireEvent(Triggers.FOO, new Arguments("foo")));
 		assertTrue(machine.fireEvent(Triggers.FOO, new Arguments("hej")));
-
 	}
 }
