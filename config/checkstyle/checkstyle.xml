@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
-		"-//Puppy Crawl//DTD Check Configuration 1.2//EN"
-		"http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
+		"-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+		"https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <module name="Checker">
 
@@ -9,9 +9,14 @@
 	<!-- See http://checkstyle.sf.net/config_sizes.html -->
 	<module name="FileLength"/>
 
+	<!-- LineLength moved to Checker level in Checkstyle 10 -->
+	<module name="LineLength">
+		<property name="max" value="160"/>
+		<property name="severity" value="info"/>
+	</module>
+
 	<module name="TreeWalker">
 		<property name="tabWidth" value="3"/>
-        <property name="cacheFile" value="checkStyle-cacheFile"/>
 		<!-- Checks for Naming Conventions.                  -->
 		<!-- See http://checkstyle.sf.net/config_naming.html -->
 		<module name="ConstantName">
@@ -50,10 +55,6 @@
 
 		<!-- Checks for Size Violations.                    -->
 		<!-- See http://checkstyle.sf.net/config_sizes.html -->
-		<module name="LineLength">
-			<property name="max" value="160"/>
-			<property name="severity" value="info"/>
-		</module>
 		<module name="MethodLength"/>
 
 		<!-- Checks for whitespace                               -->
@@ -70,9 +71,6 @@
 			<property name="severity" value="info"/>
 		</module>
 		<module name="ParenPad">
-			<property name="severity" value="info"/>
-		</module>
-		<module name="TypecastParenPad">
 			<property name="severity" value="info"/>
 		</module>
 		<module name="WhitespaceAfter">

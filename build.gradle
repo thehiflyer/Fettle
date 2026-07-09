@@ -27,8 +27,8 @@ repositories {
 }
 
 dependencies {
-	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
-	testImplementation group: 'se.mockachino', name: 'mockachino', version: '0.6.1'
+	testImplementation 'junit:junit:4.13.2'
+	testImplementation 'se.mockachino:mockachino:0.6.1'
 }
 
 tasks.register('gwtJar', Jar) {
@@ -52,11 +52,12 @@ tasks.named('jar', Jar) {
 
 tasks.named('checkstyleMain') {
     doLast {
-        def xmlReport = file("$buildDir/reports/checkstyle/main.xml")
+        def reportsDir = layout.buildDirectory.dir("reports/checkstyle").get().asFile
+        def xmlReport = new File(reportsDir, "main.xml")
         if (xmlReport.exists()) {
             ant.xslt(in: xmlReport,
                     style: "config/checkstyle/checkstyle.xsl",
-                    out: "$buildDir/reports/checkstyle/checkstyle.html"
+                    out: new File(reportsDir, "checkstyle.html").absolutePath
             )
         }
     }
@@ -130,10 +131,15 @@ publishing {
 }
 
 signing {
-    required {
-        !version.toString().endsWith('SNAPSHOT') && gradle.taskGraph.allTasks.any { it.name.startsWith('publish') }
-    }
+    required = !version.toString().endsWith('SNAPSHOT')
     sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign).configureEach {
+    onlyIf("Only sign when publishing a release") {
+        !version.toString().endsWith('SNAPSHOT') &&
+        gradle.taskGraph.allTasks.any { it.name.startsWith('publish') }
+    }
 }
 
 artifacts {
