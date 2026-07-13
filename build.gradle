@@ -88,7 +88,7 @@ tasks.named('test', Test) {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        create('mavenJava', MavenPublication) {
             from components.java
             artifact(tasks.named('gwtJar'))
 
