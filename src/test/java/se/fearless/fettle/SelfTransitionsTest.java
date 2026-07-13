@@ -1,18 +1,16 @@
 package se.fearless.fettle;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import se.fearless.fettle.builder.StateMachineBuilder;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-@SuppressWarnings("unchecked")
-@ExtendWith(MockitoExtension.class)
 public class SelfTransitionsTest {
 
 	@Mock
@@ -25,9 +23,11 @@ public class SelfTransitionsTest {
 	private Action<States, String, Void> exitAction;
 
 	private StateMachine<States, String, Void> stateMachine;
+	private AutoCloseable mocks;
 
 	@BeforeEach
 	public void setUp() {
+		mocks = openMocks(this);
 		StateMachineBuilder<States, String, Void> builder = Fettle.newBuilder(States.class, String.class);
 		builder.transition().from(States.INITIAL).to(States.INITIAL).on("self").perform(transitionAction);
 		builder.onEntry(States.INITIAL).perform(entryAction);
@@ -54,5 +54,10 @@ public class SelfTransitionsTest {
 
 	private void verifyActionInvocation(Action<States, String, Void> action) {
 		verify(action).onTransition(eq(States.INITIAL), eq(States.INITIAL), eq("self"), isNull(), eq(stateMachine));
+	}
+
+	@AfterEach
+	public void tearDown() throws Exception {
+		mocks.close();
 	}
 }
